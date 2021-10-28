@@ -9,6 +9,11 @@ window.onload = function() {
 
 };
 
+$(function () {
+    $('[data-toggle="popover"]').popover()
+})
+
+
 /**
  * Send a message to the server.
  * @param msg  The message to send to the server.
