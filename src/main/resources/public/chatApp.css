@@ -44,8 +44,9 @@
     grid-area: rooms;
     width: 250px;
     height: 320px;
-    padding-left: 5px;
+    /*padding-left: 5px;*/
     background-color: white;
+    overflow-y: auto;
 }
 
 .room_btn_container {
@@ -56,17 +57,18 @@
     background-color: white;
 }
 
-.room_btn1 {
-    width: 86px;
-    height: 133px;
-    background-color: white;
+.room_btn {
+    width: 100%;
+    height: 75px;
+    /*background-color: white;*/
+    border: 1px solid lightskyblue;
 }
 
-.room_btn2 {
+/*user_btn {
     width: 82px;
     height: 133px;
     background-color: white;
-}
+}*/
 
 /**************third column**************/
 .room_name {
@@ -87,6 +89,12 @@
     overflow-y: auto;
     display: flex;
     flex-direction: column-reverse;
+}
+
+.popover_btn {
+    width: auto;
+    height: 100%;
+    border: 1px solid lightskyblue;
 }
 
 .icons {
@@ -126,9 +134,20 @@ textarea {
     grid-area: members;
     width: 200px;
     height: 200px;
-    padding-left: 5px;
+    padding-left: 0px;
     background-color: white;
+    overflow-y: auto;
 }
+
+.member_btn {
+    width: 100%;
+    height: 50px;
+    border: 1px solid lightskyblue;
+    text-align: left;
+    padding-left: 5px;
+    /*background-color: white;*/
+}
+
 
 .group_btn_container {
     grid-area: buttons2;
