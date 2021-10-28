@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat Rooms</title>
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script src="js/view.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="chatApp.css">
+</head>
+
+<body>
+<div style="position:center; top:3em; left:0em;">
+    <div class="container">
+        <div class="user_name">
+            <script>
+                var l = window.location.search;
+                // alert(l);
+            </script>
+            <label>
+                <span>
+                    <script>
+                        document.write(decodeURIComponent(l.substring(1).split('&')[0].split('=')[1]));
+                    </script>
+                </span>
+            </label>
+        </div>
+        <div class="rooms_title">
+            <label>Available Rooms</label>
+        </div>
+        <div class="room_name">
+            <label >Room Name (roomID): <span id="roomName"></span>
+            </label>
+        </div>
+        <div class="description">
+            <label>Description (introduction, rules)</label>
+        </div>
+        <div class="user_info">
+            <label>User Info</label><br>
+            <h6>Age:</h6>
+            <span id="age">23</span>
+            <br><br>
+            <h6>School:</h6>
+            <span id="school">Rice University</span>
+            <br><br>
+            <h6>Interests:</h6>
+            <span id="interests">Music, Swim</span>
+            <br>
+        </div>
+        <div class="rooms">
+<!--            <label>Room 1</label><br>-->
+<!--            <label>Room 2</label><br>-->
+<!--            <label>User 1</label><br>-->
+<!--            <label>Room 3</label><br>-->
+<!--            <label>User 2</label><br>-->
+            <span class="text" id="btn-room1" onclick="tempFunc()">
+                Room 1
+            </span><br>
+            <span class="text" id="btn-room2" onclick="tempFunc2()">
+                Room 2
+            </span><br>
+            <span class="text" id="btn-room3" onclick="tempFunc3()">
+                Room 3
+            </span><br>
+            <span class="text" id="btn-user1" onclick="tempFunc4()">
+                User 1
+            </span><br>
+            <span class="text" id="btn-user2" onclick="tempFunc5()">
+                User 2
+            </span><br>
+        </div>
+        <div class="room_btn_container row offset-md-0">
+            <div class="col-4 p-0">
+                <button class="btn btn-outline-primary p-0 u_btn" id="btn-chat" data-toggle="modal" data-target="#chatModal">
+                    Chat
+                </button>
+            </div>
+            <div class="col-4 p-0">
+                <button class="btn btn-outline-primary p-0 u_btn" id="btn-create" data-toggle="modal"
+                        data-target="#createModal">Create
+                </button>
+            </div>
+            <div class="col-4 p-0">
+                <button class="btn btn-outline-primary p-0 u_btn" id="btn-join" data-toggle="modal" data-target="#joinModal">
+                    Join
+                </button>
+            </div>
+
+
+        </div>
+        <div class="outputArea">
+            <label id="outputArea">Output Area</label>
+        </div>
+        <div class="members">
+            <label>Owner</label><br>
+            <label>Admin 1</label><br>
+            <label>Admin 2</label><br>
+            <label>Member 1</label><br>
+            <label>Member 1</label><br>
+        </div>
+        <div class="group_btn_container">
+            <div class="row m-0" style="width: 200px;height: 50px;">
+                <div class="col-6 p-0">
+                    <button class="btn btn-primary u_btn" id="btn-invite" data-toggle="modal"
+                            data-target="#inviteModal">Invite
+                    </button>
+                </div>
+                <div class="col-6 p-0">
+                    <button class="btn btn-primary u_btn" id="btn-mute" data-toggle="modal" data-target="#muteModal">
+                        Mute
+                    </button>
+                </div>
+            </div>
+            <div class="row m-0" style="width: 200px;height: 50px;">
+                <div class="col-6 p-0">
+                    <button class="btn btn-primary u_btn" id="btn-block" data-toggle="modal" data-target="#blockModal">
+                        Block
+                    </button>
+                </div>
+                <div class="col-6 p-0">
+                    <button class="btn btn-primary u_btn" id="btn-kick" data-toggle="modal" data-target="#kickModal">
+                        Kick
+                    </button>
+                </div>
+            </div>
+            <div class="row m-0" style="width: 200px;height: 50px;">
+                <div class="col-6 p-0">
+                    <button class="btn btn-primary u_btn" id="btn-history" data-toggle="modal"
+                            data-target="#historyModal">History
+                    </button>
+                </div>
+                <div class="col-6 p-0">
+                    <button class="btn btn-primary u_btn" id="btn-leave" data-toggle="modal" data-target="#leaveModal">
+                        Leave
+                    </button>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="icons">
+            <label> We are images</label>
+        </div>
+        <div class="inputArea">
+            <textarea type="text" id="inputArea" name="inputArea"></textarea>
+        </div>
+        <div class="enter">
+            <button class="btn" id="btn-clear">
+                <img width="150px" height="80px" src="enter.jpg">
+            </button>
+        </div>
+        <div class="logout_btn">
+            <button class="btn" id="btn-logout" onclick="goToPage()">
+                <img width="120px" height="90px" src="logout.png">
+            </button>
+            <script>
+                function goToPage(){
+                    window.location.href ="index.html"
+                    return false;
+                }
+            </script>
+        </div>
+        <div class="notification">
+
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#NotificationsModal">
+                Notifications
+            </button>
+            <!-- Modal -->
+            <div class="modal fade" id="NotificationsModal" tabindex="-1" role="dialog" aria-labelledby="NotificationsModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="NotificationsModalLabel">Notification</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <table>
+                                <tr>
+                                    <th>Sender: </th>
+                                    <th>Information</th>
+                                </tr>
+                                <tr>
+                                    <th>Tom </th>
+                                    <th>remove you from group 1</th>
+                                </tr>
+                                <tr>
+                                    <th>Jack </th>
+                                    <th>remove you from group 2</th>
+                                </tr>
+                                <tr>
+                                    <th>Tom </th>
+                                    <th>block you from group 3</th>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content w-100">
+            <div class="modal-header">
+
+                <h5 class="modal-title" id="exampleModalLabel">Hello, xxx</h5>
+                <!---
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                --->
+            </div>
+            <div class="modal-body">
+                <small class="float-left"><i>Assigned room id: xxxxxx</i></small>
+                <br>
+                <h3 class="mt-3">Create a Chat Room</h3>
+                <form>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label float-left">Room name</label>
+                        <input type="text" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-3">
+                            <p class="mt-2">
+                                Duration
+                            </p>
+
+                        </div>
+                        <div class="col-2 p-0">
+                            <input type="number" class="form-control p-0">
+                        </div>
+                        <div class="col-2 pl-0">
+                            <p class="mt-2">
+                                hour
+                            </p>
+                        </div>
+                        <div class="col-2 p-0">
+                            <input type="number" class="form-control p-0">
+                        </div>
+                        <div class="col-2 pl-1">
+                            <p class="mt-2">
+                                minute
+                            </p>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-7">
+                            <p class="float-left mt-2">
+                                Max number of Users
+                            </p>
+                        </div>
+                        <div class="col-2 p-0">
+                            <input type="number" class="form-control p-0" id="maxuser">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-3">
+                            <p class="float-left">Privacy</p>
+                        </div>
+                        <div class="col-4">
+                            <input type="radio" name="privacy">
+                            <span>public</span>
+                        </div>
+                        <div class="col-4">
+                            <input type="radio" name="privacy">
+                            <span>private</span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-3">
+                            <p class="float-left mt-2">
+                                password
+                            </p>
+                        </div>
+                        <div class="col-8">
+                            <input type="password" class="form-control" id="password">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Save</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="joinModal" tabindex="-1" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content w-100">
+            <div class="modal-body">
+                <div class="row p-1">
+                    <div id="list-example" class="list-group col-2 p-0" style="height: 300px;overflow: auto">
+                        <a class="list-group-item list-group-item-action" href="#A">A</a>
+                        <a class="list-group-item list-group-item-action" href="#B">B</a>
+                        <a class="list-group-item list-group-item-action" href="#C">C</a>
+                        <a class="list-group-item list-group-item-action" href="#D">D</a>
+                        <a class="list-group-item list-group-item-action" href="#E">E</a>
+                        <a class="list-group-item list-group-item-action" href="#F">F</a>
+                        <a class="list-group-item list-group-item-action" href="#G">G</a>
+                        <a class="list-group-item list-group-item-action" href="#H">H</a>
+                        <a class="list-group-item list-group-item-action" href="#I">I</a>
+                        <a class="list-group-item list-group-item-action" href="#J">J</a>
+                        <a class="list-group-item list-group-item-action" href="#K">K</a>
+                        <a class="list-group-item list-group-item-action" href="#L">L</a>
+                        <a class="list-group-item list-group-item-action" href="#M">M</a>
+                        <a class="list-group-item list-group-item-action" href="#N">N</a>
+                        <a class="list-group-item list-group-item-action" href="#O">O</a>
+                        <a class="list-group-item list-group-item-action" href="#P">P</a>
+                        <a class="list-group-item list-group-item-action" href="#Q">Q</a>
+                        <a class="list-group-item list-group-item-action" href="#R">R</a>
+                        <a class="list-group-item list-group-item-action" href="#S">S</a>
+                        <a class="list-group-item list-group-item-action" href="#T">T</a>
+                        <a class="list-group-item list-group-item-action" href="#U">U</a>
+                        <a class="list-group-item list-group-item-action" href="#V">V</a>
+                        <a class="list-group-item list-group-item-action" href="#W">W</a>
+                        <a class="list-group-item list-group-item-action" href="#X">X</a>
+                        <a class="list-group-item list-group-item-action" href="#Y">Y</a>
+                        <a class="list-group-item list-group-item-action" href="#z">Z</a>
+                    </div>
+                    <div data-spy="scroll" data-target="#list-example" data-offset="0"
+                         class="p-0 col-10 scrollspy-example" style="height: 300px;overflow: auto">
+                        <form>
+                            <div id="A"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                <tr>
+                                    <th scope="row"><input type="radio" name="join"></th>
+                                    <td>Amazon</td>
+                                    <td>publoc</td>
+                                    <td>70/150</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><input type="radio" name="join"></th>
+                                    <td>COMP 504</td>
+                                    <td>public</td>
+                                    <td>180/200</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><input type="radio" name="join"></th>
+                                    <td>Google</td>
+                                    <td>public</td>
+                                    <td>50/100</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><input type="radio" name="join"></th>
+                                    <td>Group D</td>
+                                    <td>private</td>
+                                    <td>50/100</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><input type="radio" name="join"></th>
+                                    <td>Google</td>
+                                    <td>public</td>
+                                    <td>50/100</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div id="B"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                <tr>
+                                    <th scope="row"><input type="radio" name="join"></th>
+                                    <td>Amazon</td>
+                                    <td>publoc</td>
+                                    <td>70/150</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><input type="radio" name="join"></th>
+                                    <td>COMP 504</td>
+                                    <td>public</td>
+                                    <td>180/200</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><input type="radio" name="join"></th>
+                                    <td>Google</td>
+                                    <td>public</td>
+                                    <td>50/100</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><input type="radio" name="join"></th>
+                                    <td>Group D</td>
+                                    <td>private</td>
+                                    <td>50/100</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><input type="radio" name="join"></th>
+                                    <td>Google</td>
+                                    <td>public</td>
+                                    <td>50/100</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><input type="radio" name="join"></th>
+                                    <td>Google</td>
+                                    <td>public</td>
+                                    <td>50/100</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div id="C"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                <tr>
+                                    <th scope="row"><input type="radio" name="join"></th>
+                                    <td>Amazon</td>
+                                    <td>publoc</td>
+                                    <td>70/150</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><input type="radio" name="join"></th>
+                                    <td>COMP 504</td>
+                                    <td>public</td>
+                                    <td>180/200</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><input type="radio" name="join"></th>
+                                    <td>Google</td>
+                                    <td>public</td>
+                                    <td>50/100</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><input type="radio" name="join"></th>
+                                    <td>Group D</td>
+                                    <td>private</td>
+                                    <td>50/100</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><input type="radio" name="join"></th>
+                                    <td>Google</td>
+                                    <td>public</td>
+                                    <td>50/100</td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                            <div id="D"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                <tr>
+                                    <th scope="row"><input type="radio" name="join"></th>
+                                    <td>Amazon</td>
+                                    <td>publoc</td>
+                                    <td>70/150</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><input type="radio" name="join"></th>
+                                    <td>COMP 504</td>
+                                    <td>public</td>
+                                    <td>180/200</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><input type="radio" name="join"></th>
+                                    <td>Google</td>
+                                    <td>public</td>
+                                    <td>50/100</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><input type="radio" name="join"></th>
+                                    <td>Group D</td>
+                                    <td>private</td>
+                                    <td>50/100</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><input type="radio" name="join"></th>
+                                    <td>Google</td>
+                                    <td>public</td>
+                                    <td>50/100</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div id="E"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                <tr>
+                                    <th scope="row"><input type="radio" name="join"></th>
+                                    <td>Google</td>
+                                    <td>public</td>
+                                    <td>50/100</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><input type="radio" name="join"></th>
+                                    <td>Amazon</td>
+                                    <td>publoc</td>
+                                    <td>70/150</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><input type="radio" name="join"></th>
+                                    <td>COMP 504</td>
+                                    <td>public</td>
+                                    <td>180/200</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><input type="radio" name="join"></th>
+                                    <td>Google</td>
+                                    <td>public</td>
+                                    <td>50/100</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div id="F"></div>
+                            <table class="table mb-0">
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                            <div id="G"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="H"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="I"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="J"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="K"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="L"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="M"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="N"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="O"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="P"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="Q"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="R"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="S"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="T"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="U"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="V"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="W"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="X"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="Y"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="Z"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="row form-control border-0">
+                    <p class=" float-left">Your selection:</p>
+                </div>
+                <div class="row bg-light form-control border-0">
+                    <p>Google, Gruop D</p>
+                </div>
+                <button type="button" class="btn btn-primary">Clear</button>
+                <button type="button" class="btn btn-primary">Join</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="muteModal" tabindex="-1" aria-labelledby="muteModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content w-75">
+            <div class="modal-header">
+
+                <h5 class="modal-title" id="muteModalLabel">Google, xxx</h5>
+                <!---
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                --->
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div style="height: 300px;overflow: auto;">
+                        <table class="table ">
+                            <tbody>
+                            <tr>
+                                <th scope="row"><input type="radio" name="mute"></th>
+                                <td>Yvonne</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><input type="radio" name="mute"></th>
+                                <td>Mona</td>
+                                <td>isMuted</td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><input type="radio" name="mute"></th>
+                                <td>Werner</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><input type="radio" name="mute"></th>
+                                <td>Mona</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><input type="radio" name="mute"></th>
+                                <td>Yvonne</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><input type="radio" name="mute"></th>
+                                <td>Ethel</td>
+                                <td>isMuted</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Clear</button>
+                <button type="button" class="btn btn-primary">Mute</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <small class="text-danger"><em>Selected users will be muted and cannot send messages in this group</em></small>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="blockModal" tabindex="-1" aria-labelledby="blockModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content w-75">
+            <div class="modal-header">
+
+                <h5 class="modal-title" id="blockModalLabel">Google, xxx</h5>
+                <!---
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                --->
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div style="height: 300px;overflow: auto;">
+                        <table class="table ">
+                            <tbody>
+                            <tr>
+                                <th scope="row"><input type="radio" name="block"></th>
+                                <td>Yvonne</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><input type="radio" name="block"></th>
+                                <td>Mona</td>
+                                <td>isBlocked</td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><input type="radio" name="block"></th>
+                                <td>Werner</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><input type="radio" name="block"></th>
+                                <td>Mona</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><input type="radio" name="block"></th>
+                                <td>Yvonne</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><input type="radio" name="block"></th>
+                                <td>Ethel</td>
+                                <td>isBlocked</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Clear</button>
+                <button type="button" class="btn btn-primary">Block</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <div class="row">
+                    <div class="col-11">
+                        <small class="text-danger"><em>Selected users cannot join this group chat.</em></small>
+                    </div>
+                    <div class="col-1"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="kickModal" tabindex="-1" aria-labelledby="kickModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content w-75">
+            <div class="modal-header">
+
+                <h5 class="modal-title" id="kickModalLabel">Google, xxx</h5>
+                <!---
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                --->
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div style="height: 300px;overflow: auto;">
+                        <table class="table ">
+                            <tbody>
+                            <tr>
+                                <th scope="row"><input type="radio" name="kick"></th>
+                                <td>Yvonne</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><input type="radio" name="kick"></th>
+                                <td>Mona</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><input type="radio" name="kick"></th>
+                                <td>Werner</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><input type="radio" name="kick"></th>
+                                <td>Mona</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><input type="radio" name="kick"></th>
+                                <td>Yvonne</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><input type="radio" name="kick"></th>
+                                <td>Ethel</td>
+                                <td></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Clear</button>
+                <button type="button" class="btn btn-primary">Kick</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <div class="row">
+                    <div class="col">
+                        <small class="text-danger"><em>Selected users will be removed from this group chat.</em></small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="leaveModal" tabindex="-1" aria-labelledby="leaveModalLabel">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content w-75">
+            <div class="modal-body">
+                <h5 class="float-left mt-2">Hello xxx:</h5>
+
+                <p class="text-left mt-5">Other members in the room will be notified. If you want to chat with a user or
+                    a group, you should login again</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Leave</button>
+                <button type="button" class="btn btn-primary">Stay</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="chatModal" tabindex="-1" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content w-100">
+            <div class="modal-header">
+
+                <h5 class="modal-title float-left" id="chatModalLabel">Hello, xxx</h5>
+                <!---
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                --->
+            </div>
+            <div class="modal-body">
+                <h3>Chat with someone</h3>
+                <div class="row p-1">
+                    <div id="chat-list-example" class="list-group col-2 p-0" style="height: 300px;overflow: auto">
+                        <a class="list-group-item list-group-item-action" href="#chat_A">A</a>
+                        <a class="list-group-item list-group-item-action" href="#chat_B">B</a>
+                        <a class="list-group-item list-group-item-action" href="#chat_C">C</a>
+                        <a class="list-group-item list-group-item-action" href="#chat_D">D</a>
+                        <a class="list-group-item list-group-item-action" href="#chat_E">E</a>
+                        <a class="list-group-item list-group-item-action" href="#chat_F">F</a>
+                        <a class="list-group-item list-group-item-action" href="#chat_G">G</a>
+                        <a class="list-group-item list-group-item-action" href="#chat_H">H</a>
+                        <a class="list-group-item list-group-item-action" href="#chat_I">I</a>
+                        <a class="list-group-item list-group-item-action" href="#chat_J">J</a>
+                        <a class="list-group-item list-group-item-action" href="#chat_K">K</a>
+                        <a class="list-group-item list-group-item-action" href="#chat_L">L</a>
+                        <a class="list-group-item list-group-item-action" href="#chat_M">M</a>
+                        <a class="list-group-item list-group-item-action" href="#chat_N">N</a>
+                        <a class="list-group-item list-group-item-action" href="#chat_O">O</a>
+                        <a class="list-group-item list-group-item-action" href="#chat_P">P</a>
+                        <a class="list-group-item list-group-item-action" href="#chat_Q">Q</a>
+                        <a class="list-group-item list-group-item-action" href="#chat_R">R</a>
+                        <a class="list-group-item list-group-item-action" href="#chat_S">S</a>
+                        <a class="list-group-item list-group-item-action" href="#chat_T">T</a>
+                        <a class="list-group-item list-group-item-action" href="#chat_U">U</a>
+                        <a class="list-group-item list-group-item-action" href="#chat_V">V</a>
+                        <a class="list-group-item list-group-item-action" href="#chat_W">W</a>
+                        <a class="list-group-item list-group-item-action" href="#chat_X">X</a>
+                        <a class="list-group-item list-group-item-action" href="#chat_Y">Y</a>
+                        <a class="list-group-item list-group-item-action" href="#chat_Z">Z</a>
+                    </div>
+                    <div data-spy="scroll" data-target="#chat-list-example" data-offset="0"
+                         class="p-0 col-10 scrollspy-example" style="height: 300px;overflow: auto">
+                        <form>
+                            <div id="chat_A"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="chat_B"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="chat_C"></div>
+                            <table class="table mb-0">
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                            <div id="chat_D"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="chat_E"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="chat_F"></div>
+                            <table class="table mb-0">
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                            <div id="chat_G"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="chat_H"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="chat_I"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="chat_J"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="chat_K"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="chat_L"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="chat_M"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="chat_N"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="chat_O"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="chat_P"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="chat_Q"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="chat_R"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="chat_S"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="chat_T"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="chat_U"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="chat_V"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="chat_W"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="chat_X"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="chat_Y"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="chat_Z"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Start</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="inviteModal" tabindex="-1" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content w-100">
+            <div class="modal-header">
+
+                <h5 class="modal-title float-left" id="inviteModalLabel">Hello, xxx</h5>
+                <!---
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                --->
+            </div>
+            <div class="modal-body">
+                <h3>Invite some to Group XXX</h3>
+                <div class="row p-1">
+                    <div id="invite-list-example" class="list-group col-2 p-0" style="height: 300px;overflow: auto">
+                        <a class="list-group-item list-group-item-action" href="#invite_A">A</a>
+                        <a class="list-group-item list-group-item-action" href="#invite_B">B</a>
+                        <a class="list-group-item list-group-item-action" href="#invite_C">C</a>
+                        <a class="list-group-item list-group-item-action" href="#invite_D">D</a>
+                        <a class="list-group-item list-group-item-action" href="#invite_E">E</a>
+                        <a class="list-group-item list-group-item-action" href="#invite_F">F</a>
+                        <a class="list-group-item list-group-item-action" href="#invite_G">G</a>
+                        <a class="list-group-item list-group-item-action" href="#invite_H">H</a>
+                        <a class="list-group-item list-group-item-action" href="#invite_I">I</a>
+                        <a class="list-group-item list-group-item-action" href="#invite_J">J</a>
+                        <a class="list-group-item list-group-item-action" href="#invite_K">K</a>
+                        <a class="list-group-item list-group-item-action" href="#invite_L">L</a>
+                        <a class="list-group-item list-group-item-action" href="#invite_M">M</a>
+                        <a class="list-group-item list-group-item-action" href="#invite_N">N</a>
+                        <a class="list-group-item list-group-item-action" href="#invite_O">O</a>
+                        <a class="list-group-item list-group-item-action" href="#invite_P">P</a>
+                        <a class="list-group-item list-group-item-action" href="#invite_Q">Q</a>
+                        <a class="list-group-item list-group-item-action" href="#invite_R">R</a>
+                        <a class="list-group-item list-group-item-action" href="#invite_S">S</a>
+                        <a class="list-group-item list-group-item-action" href="#invite_T">T</a>
+                        <a class="list-group-item list-group-item-action" href="#invite_U">U</a>
+                        <a class="list-group-item list-group-item-action" href="#invite_V">V</a>
+                        <a class="list-group-item list-group-item-action" href="#invite_W">W</a>
+                        <a class="list-group-item list-group-item-action" href="#invite_X">X</a>
+                        <a class="list-group-item list-group-item-action" href="#invite_Y">Y</a>
+                        <a class="list-group-item list-group-item-action" href="#invite_Z">Z</a>
+                    </div>
+                    <div data-spy="scroll" data-target="#chat-list-example" data-offset="0"
+                         class="p-0 col-10 scrollspy-example" style="height: 300px;overflow: auto">
+                        <form>
+                            <div id="invite_A"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="invite_B"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="invite_C"></div>
+                            <table class="table mb-0">
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                            <div id="invite_D"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="invite_E"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="invite_F"></div>
+                            <table class="table mb-0">
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                            <div id="invite_G"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="invite_H"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="invite_I"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="invite_J"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="invite_K"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="invite_L"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="invite_M"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="invite_N"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="invite_O"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="invite_P"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="invite_Q"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="invite_R"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="invite_S"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="invite_T"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="invite_U"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="invite_V"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="invite_W"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="invite_X"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="invite_Y"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div id="invite_Z"></div>
+                            <table class="table mb-0">
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Invite</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="historyModal" tabindex="-1" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content w-100">
+            <div class="modal-header">
+
+                <h5 class="modal-title float-left" id="historyModalLabel">XXX chat history</h5>
+                <!---
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                --->
+            </div>
+            <div class="modal-body">
+                <div class="row ml-2 mr-2">
+                    <div class="col-4 pl-0 pr-sm-1">
+                        <table class="table">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">Username</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="table-active">
+                                <td>Mark</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-4 pl-0 pr-sm-1">
+                        <table class="table">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">Username</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="table-active">
+                                <td>Mark</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-4 pl-0 pr-sm-1">
+                        <table class="table">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">Username</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="table-active">
+                                <td>Mark</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<!---
+<form>
+                    <div style="height: 300px;overflow: auto;">
+
+                        <table class="table ">
+                            <tbody>
+                            <tr>
+                                <th scope="row"><input type="radio" name="join"></th>
+                                <td>Amazon</td>
+                                <td>publoc</td>
+                                <td>70/150</td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><input type="radio" name="join"></th>
+                                <td>COMP 504</td>
+                                <td>public</td>
+                                <td>180/200</td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><input type="radio" name="join"></th>
+                                <td>Google</td>
+                                <td>public</td>
+                                <td>50/100</td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><input type="radio" name="join"></th>
+                                <td>Group D</td>
+                                <td>private</td>
+                                <td>50/100</td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><input type="radio" name="join"></th>
+                                <td>Google</td>
+                                <td>public</td>
+                                <td>50/100</td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><input type="radio" name="join"></th>
+                                <td>Google</td>
+                                <td>public</td>
+                                <td>50/100</td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><input type="radio" name="join"></th>
+                                <td>Google</td>
+                                <td>public</td>
+                                <td>50/100</td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><input type="radio" name="join"></th>
+                                <td>Google</td>
+                                <td>public</td>
+                                <td>50/100</td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><input type="radio" name="join"></th>
+                                <td>Google</td>
+                                <td>public</td>
+                                <td>50/100</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+--->

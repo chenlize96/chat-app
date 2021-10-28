@@ -1,0 +1,184 @@
+/**************first column**************/
+.user_name {
+    grid-area: user_name;
+    width: 150px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    background-color: white;
+}
+
+.notification {
+    grid-area: notification;
+    width: 150px;
+    height: 50px;
+    background-color: white;
+}
+
+.user_info {
+    grid-area: user_info;
+    width: 150px;
+    height: 300px;
+    padding: 5px;
+    background-color: white;
+}
+
+.logout_btn {
+    grid-area: logout_btn;
+    width: 150px;
+    height: 100px;
+    background-color: white;
+}
+
+/**************second column**************/
+.rooms_title {
+    grid-area: rooms_title;
+    width: 250px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    background-color: white;
+}
+
+.rooms {
+    grid-area: rooms;
+    width: 250px;
+    height: 320px;
+    padding-left: 5px;
+    background-color: white;
+}
+
+.room_btn_container {
+    grid-area: buttons1;
+    width: 250px;
+    height: 133px;
+    font-size:0px;
+    background-color: white;
+}
+
+.room_btn1 {
+    width: 86px;
+    height: 133px;
+    background-color: white;
+}
+
+.room_btn2 {
+    width: 82px;
+    height: 133px;
+    background-color: white;
+}
+
+/**************third column**************/
+.room_name {
+    grid-area: room_name;
+    width: 500px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    background-color: white;
+}
+
+.outputArea {
+    grid-area: outputArea;
+    width: 500px;
+    height: 320px;
+    padding-left: 5px;
+    background-color: white;
+}
+
+.icons {
+    grid-area: icons;
+    width: 500px;
+    height: 30px;
+    padding-left: 5px;
+    background-color: white;
+}
+
+.inputArea {
+    grid-area: inputArea;
+    width: 500px;
+    height: 100px;
+    background-color: white;
+}
+
+textarea {
+    resize: none;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    background-color: white;
+}
+
+/**************forth column**************/
+.description {
+    grid-area: description;
+    width: 200px;
+    height: 50px;
+    line-height: 25px;
+    text-align: center;
+    background-color: white;
+}
+
+.members {
+    grid-area: members;
+    width: 200px;
+    height: 200px;
+    padding-left: 5px;
+    background-color: white;
+}
+
+.group_btn_container {
+    grid-area: buttons2;
+    width: 200px;
+    height: 150px;
+    background-color: white;
+}
+
+.group_btn {
+    width: 100px;
+    height: 50px;
+    background-color: white;
+}
+
+.enter {
+    grid-area: enter;
+    width: 200px;
+    height: 100px;
+    background-color: white;
+}
+
+/**************containers**************/
+.container {
+    display: grid;
+    grid-template-areas:
+                'user_name rooms_title room_name room_name description'
+                'notification rooms outputArea outputArea members'
+                'user_info rooms outputArea outputArea members'
+                'user_info rooms outputArea outputArea buttons2'
+                'user_info buttons1 icons icons buttons2'
+                'logout_btn buttons1 inputArea inputArea enter';
+    grid-gap: 3px;
+    background-color: lightskyblue;
+    padding: 5px;
+    width: 1120px;
+    margin:auto;
+}
+
+select, label {
+    text-align: center;
+    font-size: 20px;
+
+}
+
+.btn {
+    width: 100%;
+    height: 100%;
+    border: 1px solid lightskyblue;
+}
+
+/*div {
+    background-color: white;
+    text-align: center;
+
+}*/
+
