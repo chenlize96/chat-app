@@ -22,6 +22,14 @@ function sendMessage(msg) {
     }
 }
 
+function onKeyPress(event) {
+    event = event || window.event;
+    if (event.keyCode == 13) {
+        event.returnValue = false;
+        $('#inputArea').val('').focus();
+    }
+}
+
 /**
  * Enter a chatRoom
  */
