@@ -1,5 +1,6 @@
 package edu.rice.comp504.model;
 
+import edu.rice.comp504.model.user.User;
 import org.eclipse.jetty.websocket.api.Session;
 
 import java.util.Map;
@@ -10,16 +11,39 @@ import java.util.concurrent.ConcurrentHashMap;
  * UserDB is used to store users.
  */
 public class UserDB {
+    private static final Map<Session, String> sessionUserMap =  new ConcurrentHashMap<>();
+    private static int nextUserId = 1;
     // TODO: This userDB will be implemented to something like UserStore, it will store all users
     //      and their relationship to their chatroom.
+    private static final Map<String, User> users = new ConcurrentHashMap<>();
 
-    private static final Map<Session,String> sessionUserMap =  new ConcurrentHashMap<>();
-    private static int nextUserId = 1;
 
     /**
      * Constructor.
      */
     public UserDB() {
+    }
+
+    /**
+     * Get the username to User Class map.
+     * @return The available users
+     */
+    public static Map<String, User> getUsers() {
+        return users;
+    }
+
+    /**
+     * Add new user to User Class map.
+     */
+    public static void addUser(User newUser) {
+        users.put(newUser.getUsername(), newUser);
+    }
+
+    /**
+     * Check if the user is in User Class map.
+     */
+    public static Boolean checkUser(String username) {
+        return users.containsKey(username);
     }
 
     /**

@@ -12,13 +12,13 @@ import java.util.Arrays;
  * User abstract class to store User's related attributes.
  */
 public abstract class User implements PropertyChangeListener {
-    private final int userId;
+    //private final int userId;
     private String username;
     private String password;
-    private String nickname;
+    //private String nickname;
     private String dateOfBirth;
-    private String emailAddress;
-    private final String userType;
+    //private String emailAddress;
+    //private final String userType;
     private ArrayList<ChatRoom> roomList;
     private ArrayList<Notification> notificationsList;
     private String school;
@@ -29,15 +29,18 @@ public abstract class User implements PropertyChangeListener {
     /**
      * A constructor for a user.
      */
-    public User(int uid, String username, String password, String nickname,
-                String dateOfBirth, String emailAddress, String type, String school, int age, String interests) {
-        this.userId = uid;
+    /*public User(int uid, String username, String password, String nickname,
+                String dateOfBirth, String emailAddress, String type, String school, int age, String interests) {*/
+    public User(String username, String password, String school, int age, String interests) {
+        //this.userId = uid;
         this.username = username;
         this.password = password;
-        this.nickname = nickname;
-        this.dateOfBirth = dateOfBirth;
-        this.emailAddress = emailAddress;
-        this.userType = type;
+        //this.nickname = nickname;
+        //this.dateOfBirth = dateOfBirth;
+        //this.emailAddress = emailAddress;
+        // we can delete the type since the room class has difficult arrays for different roles
+        // if we assign the type to the user class, we need to change it when we change the room
+        //this.userType = type; be careful !
         this.roomList = new ArrayList<>();
         this.notificationsList = new ArrayList<>();
         this.interests = new ArrayList<>();
@@ -110,9 +113,9 @@ public abstract class User implements PropertyChangeListener {
      * Get user ID of current user.
      * @return The user ID
      */
-    public int getUserId() {
+    /*public int getUserId() {
         return this.userId;
-    }
+    }*/
 
     /**
      * Get username of current user.
@@ -150,57 +153,57 @@ public abstract class User implements PropertyChangeListener {
      * Get nickname or display name of current user.
      * @return The nickname
      */
-    public String getNickname() {
+    /*public String getNickname() {
         return nickname;
-    }
+    }*/
 
     /**
      * Set the current user's nickname to target nickname.
      * @param nickname The target nickname
      */
-    public void setNickname(String nickname) {
+    /*public void setNickname(String nickname) {
         this.nickname = nickname;
-    }
+    }*/
 
     /**
      * Get date of birth of current user.
      * @return String type of date of birth.
      */
-    public String getDateOfBirth() {
+    /*public String getDateOfBirth() {
         return dateOfBirth;
-    }
+    }*/
 
     /**
      * Set the date of birth of current user.
      * @param dateOfBirth The date of birth that needs to be set to current user
      */
-    public void setDateOfBirth(String dateOfBirth) {
+    /*public void setDateOfBirth(String dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
-    }
+    }*/
 
     /**
      * Get email address of current user.
      * @return Email address
      */
-    public String getEmailAddress() {
+    /*public String getEmailAddress() {
         return emailAddress;
-    }
+    }*/
 
     /**
      * Set email address of current user to a new address.
      * @param emailAddress The new email address
      */
-    public void setEmailAddress(String emailAddress) {
+    /*public void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
-    }
+    }*/
 
     /**
      * Get the user's type.
      * @return User type
      */
-    public String getUserType() {
+    /*public String getUserType() {
         return userType;
-    }
+    }*/
 
     /**
      * Get all rooms this user is in.

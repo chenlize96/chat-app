@@ -1,5 +1,7 @@
 package edu.rice.comp504.adapter;
 
+import edu.rice.comp504.model.MsgToClientSender;
+import edu.rice.comp504.model.UserDB;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
@@ -18,7 +20,8 @@ public class WebSocketAdapter {
      */
     @OnWebSocketConnect
     public void onConnect(Session session) {
-
+        String username = "User" + UserDB.genNextUserId();
+        UserDB.addSessionUser(session, username);
     }
 
     /**
@@ -27,7 +30,7 @@ public class WebSocketAdapter {
      */
     @OnWebSocketClose
     public void onClose(Session session, int statusCode, String reason) {
-
+        UserDB.removeUser(session);
     }
 
     /**
@@ -37,6 +40,6 @@ public class WebSocketAdapter {
      */
     @OnWebSocketMessage
     public void onMessage(Session session, String message) {
-
+        MsgToClientSender.broadcastMessage(UserDB.getUser(session), message);
     }
 }

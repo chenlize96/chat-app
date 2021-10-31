@@ -1,5 +1,6 @@
 package edu.rice.comp504.controller;
 
+import com.google.gson.Gson;
 import edu.rice.comp504.adapter.WebSocketAdapter;
 
 import static spark.Spark.*;
@@ -17,7 +18,47 @@ public class ChatAppController {
         port(getHerokuAssignedPort());
         staticFiles.location("/public");
         webSocket("/chatapp", WebSocketAdapter.class);
+        Gson gson = new Gson();
         init();
+
+        post("/login", (request, response) -> {
+            // TODO: check if username is in UserDB,
+            //  and then check if the password is correct,
+            //  return true => direct to the main page AND
+            //  set the main page as the user instance => see the available rooms
+            //  and update user info on the leftmost column, otherwise return false and do nothing
+            System.out.println("username = " + request.queryMap().value("username") +
+                    " password = " + request.queryMap().value("password"));
+            return gson.toJson(true);
+        });
+
+        post("/register", (request, response) -> {
+            // TODO: check if the username is in UserDB,
+            //  if in, then return false,
+            //  otherwise, create a User Class in users Map in UserDB using the data,
+            //  then return true => register successfully
+            System.out.println("username = " + request.queryMap().value("username") +
+                    " school = " + request.queryMap().value("school") +
+                    " age = " + request.queryMap().value("age") +
+                    " interests = " + request.queryMap().value("interests") +
+                    " password = " + request.queryMap().value("password")
+            );
+            return gson.toJson(true);
+        });
+
+        /* the above is the endpoint for index.html
+         ****************************************************************************************
+         * the below is the endpoint for main.html
+         */
+
+        get("/logout", (request, response) -> {
+            // TODO: there is no restriction on the type of return value
+            System.out.println("username = " + request.queryMap().value("username"));
+            return gson.toJson(true);
+        });
+
+
+
     }
 
     /**

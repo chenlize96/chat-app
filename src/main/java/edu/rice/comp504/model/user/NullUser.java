@@ -9,17 +9,21 @@ public class NullUser extends User{
 
     /**
      * Null user constructor.
-     * @param uid User ID
+     //* @param uid User ID
      * @param username Username
      * @param password Password
-     * @param nickname Nickname
-     * @param dateOfBirth Date of birth
-     * @param emailAddress Email address
+     //* @param nickname Nickname
+     //* @param dateOfBirth Date of birth
+     //* @param emailAddress Email address
      */
-    public NullUser(int uid, String username, String password, String nickname,
+    /*public NullUser(int uid, String username, String password, String nickname,
                           String dateOfBirth, String emailAddress) {
         super(-1, "null", "null", "null",
                 "00-00-0000",  "null", "null", "null", -1, "null");
+    }*/
+    public NullUser(String username, String password, String school, int age, String interests) {
+        super("null", "null",
+                "null",  -1, "null");
     }
 
     /**

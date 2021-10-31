@@ -1,14 +1,61 @@
-function logIn(){
-    window.location.href="main.html";
+'use strict';
+
+window.onload = function() {
+    clear();
+    $('#registerForm').on('show.bs.modal', clearForm);
+    $("#btn_log").click(doLogin);
+    $(document).on("click", "#btn_register", doRegister);
+    $(document).on("click", "#btn_clear", clearForm);
+};
+
+function doLogin(){
+    $.post("/login", {username: $("#usernameLogin").val(),
+        password: $("#passwordLogin").val()}, function (data) {
+        console.log(data);
+        // get a boolean - if true then submit, otherwise do not direct AND show error message
+        if (data === true) {
+            document.getElementById("registerInfo").submit();
+        }
+    }, "json");
 }
-function clear(){
-    document.getElementById("userName").value="";
-    document.getElementById("zipcode").value="";
-    document.getElementById("email").value="";
-    document.getElementById("phone").value="";
-    document.getElementById("password").value="";
-    document.getElementById("passwordSecond").value="";
+
+function doRegister() {
+    // assume front-end can compare the password with the password confirmation
+    $.post("/register", {username: $("#username").val(), school: $("#school").val(),
+        age: $("#age").val(), interests: $("#interests").val(),
+        password: $("#password").val()}, function (data) {
+        console.log(data);
+        // if true then register successfully, otherwise there exists the same username
+        if (data === true) {
+            console.log("success");
+            // close the form
+            $("#registerForm").modal('hide');
+        } else {
+            console.log("fail");
+            // show error messages on the form
+        }
+    }, "json");
 }
+
+function clear() {
+    document.getElementById("usernameLogin").value = "";
+    document.getElementById("passwordLogin").value = "";
+}
+
+function clearForm() {
+    document.getElementById("username").value = "";
+    //document.getElementById("zipcode").value="";
+    //document.getElementById("email").value="";
+    //document.getElementById("phone").value="";
+    document.getElementById("school").value = "";
+    document.getElementById("age").value = "";
+    document.getElementById("interests").value = "";
+    document.getElementById("password").value = "";
+    document.getElementById("passwordSecond").value = "";
+}
+
+
+/* Lize - the code below does not have any function, but do not delete them */
 function validateZipcode(){
     var a = document.getElementById("zipcode");
     var a2 = document.getElementById("zipcodeAlert");
@@ -38,7 +85,6 @@ function validatePhone(){
     return true;
 }
 
-
 function validateEmail(){
     var a = document.getElementById("email");
     var a2 = document.getElementById("emailAlert");
@@ -51,7 +97,6 @@ function validateEmail(){
     }
     return true;
 }
-
 
 function validatePassword(){
     var pass = document.getElementById("password");
