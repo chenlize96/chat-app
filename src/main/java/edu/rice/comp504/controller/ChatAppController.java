@@ -75,6 +75,14 @@ public class ChatAppController {
             return gson.toJson(true);
         });
 
+        post("/sendMessage", (request, response) -> {
+            System.out.println("username = " + request.queryMap().value("username") +
+                    " roomName = " + request.queryMap().value("roomName") +
+                    " message = " + request.queryMap().value("message")
+            );
+            return gson.toJson(true);
+        });
+
     }
 
     /**
