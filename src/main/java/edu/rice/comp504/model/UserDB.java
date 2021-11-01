@@ -1,5 +1,6 @@
 package edu.rice.comp504.model;
 
+import edu.rice.comp504.model.user.RegisteredUser;
 import edu.rice.comp504.model.user.User;
 import org.eclipse.jetty.websocket.api.Session;
 
@@ -16,7 +17,6 @@ public class UserDB {
     // TODO: This userDB will be implemented to something like UserStore, it will store all users
     //      and their relationship to their chatroom.
     private static final Map<String, User> users = new ConcurrentHashMap<>();
-
 
     /**
      * Constructor.
@@ -35,7 +35,8 @@ public class UserDB {
     /**
      * Add new user to User Class map.
      */
-    public static void addUser(User newUser) {
+    public static void addUser(String username, String password, String school, int age, String interests) {
+        RegisteredUser newUser = new RegisteredUser(username, password, school, age, interests);
         users.put(newUser.getUsername(), newUser);
     }
 

@@ -9,7 +9,7 @@ import static spark.Spark.*;
  * The chat app controller communicates with all the clients on the web socket.
  */
 public class ChatAppController {
-
+    public static WebSocketAdapter webSocketAdapter = new WebSocketAdapter();
     /**
      * Chat App entry point.
      * @param args The command line arguments
@@ -27,9 +27,9 @@ public class ChatAppController {
             //  return true => direct to the main page AND
             //  set the main page as the user instance => see the available rooms
             //  and update user info on the leftmost column, otherwise return false and do nothing
-            System.out.println("username = " + request.queryMap().value("username") +
-                    " password = " + request.queryMap().value("password"));
-            return gson.toJson(true);
+
+            return gson.toJson(webSocketAdapter.logInUser( request.queryMap().value("username"),
+                    request.queryMap().value("password")));
         });
 
         post("/register", (request, response) -> {
@@ -37,12 +37,11 @@ public class ChatAppController {
             //  if in, then return false,
             //  otherwise, create a User Class in users Map in UserDB using the data,
             //  then return true => register successfully
-            System.out.println("username = " + request.queryMap().value("username") +
-                    " school = " + request.queryMap().value("school") +
-                    " age = " + request.queryMap().value("age") +
-                    " interests = " + request.queryMap().value("interests") +
-                    " password = " + request.queryMap().value("password")
-            );
+            webSocketAdapter.registerUser(request.queryMap().value("username"),
+                    request.queryMap().value("school"),
+                    Integer.parseInt(request.queryMap().value("age")),
+                    request.queryMap().value("interests"),
+                    request.queryMap().value("password"));
             return gson.toJson(true);
         });
 

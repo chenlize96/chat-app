@@ -2,11 +2,15 @@ package edu.rice.comp504.adapter;
 
 import edu.rice.comp504.model.MsgToClientSender;
 import edu.rice.comp504.model.UserDB;
+import edu.rice.comp504.model.user.NullUser;
+import edu.rice.comp504.model.user.User;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
+
+import java.util.*;
 
 /**
  * Create a web socket for the server.
@@ -41,5 +45,18 @@ public class WebSocketAdapter {
     @OnWebSocketMessage
     public void onMessage(Session session, String message) {
         MsgToClientSender.broadcastMessage(UserDB.getUser(session), message);
+    }
+
+    public void registerUser(String username, String school, int age, String interestsTemp, String password) {
+        UserDB.addUser(username, school, interestsTemp, age, password);
+    }
+
+    public User logInUser(String username, String password) {
+        Map<String, User> usersTemp = UserDB.getUsers();
+        if (usersTemp.containsKey(username)) {
+            if (usersTemp.get(username).getPassword().equals(password))
+                return usersTemp.get(username);
+        }
+        return new NullUser("","","",0,"");
     }
 }

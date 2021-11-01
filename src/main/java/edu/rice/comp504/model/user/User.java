@@ -55,7 +55,7 @@ public abstract class User implements PropertyChangeListener {
      */
     public void addToInterests(String interests) {
         try {
-            this.interests.addAll(Arrays.asList(interests.split(",")));
+            this.interests.addAll(Arrays.asList(interests.split(", ")));
         } catch (NullPointerException npe) {
             System.out.println("NullPointerException, addToInterests failed!");
         }
