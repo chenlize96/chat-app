@@ -2,6 +2,12 @@ package edu.rice.comp504.controller;
 
 import com.google.gson.Gson;
 import edu.rice.comp504.adapter.WebSocketAdapter;
+import edu.rice.comp504.model.UserDB;
+import edu.rice.comp504.model.user.NullUser;
+import edu.rice.comp504.model.user.User;
+import spark.Session;
+
+import javax.servlet.http.HttpSession;
 
 import static spark.Spark.*;
 
@@ -27,9 +33,13 @@ public class ChatAppController {
             //  return true => direct to the main page AND
             //  set the main page as the user instance => see the available rooms
             //  and update user info on the leftmost column, otherwise return false and do nothing
-
-            return gson.toJson(webSocketAdapter.logInUser( request.queryMap().value("username"),
-                    request.queryMap().value("password")));
+            User user = webSocketAdapter.logInUser( request.queryMap().value("username"),
+                    request.queryMap().value("password"));
+            if(!(user instanceof NullUser)) {
+                Session session = request.session(); //  create session here
+                session.attribute("username",request.queryMap().value("username"));
+            }
+            return gson.toJson(user);
         });
 
         post("/register", (request, response) -> {
@@ -37,6 +47,9 @@ public class ChatAppController {
             //  if in, then return false,
             //  otherwise, create a User Class in users Map in UserDB using the data,
             //  then return true => register successfully
+            if(UserDB.checkUser(request.queryMap().value("username"))) {
+                return gson.toJson(false);
+            }
             webSocketAdapter.registerUser(request.queryMap().value("username"),
                     request.queryMap().value("school"),
                     Integer.parseInt(request.queryMap().value("age")),
@@ -51,6 +64,9 @@ public class ChatAppController {
          */
 
         get("/logout", (request, response) -> {
+            // TODO: remove the session related info
+            Session session = request.session();
+            session.invalidate();
             // TODO: there is no restriction on the type of return value
             System.out.println("username = " + request.queryMap().value("username"));
             return gson.toJson(true);
@@ -73,6 +89,7 @@ public class ChatAppController {
             //true: close the page, false: no changes
             return gson.toJson(true);
         });
+
 
     }
 
