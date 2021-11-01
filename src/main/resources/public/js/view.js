@@ -80,7 +80,7 @@ function doLogOut() {
 function sendMessage() {
     $.post("/sendMessage", {
         username: $("#user_name").val(),
-        roomName:document.getElementById("roomName").innerText,
+        roomName:document.getElementById("title").innerText,
         message:$("#inputArea").val()
     }, function (data) {
         if(data === true) {
