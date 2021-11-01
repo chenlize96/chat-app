@@ -7,7 +7,28 @@ const webSocket = new WebSocket("ws://" + location.hostname + ":" + location.por
  */
 window.onload = function() {
     $("#btn-logout").click(doLogOut);
+    $(document).on("click", "#btn_createRoomSave", createGroupChat);
+
 };
+
+function createGroupChat() {
+    $.post("/create/groupchat", {
+        roomName: $("#recipient-name").val(),
+        duration: $("#hour").val(),
+        maxUser: $("#maxUser").val(),
+        isPublic: $("#isPublic").is(':checked'),
+        password: $("#password").val(),
+    }, function (data) {
+        if (data === true) {
+            console.log(data);
+            console.log("create room success");
+            $("#createModal").modal('hide');
+        } else {
+            console.log("create room fail");
+        }
+
+    }, "json");
+}
 
 /**
  * Logout the account, and redirect to the landing page.
