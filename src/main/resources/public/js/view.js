@@ -6,9 +6,58 @@ const webSocket = new WebSocket("ws://" + location.hostname + ":" + location.por
  * Entry point into chat room
  */
 window.onload = function() {
-    $("#user_name").text(localStorage.getItem("username"));
+    setUsername();
     $("#btn-logout").click(doLogOut);
+    $(document).on("click", "#btn_createRoomSave", createGroupChat);
+    $(document).on("click", "#btn_createRoomCancel", clearCreateForm);
+
 };
+
+/**
+ * Set the username.
+ */
+function setUsername() {
+    if ($("#user_name").val() == "") {
+        console.log("set the username successfully");
+        $("#user_name").text(localStorage.getItem("username"));
+        $("#user_name").val(localStorage.getItem("username"));
+    } else {
+        console.log("do not reset the username");
+    }
+}
+
+/**
+ * Clear the create form.
+ */
+function clearCreateForm() {
+    document.getElementById("new_room_name").value = "";
+    document.getElementById("interest").value = "";
+    document.getElementById("maxUser").value = 1;
+    document.getElementById("password").value = "";
+}
+
+/**
+ * Create a new group chat room.
+ */
+function createGroupChat() {
+    $.post("/create/groupchat", {
+        username: $("#user_name").val(),
+        roomName: $("#new_room_name").val(),
+        interest: $("#interest").val(), // only one interest for each room
+        maxUser: $("#maxUser").val(),
+        isPublic: $("#isPublic").is(':checked'),
+        password: $("#password").val(),
+    }, function (data) {
+        if (data === true) { // the size of the roomList increases
+            console.log(data);
+            console.log("create room success");
+            clearCreateForm();
+            $("#createModal").modal('hide');
+        } else {
+            console.log("create room fail");
+        }
+    }, "json");
+}
 
 /**
  * Logout the account, and redirect to the landing page.

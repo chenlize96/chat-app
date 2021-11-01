@@ -57,7 +57,23 @@ public class ChatAppController {
             return gson.toJson(true);
         });
 
-
+        post("/create/groupchat", (request, response) -> {
+            // TODO: check if roomName (**unique**) is in UserDB =>
+            //  false => create the room (set owner), and return the new roomList of current user,
+            //  otherwise return the roomList of current user
+            //  (front-end will use the number of the roomList to judge if a room is created)
+            //  the return value is used to update rooms
+            //  the following data are the minimum requirement for hw6
+            System.out.println("username = " + request.queryMap().value("username") +
+                    " roomName = " + request.queryMap().value("roomName") +
+                    " interest = " + request.queryMap().value("interest") +
+                    " maxUser = " + request.queryMap().value("maxUser") +
+                    " isPublic = " + request.queryMap().value("isPublic") +
+                    " password = " + request.queryMap().value("password")
+            );//type of isPublic: String
+            //true: close the page, false: no changes
+            return gson.toJson(true);
+        });
 
     }
 

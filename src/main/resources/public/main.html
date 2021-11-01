@@ -253,85 +253,51 @@
     <div class="modal-dialog">
         <div class="modal-content w-100">
             <div class="modal-header">
-
-                <h5 class="modal-title" id="exampleModalLabel">Hello, xxx</h5>
-                <!---
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                --->
+                <h5 class="modal-title" id="exampleModalLabel">Create a Chat Room</h5>
             </div>
             <div class="modal-body">
-                <small class="float-left"><i>Assigned room id: xxxxxx</i></small>
-                <br>
-                <h3 class="mt-3">Create a Chat Room</h3>
                 <form>
-                    <div class="form-group">
-                        <label for="recipient-name" class="col-form-label float-left">Room name</label>
-                        <input type="text" class="form-control" id="recipient-name">
+                    <div class="form-group row">
+                        <label for="new_room_name" class="col-3 col-form-label text-left">Room Name:</label>
+                        <input type="text" class="col-6 form-control" id="new_room_name">
                     </div>
                     <div class="form-group row">
-                        <div class="col-3">
-                            <p class="mt-2">
-                                Duration
-                            </p>
-
+                        <label for="maxUser" class="col-2 col-form-label text-left">Size:</label>
+                        <input type="number" class="form-control col-2" id="maxUser"
+                               value="1" min="1" max="50">
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-3 col-form-label text-left">Privacy:</label>
+                        <div class="col-3 col-form-label">
+                            <input type="radio" name="privacy" checked="checked" id="isPublic">
+                            <span>Public</span>
                         </div>
-                        <div class="col-2 p-0">
-                            <input type="number" class="form-control p-0">
-                        </div>
-                        <div class="col-2 pl-0">
-                            <p class="mt-2">
-                                hour
-                            </p>
-                        </div>
-                        <div class="col-2 p-0">
-                            <input type="number" class="form-control p-0">
-                        </div>
-                        <div class="col-2 pl-1">
-                            <p class="mt-2">
-                                minute
-                            </p>
+                        <div class="col-3 col-form-label">
+                            <input type="radio" name="privacy" id="isPrivate">
+                            <span>Private</span>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <div class="col-7">
-                            <p class="float-left mt-2">
-                                Max number of Users
-                            </p>
-                        </div>
-                        <div class="col-2 p-0">
-                            <input type="number" class="form-control p-0" id="maxuser">
-                        </div>
+                        <label for="interest" class="col-3 col-form-label text-left">Interest:</label>
+                        <input type="text" class="form-control col-6" id="interest" placeholder="swim">
                     </div>
                     <div class="form-group row">
-                        <div class="col-3">
-                            <p class="float-left">Privacy</p>
-                        </div>
-                        <div class="col-4">
-                            <input type="radio" name="privacy">
-                            <span>public</span>
-                        </div>
-                        <div class="col-4">
-                            <input type="radio" name="privacy">
-                            <span>private</span>
-                        </div>
+                        <label for="password" class="col-3 col-form-label text-left">Password:</label>
+                        <input type="password" class="form-control col-4" id="password">
                     </div>
-                    <div class="form-group row">
-                        <div class="col-3">
-                            <p class="float-left mt-2">
-                                password
-                            </p>
+                    <!--<div class="form-group row">
+                        <label for="hours" class="col-sm-2 col-form-label">Duration</label>
+                        <div class="col-sm-10">
+                            <input type="number" class="form-control col-1 p-0" id="hours" value=1>
                         </div>
-                        <div class="col-8">
-                            <input type="password" class="form-control" id="password">
-                        </div>
-                    </div>
+                        <label for="hours" class="col-sm-1 col-form-label">hour(s)</label>
+                    </div>-->
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Save</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="btn_createRoomSave">Save</button>
+                <button type="button" class="btn btn-secondary" id="btn_createRoomCancel"
+                        data-dismiss="modal">Cancel</button>
             </div>
         </div>
     </div>

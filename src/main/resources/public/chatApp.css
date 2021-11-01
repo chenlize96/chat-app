@@ -9,7 +9,6 @@
     border-radius: 8px;
 }
 
-
 /**************main page**************/
 /**************first column**************/
 .user_name {
@@ -225,6 +224,12 @@ select, label {
     text-align: center;
 
 }*/
+
+/**************internal attributes**************/
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    opacity: 1;
+}
 
 
 /**************external chat**************/
