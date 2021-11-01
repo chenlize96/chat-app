@@ -57,7 +57,16 @@ public class ChatAppController {
             return gson.toJson(true);
         });
 
-
+        post("/create/groupchat", (request, response) -> {
+            System.out.println("roomName = " + request.queryMap().value("roomName") +
+                    " duration = " + request.queryMap().value("duration") +
+                    " maxUser = " + request.queryMap().value("maxUser") +
+                    " isPublic = " + request.queryMap().value("isPublic") +
+                    " password = " + request.queryMap().value("password")
+            );//type of isPublic: String
+            //true: close the page, false: no changes
+            return gson.toJson(true);
+        });
 
     }
 
