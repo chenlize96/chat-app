@@ -14,6 +14,7 @@ function doLogin(){
         console.log(data);
         // get a boolean - if true then submit, otherwise do not direct AND show error message
         if (data === true) {
+            localStorage.setItem("username", $("#usernameLogin").val());
             document.getElementById("registerInfo").submit();
         }
     }, "json");

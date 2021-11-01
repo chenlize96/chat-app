@@ -18,19 +18,7 @@
 <body>
 <div style="position:center; top:3em; left:0em;">
     <div class="container">
-        <div id="user_name" class="user_name">
-            <script>
-                var l = window.location.search;
-                // alert(l);
-            </script>
-            <label>
-                <span>
-                    <script>
-                        document.write(decodeURIComponent(l.substring(1).split('&')[0].split('=')[1]));
-                    </script>
-                </span>
-            </label>
-        </div>
+        <div id="user_name" class="user_name"></div>
         <div class="rooms_title">
             <label>Available Rooms</label>
         </div>

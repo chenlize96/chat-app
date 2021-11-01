@@ -6,6 +6,7 @@ const webSocket = new WebSocket("ws://" + location.hostname + ":" + location.por
  * Entry point into chat room
  */
 window.onload = function() {
+    $("#user_name").text(localStorage.getItem("username"));
     $("#btn-logout").click(doLogOut);
 };
 
