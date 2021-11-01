@@ -10,17 +10,15 @@ public class RegisteredUser extends User{
 
     /**
      * Registered user constructor.
-     * @param uid User ID
+     //* @param uid User ID
      * @param username Username
      * @param password Password
-     * @param nickname Nickname
-     * @param dateOfBirth Date of birth
-     * @param emailAddress Email address
+     //* @param nickname Nickname
+     //* @param dateOfBirth Date of birth
+     //* @param emailAddress Email address
      */
-    public RegisteredUser(int uid, String username, String password, String nickname,
-                String dateOfBirth, String emailAddress, String school, int age, String interests) {
-        super(uid, username, password, nickname, dateOfBirth,
-                emailAddress, "registered", school, age, interests);
+    public RegisteredUser(String username, String password, String school, int age, String interests) {
+        super( username, password, school, age, interests);
     }
 
 

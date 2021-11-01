@@ -18,7 +18,7 @@
 <body>
 <div style="position:center; top:3em; left:0em;">
     <div class="container">
-        <div class="user_name">
+        <div id="user_name" class="user_name">
             <script>
                 var l = window.location.search;
                 // alert(l);
@@ -213,18 +213,11 @@
             </button>
         </div>
         <div class="logout_btn">
-            <button class="btn" id="btn-logout" onclick="goToPage()">
+            <button class="btn" id="btn-logout">
                 <img width="120px" height="90px" src="logout.png">
             </button>
-            <script>
-                function goToPage(){
-                    window.location.href ="index.html"
-                    return false;
-                }
-            </script>
         </div>
         <div class="notification">
-
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#NotificationsModal">
                 Notifications
             </button>

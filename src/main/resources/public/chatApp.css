@@ -1,3 +1,16 @@
+/**************landing page**************/
+.landing_label {
+    padding: 10px;
+}
+
+.landing_btn {
+    width: 200px;
+    padding: 5px;
+    border-radius: 8px;
+}
+
+
+/**************main page**************/
 /**************first column**************/
 .user_name {
     grid-area: user_name;
