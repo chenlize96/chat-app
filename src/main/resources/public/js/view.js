@@ -5,7 +5,7 @@ const webSocket = new WebSocket("ws://" + location.hostname + ":" + location.por
 /**
  * Entry point into chat room
  */
-window.onload = function() {
+window.onload = function () {
     setUsername();
     $("#btn-logout").click(doLogOut);
     $(document).on("click", "#btn_createRoomSave", createGroupChat);
@@ -69,7 +69,7 @@ function doLogOut() {
         console.log(data);
         // it should be always true, just keep it for testing the controller
         if (data === true) {
-            window.location.href ="index.html"
+            window.location.href = "index.html"
         }
     }, "json");
 }
@@ -102,17 +102,19 @@ function onKeyPress(event) {
 function tempFunc() {
     document.getElementById("roomName").innerText = "Room 1"
 }
+
 function tempFunc2() {
     document.getElementById("roomName").innerText = "Room 2"
 }
+
 function tempFunc3() {
     document.getElementById("roomName").innerText = "Room 3"
 }
+
 function tempFunc4() {
     document.getElementById("roomName").innerText = "User 1"
 }
+
 function tempFunc5() {
     document.getElementById("roomName").innerText = "User 2"
 }
-
-

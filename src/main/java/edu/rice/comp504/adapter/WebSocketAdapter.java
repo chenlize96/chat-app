@@ -1,6 +1,7 @@
 package edu.rice.comp504.adapter;
 
 import edu.rice.comp504.model.MsgToClientSender;
+import edu.rice.comp504.model.RoomDB;
 import edu.rice.comp504.model.UserDB;
 import edu.rice.comp504.model.user.NullUser;
 import edu.rice.comp504.model.user.User;
@@ -20,6 +21,7 @@ public class WebSocketAdapter {
 
     /**
      * Open user's session.
+     *
      * @param session The user whose session is opened.
      */
     @OnWebSocketConnect
@@ -30,6 +32,7 @@ public class WebSocketAdapter {
 
     /**
      * Close the user's session.
+     *
      * @param session The use whose session is closed.
      */
     @OnWebSocketClose
@@ -39,7 +42,8 @@ public class WebSocketAdapter {
 
     /**
      * Send a message.
-     * @param session  The session user sending the message.
+     *
+     * @param session The session user sending the message.
      * @param message The message to be sent.
      */
     @OnWebSocketMessage
@@ -57,6 +61,14 @@ public class WebSocketAdapter {
             if (usersTemp.get(username).getPassword().equals(password))
                 return usersTemp.get(username);
         }
-        return new NullUser("","","",0,"");
+        return new NullUser("", "", "", 0, "");
+    }
+
+    public boolean createGroupChat(int duration, int userLimit, String roomName, String type,
+                                   String ownerUsername, int adminLimit, boolean isPublic,
+                                   String roomPassword, String rules, String blockList) {
+        int roomId = RoomDB.make().getNextRoomID();
+        return RoomDB.make().addGroupRoom(duration, userLimit, roomId, roomName, type,
+                ownerUsername, adminLimit, isPublic, roomPassword, rules, blockList);
     }
 }

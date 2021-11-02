@@ -75,22 +75,26 @@ public class ChatAppController {
         });
 
         post("/create/groupchat", (request, response) -> {
-            // TODO: check if roomName (**unique**) is in UserDB =>
-            //  false => create the room (set owner), and return the new roomList of current user,
-            //  otherwise return the roomList of current user
-            //  (front-end will use the number of the roomList to judge if a room is created)
-            //  the return value is used to update rooms
-            //  the following data are the minimum requirement for hw6
-            System.out.println("username = " + request.queryMap().value("username") +
-                    " roomName = " + request.queryMap().value("roomName") +
-                    " interest = " + request.queryMap().value("interest") +
-                    " maxUser = " + request.queryMap().value("maxUser") +
-                    " isPublic = " + request.queryMap().value("isPublic") +
-                    " password = " + request.queryMap().value("password")
-            );//type of isPublic: String
-            //true: close the page, false: no changes
-            return gson.toJson(true);
+            //TODO: Frontend alert when create fail
+            //TODO: parameter lose && copy error
+             String roomPassword = request.queryMap().value("password");
+             String roomName = request.queryMap().value("roomName");
+             int userLimit = Integer.parseInt(request.queryMap().value("maxUser"));
+             boolean isPublic = Boolean.parseBoolean(request.queryMap().value("isPublic"));
+            String ownerUsername = request.queryMap().value("user_name");
+            String blockList = "";//todo
+            String type = "groupchat";
+            int duration = 0;  // TODO
+            int adminLimit = 0;   // TODO
+            String rules = "";
+            return gson.toJson(webSocketAdapter.createGroupChat(duration, userLimit, roomName, type,
+                            ownerUsername, adminLimit, isPublic,
+                    roomPassword, rules, blockList));
+
         });
+
+
+
 
 
 
