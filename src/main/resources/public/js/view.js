@@ -103,7 +103,8 @@ function sendMessage() {
  */
 function onKeyPress(event) {
     event = event || window.event;
-    if (event.keyCode === 13) {
+    if (event.which === 13) {
+        event.preventDefault();
         event.returnValue = false;
         console.log("onKeyPress");
         sendMessage();
