@@ -3,7 +3,6 @@ package edu.rice.comp504.model.chatroom;
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * A concrete class to represent multiple users chat room.
@@ -12,42 +11,35 @@ public class GroupChat extends ChatRoom{
 
     // owner is the username of the owner
     private String owner;
-    private int adminLimit;
     // adminList and userList are stored as ArrayList<String> with user's username
     private ArrayList<String> adminList;
     private ArrayList<String> userList;
     private int curNumUser;
     private boolean isPublic;
     private String roomPassword;
+    private String interest;
     private ArrayList<String> rules;
     private ArrayList<String> blockList;
 
 
     /**
      * A constructor for group chat room
-     * @param duration The duration
      * @param userLimit The user limit
-     * @param roomId The room id
      * @param roomName The room name
-     * @param type The type of the room, group chat will always be groupchat
      * @param ownerUsername The username of first user
-     * @param adminLimit The admin number limit
-     * @param blockList The block list of usernames
      * @param isPublic If this room is public or not
      * @param roomPassword The room password
-     * @param rules The rule string.
      */
-    public GroupChat(int duration , int userLimit, int roomId, String roomName, String type,
-                     String ownerUsername, int adminLimit, boolean isPublic,
-                     String roomPassword, String rules, String blockList) {
+    public GroupChat(int userLimit, int roomId, String roomName, String interest, String ownerUsername,
+                     boolean isPublic, String roomPassword) {
         // Call super constructor
-        super(duration, userLimit, roomId, roomName, "groupchat");
+        super(userLimit, roomId, roomName, "groupchat");
         // Initialize attributes
         this.owner = ownerUsername;
-        this.adminLimit = adminLimit;
         this.curNumUser = 1;
         this.isPublic = isPublic;
         this.roomPassword = roomPassword;
+        this.interest = interest;
         // Initialize list attributes
         this.adminList = new ArrayList<>();
         this.userList = new ArrayList<>();
@@ -55,8 +47,6 @@ public class GroupChat extends ChatRoom{
         this.blockList = new ArrayList<>();
         // Add elements to list attributes
         this.addToUserList(ownerUsername);
-        this.addRules(rules);
-        this.addToBlockList(blockList);
     }
 
     /**
@@ -91,13 +81,6 @@ public class GroupChat extends ChatRoom{
         return isPublic;
     }
 
-    /**
-     * Get admin limit number.
-     * @return The admin number limit
-     */
-    public int getAdminLimit() {
-        return adminLimit;
-    }
 
     /**
      * Get current number of all users.
@@ -129,14 +112,6 @@ public class GroupChat extends ChatRoom{
      */
     public ArrayList<String> getRules() {
         return rules;
-    }
-
-    /**
-     * Set admin limit number.
-     * @param adminLimit Admin limit int
-     */
-    public void setAdminLimit(int adminLimit) {
-        this.adminLimit = adminLimit;
     }
 
 
@@ -202,9 +177,7 @@ public class GroupChat extends ChatRoom{
      */
     public void addToUserList(String users) {
         try {
-            List<String> toAdd = Arrays.asList(users.split(","));
-            this.userList.addAll(toAdd);
-            this.setCurNumUser(this.getCurNumUser() + toAdd.size());
+            this.adminList.addAll(Arrays.asList(users.split(",")));
         } catch (StringIndexOutOfBoundsException sioobe) {
             System.out.println("IndexOutOfBoundsException, addToBlockList failed!");
         } catch (NullPointerException npe) {
@@ -241,6 +214,12 @@ public class GroupChat extends ChatRoom{
         }
     }
 
+    /**
+     * @return room interest.
+     * */
+    public String getInterest() {
+        return interest;
+    }
 
     /**
      * According to property change event's content to modified current chat room's instances.

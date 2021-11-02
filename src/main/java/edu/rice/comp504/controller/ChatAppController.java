@@ -151,19 +151,19 @@ public class ChatAppController {
         post("/create/groupchat", (request, response) -> {
             //TODO: Frontend alert when create fail
             //TODO: parameter lose && copy error
-             String roomPassword = request.queryMap().value("password");
-             String roomName = request.queryMap().value("roomName");
-             int userLimit = Integer.parseInt(request.queryMap().value("maxUser"));
-             boolean isPublic = Boolean.parseBoolean(request.queryMap().value("isPublic"));
+            String roomName = request.queryMap().value("roomName");
+            int userLimit = Integer.parseInt(request.queryMap().value("maxUser"));
+            boolean isPublic = Boolean.parseBoolean(request.queryMap().value("isPublic"));
+            String roomPassword = "";
+            if (!isPublic) {
+                roomPassword = request.queryMap().value("password");
+            }
+            String interest = request.queryMap().value("interest");
+            interest = interest.toLowerCase();
+            interest = interest.strip();
             String ownerUsername = request.queryMap().value("user_name");
-            String blockList = "";//todo
-            String type = "groupchat";
-            int duration = 0;  // TODO
-            int adminLimit = 0;   // TODO
-            String rules = "";
-            return gson.toJson(webSocketAdapter.createGroupChat(duration, userLimit, roomName, type,
-                            ownerUsername, adminLimit, isPublic,
-                    roomPassword, rules, blockList));
+            return gson.toJson(webSocketAdapter.createGroupChat(userLimit, roomName, interest, ownerUsername,
+                    isPublic, roomPassword));
 
         });
 

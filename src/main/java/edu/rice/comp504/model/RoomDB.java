@@ -36,13 +36,11 @@ public class RoomDB {
      *
      * @return true is the room is created
      */
-    public boolean addGroupRoom(int duration, int userLimit, int roomId, String roomName, String type,
-                                String ownerUsername, int adminLimit, boolean isPublic,
-                                String roomPassword, String rules, String blockList) {
+    public boolean addGroupRoom(int userLimit, String roomName, String interest, String ownerUsername,
+                                boolean isPublic, String roomPassword) {
         if (rooms.containsKey(roomName)) return false;
-        GroupChat temp = new GroupChat(duration, userLimit, roomId, roomName, type,
-                ownerUsername, adminLimit, isPublic,
-                roomPassword, rules, blockList);
+        GroupChat temp = new GroupChat(userLimit, this.getNextRoomID(), roomName,
+                interest, ownerUsername, isPublic, roomPassword);
         rooms.put(roomName, temp);
         return true;
     }

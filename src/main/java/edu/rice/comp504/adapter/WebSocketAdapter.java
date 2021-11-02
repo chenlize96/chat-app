@@ -64,11 +64,8 @@ public class WebSocketAdapter {
         return new NullUser("", "", "", 0, "");
     }
 
-    public boolean createGroupChat(int duration, int userLimit, String roomName, String type,
-                                   String ownerUsername, int adminLimit, boolean isPublic,
-                                   String roomPassword, String rules, String blockList) {
-        int roomId = RoomDB.make().getNextRoomID();
-        return RoomDB.make().addGroupRoom(duration, userLimit, roomId, roomName, type,
-                ownerUsername, adminLimit, isPublic, roomPassword, rules, blockList);
+    public boolean createGroupChat(int userLimit, String roomName, String interest, String ownerUsername,
+                                   boolean isPublic, String roomPassword) {
+        return RoomDB.make().addGroupRoom(userLimit,roomName, interest, ownerUsername, isPublic, roomPassword);
     }
 }
