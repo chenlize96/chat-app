@@ -41,7 +41,7 @@ public class ChatAppController {
                     session.attribute("username",request.queryMap().value("username"));
                 }
             }
-            return gson.toJson(user);
+            return gson.toJson(true);
         });
 
         post("/register", (request, response) -> {
@@ -73,6 +73,27 @@ public class ChatAppController {
             System.out.println("username = " + request.queryMap().value("username"));
             return gson.toJson(true);
         });
+
+        post("/create/groupchat", (request, response) -> {
+            //TODO: Frontend alert when create fail
+            //TODO: parameter lose && copy error
+             String roomPassword = request.queryMap().value("password");
+             String roomName = request.queryMap().value("roomName");
+             int userLimit = Integer.parseInt(request.queryMap().value("maxUser"));
+             boolean isPublic = Boolean.parseBoolean(request.queryMap().value("isPublic"));
+            String ownerUsername = request.queryMap().value("user_name");
+            String blockList = "";//todo
+            String type = "groupchat";
+            int duration = 0;  // TODO
+            int adminLimit = 0;   // TODO
+            String rules = "";
+            return gson.toJson(webSocketAdapter.createGroupChat(duration, userLimit, roomName, type,
+                            ownerUsername, adminLimit, isPublic,
+                    roomPassword, rules, blockList));
+
+        });
+
+
 
 
 
