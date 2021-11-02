@@ -2,12 +2,20 @@ package edu.rice.comp504.controller;
 
 import com.google.gson.Gson;
 import edu.rice.comp504.adapter.WebSocketAdapter;
+import edu.rice.comp504.model.RoomDB;
 import edu.rice.comp504.model.UserDB;
+import edu.rice.comp504.model.chatroom.ChatRoom;
+import edu.rice.comp504.model.chatroom.GroupChat;
+import edu.rice.comp504.model.notification.Notification;
+import edu.rice.comp504.model.notification.NotificationFac;
 import edu.rice.comp504.model.user.NullUser;
 import edu.rice.comp504.model.user.User;
 import spark.Session;
 
 import javax.servlet.http.HttpSession;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static spark.Spark.*;
 
@@ -64,6 +72,64 @@ public class ChatAppController {
          ****************************************************************************************
          * the below is the endpoint for main.html
          */
+
+        post("/join/getRooms", (request, response) -> {
+            String username = request.queryMap().value("username");
+            User user = UserDB.getUsers().get(username);
+            List<ChatRoom> addedRoomList = user.getRoomList();
+            List<ChatRoom> allRoomList = new ArrayList<>(RoomDB.make().getRooms().values());
+            // res list (allRoomList - addedRoomList)
+            List<ChatRoom> res = new ArrayList<>();
+            for(ChatRoom chatRoom : allRoomList) {
+                if(!addedRoomList.contains(chatRoom)) {
+                    res.add(chatRoom);
+                }
+            }
+            return gson.toJson(res);
+        });
+
+        post("/join/group", (request, response) -> {
+            String username = request.queryMap().value("username");
+            String roomName = request.queryMap().value("roomName");
+            User user = UserDB.getUsers().get(username);
+            // check if the applicant is already a member of this group chat
+            // check if userLimit of the room is still available
+            GroupChat joinRoom = (GroupChat) RoomDB.make().getRooms().get(roomName);
+            if(joinRoom.getUserList().contains(username) || joinRoom.getCurNumUser() >= joinRoom.getUserLimit()) {
+                return gson.toJson(user.getRoomList());
+            }
+            // if public  -> enter
+            //    private -> check password and send a notification to the owner of the room
+            if(joinRoom.isPublic()) {
+                joinRoom.addToUserList(username);
+                user.getRoomList().add(joinRoom);
+            } else {
+                Notification notification = new NotificationFac().make("invite",username,joinRoom.getOwner(),roomName);
+                User owner = UserDB.getUsers().get(joinRoom.getOwner());
+                owner.addNotification(notification);
+            }
+            return gson.toJson(user.getRoomList());
+        });
+
+        post("/join/notification/accept", (request, response) -> {
+            String username = request.queryMap().value("username");
+            String roomName = request.queryMap().value("roomName");
+            User user = UserDB.getUsers().get(username);
+            GroupChat joinRoom = (GroupChat) RoomDB.make().getRooms().get(roomName);
+            user.addAChatRoom(joinRoom);
+            joinRoom.addToUserList(username);
+            return gson.toJson("successfully join the room");
+        });
+
+        post("/join/notification/reject", (request, response) -> {
+            String sender = request.queryMap().value("sender"); // owner of the room
+            String receiver = request.queryMap().value("receiver"); // applicant
+            String roomName = request.queryMap().value("roomName");
+            User receiveUser = UserDB.getUsers().get(receiver);
+            Notification notification = new NotificationFac().make("reject",sender,receiver,roomName);
+            receiveUser.addNotification(notification);
+            return gson.toJson("fail to join the room");
+        });
 
         get("/logout", (request, response) -> {
             // TODO: remove the session related info
