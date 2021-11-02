@@ -76,13 +76,26 @@ function doLogOut() {
 
 /**
  * Send a message to the server.
- * @param msg  The message to send to the server.
  */
-function sendMessage(msg) {
-    if (msg !== "") {
-        webSocket.send(msg);
-        $("#message").val("");
-    }
+function sendMessage() {
+    $.post("/sendMessage", {
+        username: $("#user_name").val(),
+        roomName:document.getElementById("title").innerText,
+        message:$("#inputArea").val()
+    }, function (data) {
+        if(data === true) {
+            console.log("ready to send");
+            $('#inputArea').val('').focus();
+        } else {
+            console.log("will not be sent");
+        }
+        /*
+        if (msg !== "") {
+            webSocket.send(msg);
+            $("#message").val("");
+        }
+        */
+    }, "json");
 }
 
 /**
@@ -90,9 +103,10 @@ function sendMessage(msg) {
  */
 function onKeyPress(event) {
     event = event || window.event;
-    if (event.keyCode == 13) {
+    if (event.keyCode === 13) {
         event.returnValue = false;
-        $('#inputArea').val('').focus();
+        console.log("onKeyPress");
+        sendMessage();
     }
 }
 
