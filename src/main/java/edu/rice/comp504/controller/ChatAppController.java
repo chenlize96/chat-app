@@ -92,18 +92,20 @@ public class ChatAppController {
             String username = request.queryMap().value("username");
             String roomName = request.queryMap().value("roomName");
             User user = UserDB.getUsers().get(username);
+            GroupChat joinRoom = (GroupChat) RoomDB.make().getRooms().get(roomName);
             // check if the applicant is already a member of this group chat
             // check if userLimit of the room is still available
-            GroupChat joinRoom = (GroupChat) RoomDB.make().getRooms().get(roomName);
             if(joinRoom.getUserList().contains(username) || joinRoom.getCurNumUser() >= joinRoom.getUserLimit()) {
                 return gson.toJson(user.getRoomList());
             }
             // if public  -> enter
             //    private -> check password and send a notification to the owner of the room
             if(joinRoom.isPublic()) {
+                //add into room
                 joinRoom.addToUserList(username);
                 user.getRoomList().add(joinRoom);
             } else {
+                //send an invite notification
                 Notification notification = new NotificationFac().make("invite",username,joinRoom.getOwner(),roomName);
                 User owner = UserDB.getUsers().get(joinRoom.getOwner());
                 owner.addNotification(notification);
@@ -112,12 +114,17 @@ public class ChatAppController {
         });
 
         post("/join/notification/accept", (request, response) -> {
-            String username = request.queryMap().value("username");
+            String sender = request.queryMap().value("sender"); // owner of the room
+            String receiver = request.queryMap().value("receiver"); // applicant
             String roomName = request.queryMap().value("roomName");
-            User user = UserDB.getUsers().get(username);
+            User receiveUser = UserDB.getUsers().get(receiver);
             GroupChat joinRoom = (GroupChat) RoomDB.make().getRooms().get(roomName);
-            user.addAChatRoom(joinRoom);
-            joinRoom.addToUserList(username);
+            //add into room
+            receiveUser.addAChatRoom(joinRoom);
+            joinRoom.addToUserList(receiver);
+            //send notification
+            Notification notification = new NotificationFac().make("accept",sender,receiver,roomName);
+            receiveUser.addNotification(notification);
             return gson.toJson("successfully join the room");
         });
 
@@ -126,6 +133,7 @@ public class ChatAppController {
             String receiver = request.queryMap().value("receiver"); // applicant
             String roomName = request.queryMap().value("roomName");
             User receiveUser = UserDB.getUsers().get(receiver);
+            //send notification
             Notification notification = new NotificationFac().make("reject",sender,receiver,roomName);
             receiveUser.addNotification(notification);
             return gson.toJson("fail to join the room");
