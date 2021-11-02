@@ -8,21 +8,23 @@ public class InteractNotification extends Notification{
 
     /**
      * A constructor.
+     * @param sender Send user's username
      * @param receiver Receive user's username
      * @param info The notification info
      */
-    private InteractNotification(String receiver, String info) {
-        super(receiver, info, "interact", true);
+    private InteractNotification(String sender, String receiver, String info) {
+        super(sender, receiver, info, "interact", true);
     }
 
     /**
      * Make function.
+     * @param sender Send user's username
      * @param receiver Receive user's username
      * @param info The notification info
      * @return A invite notification
      */
-    public static Notification make(String receiver, String info) {
-        return new InteractNotification(receiver, info);
+    public static Notification make(String sender, String receiver, String info) {
+        return new InteractNotification(sender, receiver, info);
     }
 
 }
