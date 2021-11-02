@@ -3,6 +3,7 @@ package edu.rice.comp504.model.chatroom;
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * A concrete class to represent multiple users chat room.
@@ -201,7 +202,9 @@ public class GroupChat extends ChatRoom{
      */
     public void addToUserList(String users) {
         try {
-            this.adminList.addAll(Arrays.asList(users.split(",")));
+            List<String> toAdd = Arrays.asList(users.split(","));
+            this.userList.addAll(toAdd);
+            this.setCurNumUser(this.getCurNumUser() + toAdd.size());
         } catch (StringIndexOutOfBoundsException sioobe) {
             System.out.println("IndexOutOfBoundsException, addToBlockList failed!");
         } catch (NullPointerException npe) {
