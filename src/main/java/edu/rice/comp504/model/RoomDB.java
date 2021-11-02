@@ -27,6 +27,10 @@ public class RoomDB {
         return ONLY;
     }
 
+    public Map<String, ChatRoom> getRooms() {
+        return rooms;
+    }
+
     /**
      * Create a group chat room method .
      *
