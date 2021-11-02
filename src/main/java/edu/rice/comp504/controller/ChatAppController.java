@@ -37,7 +37,9 @@ public class ChatAppController {
                     request.queryMap().value("password"));
             if(!(user instanceof NullUser)) {
                 Session session = request.session(); //  create session here
-                session.attribute("username",request.queryMap().value("username"));
+                if(session.isNew()) {
+                    session.attribute("username",request.queryMap().value("username"));
+                }
             }
             return gson.toJson(user);
         });
