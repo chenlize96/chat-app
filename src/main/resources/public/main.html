@@ -23,7 +23,7 @@
             <label>Available Rooms</label>
         </div>
         <div class="room_name">
-            <label >Room Name (roomID): <span id="roomName"></span>
+            <label id="title">Welcome!  <span id="roomName"></span><span>(1/10)</span>
             </label>
         </div>
         <div class="description">
@@ -193,10 +193,10 @@
             <label> We are images</label>
         </div>
         <div class="inputArea">
-            <textarea type="text" id="inputArea" name="inputArea" onkeyup="onKeyPress()"></textarea>
+            <textarea type="text" id="inputArea" name="inputArea" onkeydown="onKeyPress()"></textarea>
         </div>
         <div class="enter">
-            <button class="btn" id="btn-clear">
+            <button class="btn" id="btn-clear" onclick="sendMessage()">
                 <img width="150px" height="80px" src="enter.jpg">
             </button>
         </div>
