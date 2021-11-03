@@ -26,7 +26,7 @@ public class UserChat extends ChatRoom{
      */
     public UserChat(int duration , int userLimit, int roomId, String roomName, String type,
                     String user1, String user2) {
-        super(duration, userLimit, roomId, user1 + "," + user2, "userchat");
+        super(userLimit, roomId, user1 + "," + user2, "userchat");
         this.user1 = user1;
         this.user2 = user2;
     }

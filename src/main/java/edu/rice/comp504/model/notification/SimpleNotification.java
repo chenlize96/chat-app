@@ -11,8 +11,8 @@ public class SimpleNotification extends Notification{
      * @param receiver Receive user's username
      * @param info The notification info
      */
-    private SimpleNotification(String receiver, String info) {
-        super(receiver, info, "simple", false);
+    private SimpleNotification(String sender, String receiver, String info) {
+        super(sender, receiver, info, "simple", false);
     }
 
 
@@ -22,8 +22,8 @@ public class SimpleNotification extends Notification{
      * @param info The notification info
      * @return A invite notification
      */
-    public static Notification make(String receiver, String info) {
-        return new SimpleNotification(receiver, info);
+    public static Notification make(String sender, String receiver, String info) {
+        return new SimpleNotification(sender, receiver, info);
     }
 
 

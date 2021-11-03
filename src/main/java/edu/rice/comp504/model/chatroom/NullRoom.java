@@ -8,7 +8,7 @@ import java.beans.PropertyChangeEvent;
 public class NullRoom extends ChatRoom{
 
     public NullRoom() {
-        super(0, 0, -1, "null", "null");
+        super(0, 0, "null", "null");
     }
 
     /**
