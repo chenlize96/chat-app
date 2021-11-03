@@ -23,6 +23,7 @@
             <label>Available Rooms</label>
         </div>
         <div class="room_name">
+            <label>Room Name (roomID): <span id="roomName"></span>
             <label id="title">Welcome!  <span id="roomName"></span><span>(1/10)</span>
             </label>
         </div>
@@ -42,11 +43,11 @@
             <br>
         </div>
         <div class="rooms">
-<!--            <label>Room 1</label><br>-->
-<!--            <label>Room 2</label><br>-->
-<!--            <label>User 1</label><br>-->
-<!--            <label>Room 3</label><br>-->
-<!--            <label>User 2</label><br>-->
+            <!--            <label>Room 1</label><br>-->
+            <!--            <label>Room 2</label><br>-->
+            <!--            <label>User 1</label><br>-->
+            <!--            <label>Room 3</label><br>-->
+            <!--            <label>User 2</label><br>-->
             <span class="text" id="btn-room1" onclick="tempFunc()">
                 <button class="room_btn btn-outline-primary p-0 m-0 u_btn">
                     Room 1
@@ -75,7 +76,8 @@
         </div>
         <div class="room_btn_container row offset-md-0">
             <div class="col-4 p-0">
-                <button class="btn btn-outline-primary p-0 u_btn" id="btn-chat" data-toggle="modal" data-target="#chatModal">
+                <button class="btn btn-outline-primary p-0 u_btn" id="btn-chat" data-toggle="modal"
+                        data-target="#chatModal">
                     Chat
                 </button>
             </div>
@@ -85,7 +87,8 @@
                 </button>
             </div>
             <div class="col-4 p-0">
-                <button class="btn btn-outline-primary p-0 u_btn" id="btn-join" data-toggle="modal" data-target="#joinModal">
+                <button class="btn btn-outline-primary p-0 u_btn" id="btn-join" data-toggle="modal"
+                        data-target="#joinModal">
                     Join
                 </button>
             </div>
@@ -102,7 +105,9 @@
                                 <span class="message-data-time">Jason, 10:10 AM</span>
                                 <!--<img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="avatar">-->
                             </div>
-                            <div class="message other-message text-left"> Hi Nix, how are you? How is the project coming along? </div>
+                            <div class="message other-message text-left"> Hi Nix, how are you? How is the project coming
+                                along?
+                            </div>
                         </li>
                         <li class="clearfix">
                             <div class="message-data">
@@ -115,7 +120,9 @@
                                 <span class="message-data-time">Nix, 10:15 AM</span>
                             </div>
                             <div class="message my-message">
-                                <button type="button" style="outline: none" class="text_btn outline-none" data-container="body" data-toggle="popover" data-trigger="hover focus" data-placement="top">
+                                <button type="button" style="outline: none" class="text_btn outline-none"
+                                        data-container="body" data-toggle="popover" data-trigger="hover focus"
+                                        data-placement="top">
                                     Project has been already finished and I have results to show you.
                                 </button>
                                 <script>
@@ -210,7 +217,8 @@
                 Notifications
             </button>
             <!-- Modal -->
-            <div class="modal fade" id="NotificationsModal" tabindex="-1" role="dialog" aria-labelledby="NotificationsModalLabel" aria-hidden="true">
+            <div class="modal fade" id="NotificationsModal" tabindex="-1" role="dialog"
+                 aria-labelledby="NotificationsModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -222,19 +230,19 @@
                         <div class="modal-body">
                             <table>
                                 <tr>
-                                    <th>Sender: </th>
+                                    <th>Sender:</th>
                                     <th>Information</th>
                                 </tr>
                                 <tr>
-                                    <th>Tom </th>
+                                    <th>Tom</th>
                                     <th>remove you from group 1</th>
                                 </tr>
                                 <tr>
-                                    <th>Jack </th>
+                                    <th>Jack</th>
                                     <th>remove you from group 2</th>
                                 </tr>
                                 <tr>
-                                    <th>Tom </th>
+                                    <th>Tom</th>
                                     <th>block you from group 3</th>
                                 </tr>
                             </table>
@@ -297,7 +305,8 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" id="btn_createRoomSave">Save</button>
                 <button type="button" class="btn btn-secondary" id="btn_createRoomCancel"
-                        data-dismiss="modal">Cancel</button>
+                        data-dismiss="modal">Cancel
+                </button>
             </div>
         </div>
     </div>
@@ -1306,7 +1315,6 @@
 <!---
 <form>
                     <div style="height: 300px;overflow: auto;">
-
                         <table class="table ">
                             <tbody>
                             <tr>
@@ -1367,4 +1375,4 @@
                         </table>
                     </div>
                 </form>
---->
+
