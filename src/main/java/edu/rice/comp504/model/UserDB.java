@@ -16,7 +16,9 @@ public class UserDB {
     private static int nextUserId = 1;
     // TODO: This userDB will be implemented to something like UserStore, it will store all users
     //      and their relationship to their chatroom.
-    private static final Map<String, User> users = new ConcurrentHashMap<>();
+    private static final Map<String, User> users = new ConcurrentHashMap<>(){{
+        put("admin", new RegisteredUser("admin", "123", "Rice University", 20, "swim, music"));
+    }};
 
     /**
      * Constructor.
