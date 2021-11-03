@@ -11,7 +11,7 @@ public class NullNotification extends Notification{
      * A constructor.
      */
     private NullNotification() {
-        super("null", "null", "null", false);
+        super("null", "null", "null", "null",false);
     }
 
     /**
