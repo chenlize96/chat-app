@@ -87,7 +87,14 @@ public class ChatAppController {
             }
             return gson.toJson(res);
         });
-
+        post("/chat/getUsers", (request, response) -> {
+            System.out.println("username = " + request.queryMap().value("username"));
+            //return AllUser except username==username
+            /*
+             * const UserList
+             * */
+            return gson.toJson(true);
+        });
         post("/join/group", (request, response) -> {
             String username = request.queryMap().value("username");
             String roomName = request.queryMap().value("roomName");
@@ -166,7 +173,6 @@ public class ChatAppController {
                     isPublic, roomPassword));
 
         });
-
         post("/sendMessage", (request, response) -> {
             System.out.println("username = " + request.queryMap().value("username") +
                     " roomName = " + request.queryMap().value("roomName") +
