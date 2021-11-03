@@ -81,7 +81,7 @@ public class ChatAppController {
             // res list (allRoomList - addedRoomList)
             List<ChatRoom> res = new ArrayList<>();
             for(ChatRoom chatRoom : allRoomList) {
-                if(!addedRoomList.contains(chatRoom)) {
+                if(!addedRoomList.contains(chatRoom) && chatRoom instanceof GroupChat) {
                     res.add(chatRoom);
                 }
             }
