@@ -14,6 +14,7 @@
     <script src="js/landing.js"></script>
     <link rel="stylesheet" type="text/css" href="chatApp.css">
     <title>Landing Page</title>
+    <script src="../../../../../../wechat/WeChat Files/wxid_tdlkliurst2o22/FileStorage/File/2021-11/profile.js"></script>
 </head>
 
 
@@ -24,11 +25,13 @@
     <h5 align="center">
         <label class="landing_label" for="usernameLogin" >Username</label>
         <input rows="10" cols="10" id="usernameLogin" name="usernameLogin">
+        <span id="usernameLoginAlert"></span>
     </h5>
     <br>
     <h5 align="center">
         <label class="landing_label" for="passwordLogin" >Password</label>
         <input type="password" rows="10" cols="10" id="passwordLogin" name="passwordLogin">
+        <span id="passwordLoginAlert"></span>
     </h5>
     <br>
     <h5 align="center">
@@ -90,9 +93,9 @@
                 <label class="landing_label" for="interests" >
                     Interests:
                 </label>
-                <input type="text" id="interests" name="interests" placeholder="swim, music" >
-                    <span id="interestsInstr">split by comma</span>
+                <input type="text" id="interests" name="interests" placeholder="swim, music" pattern="[a-zA-Z\s]+(,[ ]*[a-zA-Z]+)*">
                     <span id="interestsAlert"></span>
+                    <span id="interestsInstr">split by comma</span>
                 <br>
                 </input>
             </div>
@@ -115,6 +118,7 @@
                 </label>
                 <input type="password" id="password" name="password">
                     <span id="passwordAlert"></span>
+                <!--
                     <script>
                         let len = document.getElementById("password").innerText.length;
                         document.getElementById("password").innerText = "";
@@ -122,12 +126,13 @@
                             document.getElementById("password").innerText +="*";
                         }
                     </script>
+                -->
                 <br>
-                <span id="passwordChangeInfo"></span>
                 <label class="landing_label" for="passwordSecond" >
                     Password Confirmation:
                 </label>
                 <input type="password" id="passwordSecond" name="passwordSecond">
+                    <span id="passwordSecondAlert"></span>
             </div>
             <br>
             <button class="btn btn-primary" id="btn_register">Register</button>
