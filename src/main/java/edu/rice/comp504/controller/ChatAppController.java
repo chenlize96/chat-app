@@ -155,6 +155,12 @@ public class ChatAppController {
             return gson.toJson(true);
         });
 
+        get("/room/update", (request, response) -> {
+            // TODO: return the room list of the current user, which should be ArrayList<Room>
+            System.out.println(request.queryMap().value("username"));
+            return gson.toJson("the room list of the current user");
+        });
+
         post("/create/groupchat", (request, response) -> {
             //TODO: Frontend alert when create fail
             //TODO: parameter lose && copy error
@@ -168,11 +174,12 @@ public class ChatAppController {
             String interest = request.queryMap().value("interest");
             interest = interest.toLowerCase();
             interest = interest.strip();
-            String ownerUsername = request.queryMap().value("user_name");
+            String ownerUsername = request.queryMap().value("username");
+            System.out.println(userLimit+" "+roomName+" "+interest+" "+ownerUsername+" "+roomPassword);
             return gson.toJson(webSocketAdapter.createGroupChat(userLimit, roomName, interest, ownerUsername,
                     isPublic, roomPassword));
-
         });
+
         post("/sendMessage", (request, response) -> {
             System.out.println("username = " + request.queryMap().value("username") +
                     " roomName = " + request.queryMap().value("roomName") +

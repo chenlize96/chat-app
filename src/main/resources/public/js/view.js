@@ -1,5 +1,6 @@
 'use strict';
 
+let intervalID = -1;//id of current interval
 const webSocket = new WebSocket("ws://" + location.hostname + ":" + location.port + "/chatapp");
 const UserList = ["Owner", "Admin1", "Admin2", "Member1", "Member2"];
 const RoomList = [{roomName: "COMP504", type: "public", limit: 200, cur: 180},
@@ -13,6 +14,8 @@ const RoomList = [{roomName: "COMP504", type: "public", limit: 200, cur: 180},
 window.onload = function () {
     setUsername();
     loadRoomUser();
+    clearInterval(intervalID);
+    intervalID = setInterval(updateRoomList, 3000);
     let member_btn = $(".member_btn");
     $("#search_btn").click(doSearch);
     member_btn.focus(doSomething);
@@ -29,6 +32,18 @@ window.onload = function () {
     $(document).on("click", "#btn_createRoomCancel", clearCreateForm);
 
 };
+
+/**
+ * Update the room list of the current user once per 3 seconds.
+ */
+function updateRoomList() {
+    $.get("/room/update", {username: $("#user_name").val()}, function (data) {
+        console.log(data);
+        // clear the room list first
+        // update the room list from the data
+    }, "json");
+}
+
 function updateRooms(){
     $.post("/join/group", {username: $("#user_name").val(), roomName: $("#roomSelection").text()}, function (data) {
         console.log(data);
@@ -47,6 +62,7 @@ function updateRooms(){
         $("#joinModal").modal('hide');
     })
 }
+
 function getAllUsers(){
     $.post("/chat/getUsers", {username: $("#user_name").val()}, function (data) {
 
@@ -67,6 +83,7 @@ function getAllUsers(){
         });
     });
 }
+
 function getAllRooms(){
     $.post("/join/getRooms", {username: $("#user_name").val()}, function (data) {
 
@@ -88,6 +105,7 @@ function getAllRooms(){
         });
     });
 }
+
 function loadRoomUser() {
     $(".members .member_btn").remove();
     let html = '';
@@ -96,6 +114,7 @@ function loadRoomUser() {
     }
     $(".members").append(html);
 }
+
 function doSearch() {
     let sh_input = $("#search_input").val();
     console.log(sh_input);
@@ -111,6 +130,7 @@ function doSearch() {
         }
     }
 }
+
 function doSomething(){
     let username = $("#user_name").text().replace(/[\r\n]/g,"").replace(/[ ]/g,"");
     console.log(username);
@@ -123,8 +143,9 @@ function doSomething(){
         }
     }
 }
+
 /**
- * Set the username.
+ * Set the username from the landing page.
  */
 function setUsername() {
     if ($("#user_name").val() == "") {
@@ -158,6 +179,7 @@ function createGroupChat() {
         isPublic: $("#isPublic").is(':checked'),
         password: $("#password").val(),
     }, function (data) {
+        console.log(data);
         if (data === true) { // the size of the roomList increases
             console.log(data);
             console.log("create room success");
