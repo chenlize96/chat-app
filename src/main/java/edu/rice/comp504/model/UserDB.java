@@ -35,7 +35,7 @@ public class UserDB {
     /**
      * Add new user to User Class map.
      */
-    public static void addUser(String username, String password, String school, int age, String interests) {
+    public static void addUser(String username, String school, int age, String interests, String password) {
         RegisteredUser newUser = new RegisteredUser(username, password, school, age, interests);
         users.put(newUser.getUsername(), newUser);
     }

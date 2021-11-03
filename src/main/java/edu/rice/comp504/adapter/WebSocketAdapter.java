@@ -52,7 +52,7 @@ public class WebSocketAdapter {
     }
 
     public void registerUser(String username, String school, int age, String interestsTemp, String password) {
-        UserDB.addUser(username, school, interestsTemp, age, password);
+        UserDB.addUser(username, school, age, interestsTemp, password);
     }
 
     public User logInUser(String username, String password) {
