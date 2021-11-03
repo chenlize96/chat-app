@@ -13,7 +13,7 @@ function doLogin(){
         password: $("#passwordLogin").val()}, function (data) {
         console.log(data);
         // get a boolean - if true then submit, otherwise do not direct AND show error message
-        if (data === true) {
+        if (data.username !== "null") {
             localStorage.setItem("username", $("#usernameLogin").val());
             document.getElementById("registerInfo").submit();
         }
