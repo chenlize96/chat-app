@@ -17,16 +17,18 @@ public class NotificationFac implements INotificationFac{
      * Make function.
      */
     @Override
-    public Notification make(String type, String receiver, String info) {
+    public Notification make(String type, String sender, String receiver, String info) {
         switch (type) {
             case "invite":
-
+                return InviteNotification.make(sender, receiver, info);
             case "request":
-                return InteractNotification.make(receiver, info);
-
+                return InteractNotification.make(sender, receiver, info);
             case "kick":
-                return SimpleNotification.make(receiver, info);
-
+                return SimpleNotification.make(sender, receiver, info);
+            case "reject":
+                return RejectNotification.make(sender, receiver, info);
+            case "accept":
+                return AcceptNotification.make(sender, receiver, info);
             default:
                 return NullNotification.make();
         }

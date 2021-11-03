@@ -42,11 +42,11 @@
             <br>
         </div>
         <div class="rooms">
-<!--            <label>Room 1</label><br>-->
-<!--            <label>Room 2</label><br>-->
-<!--            <label>User 1</label><br>-->
-<!--            <label>Room 3</label><br>-->
-<!--            <label>User 2</label><br>-->
+            <!--            <label>Room 1</label><br>-->
+            <!--            <label>Room 2</label><br>-->
+            <!--            <label>User 1</label><br>-->
+            <!--            <label>Room 3</label><br>-->
+            <!--            <label>User 2</label><br>-->
             <span class="text" id="btn-room1" onclick="tempFunc()">
                 <button class="room_btn btn-outline-primary p-0 m-0 u_btn">
                     Room 1
@@ -133,7 +133,8 @@
             </div>
         </div>
         <div class="members">
-            <button class="member_btn btn-outline-primary">
+            <input id="search_input" class="w-75"><span><button id="search_btn" class="btn-primary w-25">sh</button></span>
+            <!---<button class="member_btn btn-outline-primary">
                 Owner
             </button>
             <button class="member_btn btn-outline-primary">
@@ -147,7 +148,7 @@
             </button>
             <button class="member_btn btn-outline-primary">
                 Member 2
-            </button>
+            </button>--->
         </div>
         <div class="group_btn_container">
             <div class="row m-0" style="width: 200px;height: 50px;">
@@ -157,7 +158,7 @@
                     </button>
                 </div>
                 <div class="col-6 p-0">
-                    <button class="btn btn-primary u_btn" id="btn-mute" data-toggle="modal" data-target="#muteModal">
+                    <button class="btn btn-primary u_btn" id="btn-mute" data-toggle="modal" data-target="#muteModal" disabled="disabled">
                         Mute
                     </button>
                 </div>
@@ -169,7 +170,7 @@
                     </button>
                 </div>
                 <div class="col-6 p-0">
-                    <button class="btn btn-primary u_btn" id="btn-kick" data-toggle="modal" data-target="#kickModal">
+                    <button class="btn btn-primary u_btn" id="btn-kick" data-toggle="modal" data-target="#kickModal" disabled="disabled">
                         Kick
                     </button>
                 </div>
@@ -307,6 +308,7 @@
         <div class="modal-content w-100">
             <div class="modal-body">
                 <div class="row p-1">
+                    <!---
                     <div id="list-example" class="list-group col-2 p-0" style="height: 300px;overflow: auto">
                         <a class="list-group-item list-group-item-action" href="#A">A</a>
                         <a class="list-group-item list-group-item-action" href="#B">B</a>
@@ -334,14 +336,15 @@
                         <a class="list-group-item list-group-item-action" href="#X">X</a>
                         <a class="list-group-item list-group-item-action" href="#Y">Y</a>
                         <a class="list-group-item list-group-item-action" href="#z">Z</a>
-                    </div>
+                    </div>--->
+                    <div class="col-1"></div>
                     <div data-spy="scroll" data-target="#list-example" data-offset="0"
                          class="p-0 col-10 scrollspy-example" style="height: 300px;overflow: auto">
                         <form>
-                            <div id="A"></div>
-                            <table class="table mb-0">
+                            <!---<div id="A"></div>--->
+                            <table class="table mb-0" id="roomTable">
                                 <tbody>
-                                <tr>
+                                <!---<tr>
                                     <th scope="row"><input type="radio" name="join"></th>
                                     <td>Amazon</td>
                                     <td>publoc</td>
@@ -370,10 +373,10 @@
                                     <td>Google</td>
                                     <td>public</td>
                                     <td>50/100</td>
-                                </tr>
+                                </tr>--->
                                 </tbody>
                             </table>
-                            <div id="B"></div>
+                            <!---<div id="B"></div>
                             <table class="table mb-0">
                                 <tbody>
                                 <tr>
@@ -619,7 +622,7 @@
                             <table class="table mb-0">
                                 <tbody>
                                 </tbody>
-                            </table>
+                            </table>--->
                         </form>
                     </div>
                 </div>
@@ -628,11 +631,11 @@
                 <div class="row form-control border-0">
                     <p class=" float-left">Your selection:</p>
                 </div>
-                <div class="row bg-light form-control border-0">
-                    <p>Google, Gruop D</p>
+                <div class="row bg-light form-control border-0" id="roomSelection">
+                    <p></p>
                 </div>
-                <button type="button" class="btn btn-primary">Clear</button>
-                <button type="button" class="btn btn-primary">Join</button>
+                <!---<button type="button" class="btn btn-primary">Clear</button>--->
+                <button type="button" class="btn btn-primary" id="join_room" disabled="disabled">Join</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
             </div>
         </div>
@@ -854,7 +857,7 @@
         <div class="modal-content w-100">
             <div class="modal-header">
 
-                <h5 class="modal-title float-left" id="chatModalLabel">Hello, xxx</h5>
+                <h5 class="modal-title float-left" id="chatModalLabel">Chat with <span id="chatWith"></span></h5>
                 <!---
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -862,8 +865,8 @@
                 --->
             </div>
             <div class="modal-body">
-                <h3>Chat with someone</h3>
                 <div class="row p-1">
+                    <!---
                     <div id="chat-list-example" class="list-group col-2 p-0" style="height: 300px;overflow: auto">
                         <a class="list-group-item list-group-item-action" href="#chat_A">A</a>
                         <a class="list-group-item list-group-item-action" href="#chat_B">B</a>
@@ -891,15 +894,17 @@
                         <a class="list-group-item list-group-item-action" href="#chat_X">X</a>
                         <a class="list-group-item list-group-item-action" href="#chat_Y">Y</a>
                         <a class="list-group-item list-group-item-action" href="#chat_Z">Z</a>
-                    </div>
+                    </div>--->
+                    <div class="col-1"></div>
                     <div data-spy="scroll" data-target="#chat-list-example" data-offset="0"
                          class="p-0 col-10 scrollspy-example" style="height: 300px;overflow: auto">
                         <form>
-                            <div id="chat_A"></div>
-                            <table class="table mb-0">
+                            <!---<div id="chat_A"></div>--->
+                            <table class="table mb-0" id="userTable">
                                 <tbody>
                                 </tbody>
                             </table>
+                            <!---
                             <div id="chat_B"></div>
                             <table class="table mb-0">
                                 <tbody>
@@ -1026,7 +1031,7 @@
                             <table class="table mb-0">
                                 <tbody>
                                 </tbody>
-                            </table>
+                            </table>--->
                         </form>
                     </div>
                 </div>

@@ -7,7 +7,7 @@ import java.beans.PropertyChangeListener;
  */
 public abstract class ChatRoom implements PropertyChangeListener {
 
-    private int duration;
+
     private int userLimit;
     private int roomId;
     private String roomName;
@@ -15,35 +15,18 @@ public abstract class ChatRoom implements PropertyChangeListener {
 
     /**
      * A constructor for a chat room.
-     * @param duration An int to represent time duration of this chat room.
      * @param userLimit An int to limit max user size.
      * @param roomId An int to store current chat room's unique id.
      * @param roomName A string to display the chat room's name.
      * @param type A string to show type of this chat room.
      */
-    public ChatRoom(int duration , int userLimit, int roomId, String roomName, String type) {
-        this.duration = duration;
+    public ChatRoom(int userLimit, int roomId, String roomName, String type) {
         this.userLimit = userLimit;
         this.roomId = roomId;
         this.roomName = roomName;
         this.type = type;
     }
 
-    /**
-     * Get duration of current chat room.
-      * @return The duration of the chat room.
-     */
-    public int getDuration() {
-        return duration;
-    }
-
-    /**
-     * Set the duration of current chat room.
-     * @param duration The duration set to this chat room.
-     */
-    public void setDuration(int duration) {
-        this.duration = duration;
-    }
 
     /**
      * Get the room id of this chat room.

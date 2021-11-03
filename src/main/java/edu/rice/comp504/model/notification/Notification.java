@@ -6,6 +6,7 @@ package edu.rice.comp504.model.notification;
 public abstract class Notification implements INotificationFac{
 
     private String receiver;
+    private String sender;
     private String info;
     private boolean readStatus;
     private String type;
@@ -17,8 +18,9 @@ public abstract class Notification implements INotificationFac{
      * @param info The notification info
      * @param type Type of this notification
      */
-    public Notification(String receiver, String info, String type, boolean hasButton) {
+    public Notification(String sender, String receiver, String info, String type, boolean hasButton) {
         this.receiver = receiver;
+        this.sender = sender;
         this.info = info;
         this.readStatus = false;
         this.type = type;
@@ -84,7 +86,7 @@ public abstract class Notification implements INotificationFac{
      * Make function.
      */
     @Override
-    public Notification make(String type, String receiver, String info) {
+    public Notification make(String type, String sender, String receiver, String info) {
         return NullNotification.make();
     }
 }
