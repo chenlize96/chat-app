@@ -20,6 +20,7 @@ public class GroupChat extends ChatRoom{
     private String interest;
     private ArrayList<String> rules;
     private ArrayList<String> blockList;
+    private ArrayList<String> muteList;
 
 
     /**
@@ -45,6 +46,7 @@ public class GroupChat extends ChatRoom{
         this.userList = new ArrayList<>();
         this.rules = new ArrayList<>();
         this.blockList = new ArrayList<>();
+        this.muteList = new ArrayList<>();
         // Add elements to list attributes
         this.addToUserList(ownerUsername);
     }
@@ -112,6 +114,14 @@ public class GroupChat extends ChatRoom{
      */
     public ArrayList<String> getRules() {
         return rules;
+    }
+
+    /**
+     * get room's mute list
+     * @return Room rules ArrayList
+     */
+    public ArrayList<String> getMuteList() {
+        return muteList;
     }
 
 
@@ -213,6 +223,10 @@ public class GroupChat extends ChatRoom{
         } catch (NullPointerException npe) {
             System.out.println("NullPointerException, addToBlockList failed!");
         }
+    }
+
+    public void addMuteList(String username) {
+        this.muteList.add(username);
     }
 
     /**

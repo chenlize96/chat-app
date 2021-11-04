@@ -1,5 +1,6 @@
 package edu.rice.comp504.adapter;
 
+import edu.rice.comp504.model.MessageDB;
 import edu.rice.comp504.model.MsgToClientSender;
 import edu.rice.comp504.model.RoomDB;
 import edu.rice.comp504.model.UserDB;
@@ -108,4 +109,27 @@ public class WebSocketAdapter {
         }
         return false;
     }
+
+    /**
+     * Adapter's create message function.
+     * @param sender sender's username
+     * @param room room's name
+     * @param body message body text
+     * @return true if message was created successfully, false otherwise
+     */
+    public boolean createMessage(String sender, String room, String body) {
+        //MUTE : check if the sender is muted in the given room
+        //BTW, BLOCK will be checked in /updateMessage
+        ChatRoom chatRoom = RoomDB.make().getRooms().get(room);
+        if(chatRoom.getType().equals("groupchat")) { //check mute
+            List<String> mutedUsers = ((GroupChat)chatRoom).getMuteList();
+            if(mutedUsers.contains(sender)) {
+                return false;
+            }
+        }
+        return MessageDB.make().addMessage(sender, room, body, "composite");
+    }
+
+
+
 }
