@@ -152,8 +152,18 @@ public class ChatAppController {
 
         get("/room/update", (request, response) -> {
             // TODO: return the room list of the current user, which should be ArrayList<Room>
-            System.out.println(request.queryMap().value("username"));
-            return gson.toJson("the room list of the current user");
+            String userName = request.queryMap().value("username");
+            List<ChatRoom> roomList = webSocketAdapter.getUserRoomList(userName);
+            return gson.toJson(roomList);
+        });
+
+        get("/room/members", (request, response) -> {
+            // TODO: return the room list of the current user, which should be ArrayList<Room>
+            String roomName = request.queryMap().value("roomname");
+            String userName = request.queryMap().value("username");
+
+            List<String> res = webSocketAdapter.showAllUsersInside(roomName);
+            return gson.toJson(res);
         });
 
         post("/create/groupchat", (request, response) -> {

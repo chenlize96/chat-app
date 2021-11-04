@@ -69,6 +69,14 @@ public class WebSocketAdapter {
         return new NullUser("", "", "", 0, "");
     }
 
+
+    /**
+     * Get room list of a user.
+     * */
+    public List<ChatRoom> getUserRoomList(String userName){
+        return (UserDB.getUsers().get(userName)).getRoomList();
+    }
+
     /**
      * Get users in same rooms.
      * */
@@ -126,6 +134,29 @@ public class WebSocketAdapter {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Return the list of user/admin/owner of the chosen room
+     * */
+    public List<String> showAllUsersInside(String roomname) {
+        Set<String> userSet = new HashSet<>();
+        List<String> users = ((GroupChat)RoomDB.make().getRooms().get(roomname)).getUserList();
+        String owner = ((GroupChat)RoomDB.make().getRooms().get(roomname)).getOwner();
+        List<String> admin = ((GroupChat)RoomDB.make().getRooms().get(roomname)).getAdminList();
+        for (String x : users)
+            userSet.add(x);
+        List <String> res = new ArrayList<>();
+        res.add("Owner: " + owner);
+        userSet.remove(owner);
+        for (String x : admin) {
+            res.add("Admin: " + x);
+            userSet.remove(x);
+        }
+        for (String x : userSet) {
+            res.add(x);
+        }
+        return res;
     }
 
     /**
