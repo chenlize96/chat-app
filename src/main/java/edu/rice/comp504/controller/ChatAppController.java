@@ -69,6 +69,18 @@ public class ChatAppController {
             return gson.toJson(true);
         });
 
+        get("/room/update", (request, response) -> {
+            String username = request.queryMap().value("username");
+            User user = UserDB.getUsers().get(username);
+            return gson.toJson(user.getRoomList());
+        });
+
+        get("/userInfo", (request, response) -> {
+            String username = request.queryMap().value("username");
+            User user = UserDB.getUsers().get(username);
+            return gson.toJson(user);
+        });
+
         /* the above is the endpoint for index.html
          ****************************************************************************************
          * the below is the endpoint for main.html
