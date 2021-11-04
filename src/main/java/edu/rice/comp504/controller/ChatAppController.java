@@ -180,6 +180,13 @@ public class ChatAppController {
                     isPublic, roomPassword));
         });
 
+        post("/chat/getUsers", (request, response) -> {
+            String userName = request.queryMap().value("username");
+            List<User> users = webSocketAdapter.getKnownUser(userName);
+            return gson.toJson(users);
+        });
+
+
         post("/sendMessage", (request, response) -> {
             System.out.println("username = " + request.queryMap().value("username") +
                     " roomName = " + request.queryMap().value("roomName") +

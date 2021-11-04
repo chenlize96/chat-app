@@ -177,7 +177,8 @@ public class GroupChat extends ChatRoom{
      */
     public void addToUserList(String users) {
         try {
-            this.adminList.addAll(Arrays.asList(users.split(",")));
+            //this.adminList.addAll(Arrays.asList(users.split(",")));
+            this.userList.addAll(Arrays.asList(users.split(",")));
         } catch (StringIndexOutOfBoundsException sioobe) {
             System.out.println("IndexOutOfBoundsException, addToBlockList failed!");
         } catch (NullPointerException npe) {

@@ -6,6 +6,7 @@ import edu.rice.comp504.model.UserDB;
 import edu.rice.comp504.model.chatroom.ChatRoom;
 import edu.rice.comp504.model.chatroom.GroupChat;
 import edu.rice.comp504.model.user.NullUser;
+import edu.rice.comp504.model.user.RegisteredUser;
 import edu.rice.comp504.model.user.User;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
@@ -13,8 +14,7 @@ import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Create a web socket for the server.
@@ -65,6 +65,33 @@ public class WebSocketAdapter {
                 return usersTemp.get(username);
         }
         return new NullUser("", "", "", 0, "");
+    }
+
+    /**
+     * Get users in same rooms.
+     * */
+    public List<User> getKnownUser(String userName){
+
+        List<User> users = new ArrayList<>();
+        Set<String> set = new HashSet<>();
+        RegisteredUser user = (RegisteredUser) UserDB.getUsers().get(userName);
+
+        for(ChatRoom room : user.getRoomList()){
+            if(room.getType().equals("groupchat")){
+                List<String> list = ((GroupChat)room).getUserList();
+                for(String tmpUser : list){
+                    set.add(tmpUser);
+                }
+            }
+        }
+
+        set.remove(userName);
+
+        for(String str : set ){
+            users.add(UserDB.getUsers().get(str));
+        }
+
+        return users;
     }
 
     /**
