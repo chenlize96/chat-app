@@ -1,5 +1,7 @@
 'use strict';
-
+/**
+ * Entry point to the landing page.
+ */
 window.onload = function() {
     clear();
     $('#registerForm').on('show.bs.modal', clearForm);
@@ -8,6 +10,9 @@ window.onload = function() {
     $(document).on("click", "#btn_clear", clearForm);
 };
 
+/**
+ * A user login to the system.
+ */
 function doLogin(){
     checkLogin();
     if(($("#usernameLogin").val() !== "") && ($("#passwordLogin").val() !== "")) {
@@ -23,6 +28,9 @@ function doLogin(){
     }
 }
 
+/**
+ * A user register an account.
+ */
 function doRegister() {
     checkRegister();
     if(checkComplete()) {
@@ -39,17 +47,24 @@ function doRegister() {
             } else {
                 console.log("fail");
                 // show error messages on the form
+                document.getElementById("usernameAlert").innerText = "user name already exists";
             }
         }, "json");
     }
 
 }
 
+/**
+ * Clear the landing page input.
+ */
 function clear() {
     document.getElementById("usernameLogin").value = "";
     document.getElementById("passwordLogin").value = "";
 }
 
+/**
+ * Clear the register page input.
+ */
 function clearForm() {
     document.getElementById("username").value = "";
     //document.getElementById("zipcode").value="";
@@ -68,7 +83,10 @@ function clearForm() {
     document.getElementById("passwordSecondAlert").innerText = "";
 }
 
-
+/**
+ * Username should not be empty.
+ * @returns {boolean} Whether username is valid or not.
+ */
 function validateLoginUserName() {
     var a = document.getElementById("usernameLogin");
     var a2 = document.getElementById("usernameLoginAlert");
@@ -82,6 +100,10 @@ function validateLoginUserName() {
     return true;
 }
 
+/**
+ * Password should not be empty.
+ * @returns {boolean} Whether password is valid or not.
+ */
 function validateLoginPassword() {
     var a = document.getElementById("passwordLogin");
     var a2 = document.getElementById("passwordLoginAlert");
@@ -95,11 +117,18 @@ function validateLoginPassword() {
     return true;
 }
 
+/**
+ * Check info on the log in page.
+ */
 function checkLogin() {
     validateLoginUserName();
     validateLoginPassword();
 }
 
+/**
+ * Username should not be empty.
+ * @returns {boolean} Whether username is valid or not.
+ */
 function validateRegisterUserName() {
     var a = document.getElementById("username");
     var a2 = document.getElementById("usernameAlert");
@@ -113,6 +142,10 @@ function validateRegisterUserName() {
     return true;
 }
 
+/**
+ * School should not be empty.
+ * @returns {boolean} Whether school is valid or not.
+ */
 function validateRegisterSchool() {
     var a = document.getElementById("school");
     var a2 = document.getElementById("schoolAlert");
@@ -126,6 +159,10 @@ function validateRegisterSchool() {
     return true;
 }
 
+/**
+ * Age should be an integer between 18 and 110 (inclusive).
+ * @returns {boolean} Whether age is valid or not.
+ */
 function validateRegisterAge() {
     var a = document.getElementById("age");
     var a2 = document.getElementById("ageAlert");
@@ -138,7 +175,7 @@ function validateRegisterAge() {
         document.getElementById("age").value = "";
         return false;
     }
-    else if(parseInt(a.value,10) < 18 || parseInt(a.value,10) >= 110) {
+    else if(parseInt(a.value,10) < 18 || parseInt(a.value,10) > 110) {
         a2.innerText = "Age from 18 to 110, please";
         document.getElementById("age").value = "";
         return false;
@@ -149,6 +186,10 @@ function validateRegisterAge() {
     return true;
 }
 
+/**
+ * Interests should be one or more words split by comma but not ended by comma.
+ * @returns {boolean} Whether interests are valid or not.
+ */
 function validateRegisterInterests() {
     var a = document.getElementById("interests");
     var a1 = document.getElementById("interestsInstr");
@@ -167,6 +208,10 @@ function validateRegisterInterests() {
     return true;
 }
 
+/**
+ * No format requirements for password but the two passwords should be the same.
+ * @returns {boolean} Whether the password is valid.
+ */
 function validateRegisterPassword() {
     var pass = document.getElementById("password");
     var pass2 = document.getElementById("passwordSecond");
@@ -191,6 +236,10 @@ function validateRegisterPassword() {
     return true;
 }
 
+/**
+ * To make sure all info for registration is complete.
+ * @returns {boolean} Whether info for registration is complete.
+ */
 function checkComplete() {
     if($("#username").val() !== "" &&
         $("#school").val() !== "" &&
@@ -201,7 +250,14 @@ function checkComplete() {
     {
         return true;
     }
+    else {
+        return false;
+    }
 }
+
+/**
+ * A function to go through all checks on the register page.
+ */
 function checkRegister() {
     validateRegisterUserName();
     validateRegisterSchool();
