@@ -87,14 +87,7 @@ public class ChatAppController {
             }
             return gson.toJson(res);
         });
-        post("/chat/getUsers", (request, response) -> {
-            System.out.println("username = " + request.queryMap().value("username"));
-            //return AllUser except username==username
-            /*
-             * const UserList
-             * */
-            return gson.toJson(true);
-        });
+
         post("/join/group", (request, response) -> {
             String username = request.queryMap().value("username");
             String roomName = request.queryMap().value("roomName");
@@ -188,7 +181,7 @@ public class ChatAppController {
 
         post("/create/userchat", (request, response) -> {
             String userName = request.queryMap().value("username");
-            String friendName = request.queryMap().value("friendname");
+            String friendName = request.queryMap().value("chatName");
             String chatName = userName+" with "+ friendName + " room";
             return gson.toJson(webSocketAdapter.createUserChat(userName,friendName));
         });
