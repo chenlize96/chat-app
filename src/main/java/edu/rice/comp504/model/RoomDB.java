@@ -2,6 +2,7 @@ package edu.rice.comp504.model;
 
 import edu.rice.comp504.model.chatroom.ChatRoom;
 import edu.rice.comp504.model.chatroom.GroupChat;
+import edu.rice.comp504.model.chatroom.UserChat;
 import edu.rice.comp504.model.user.User;
 
 import java.beans.PropertyChangeEvent;
@@ -42,6 +43,20 @@ public class RoomDB {
         GroupChat temp = new GroupChat(userLimit, this.getNextRoomID(), roomName,
                 interest, ownerUsername, isPublic, roomPassword);
         rooms.put(roomName, temp);
+        return true;
+    }
+
+    /**
+     * Create a user chat room method .
+     *
+     * @return true is the room is created
+     */
+    public boolean addUserChat(String userName, String friendName) {
+        String roomName = userName + "," + friendName;
+        if(rooms.containsKey(roomName))return false;
+        UserChat userChat = new UserChat(0,2,this.getNextRoomID(),roomName,
+                "userchat",userName,friendName);
+        rooms.put(roomName,userChat);
         return true;
     }
 
