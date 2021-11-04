@@ -39,12 +39,16 @@ public class CompositeMessage extends Message{
     public void addMultipleChildFromString(String body) {
         String[] strList = body.split(":sep:");
         for (String i : strList) {
+            //empty string is possible ":sep:Hello"
+            if(i.length()==0) {
+                continue;
+            }
             Message tempMsg = NullMessage.make();
             if (i.charAt(0) == '/') {
                 tempMsg = ImageMessage.make("auto", this.getSendUser(), i, 1.0);
                 this.addChildImage((ImageMessage) tempMsg);
             } else {
-                tempMsg = TextMessage.make("auto", this.getSendUser(), body, "default", "black", 12);
+                tempMsg = TextMessage.make("auto", this.getSendUser(), i, "default", "black", 12);
                 this.addChildText((TextMessage) tempMsg);
             }
         }
