@@ -225,6 +225,11 @@ public class ChatAppController {
             return gson.toJson(true);
         });
 
+        get("/user/notification", (request, response) -> {
+            String username = request.queryMap().value("username");
+            User user = UserDB.getUsers().get(username);
+            return user.getNotificationsList();
+        });
     }
 
     /**
