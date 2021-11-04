@@ -15,6 +15,7 @@ import spark.Session;
 import javax.servlet.http.HttpSession;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import static spark.Spark.*;
@@ -68,6 +69,18 @@ public class ChatAppController {
             return gson.toJson(true);
         });
 
+        get("/room/update", (request, response) -> {
+            String username = request.queryMap().value("username");
+            User user = UserDB.getUsers().get(username);
+            return gson.toJson(user.getRoomList());
+        });
+
+        get("/userInfo", (request, response) -> {
+            String username = request.queryMap().value("username");
+            User user = UserDB.getUsers().get(username);
+            return gson.toJson(user);
+        });
+
         /* the above is the endpoint for index.html
          ****************************************************************************************
          * the below is the endpoint for main.html
@@ -103,7 +116,7 @@ public class ChatAppController {
             // check if the applicant is already a member of this group chat
             // check if userLimit of the room is still available
             if(joinRoom.getUserList().contains(username) || joinRoom.getCurNumUser() >= joinRoom.getUserLimit()) {
-                return gson.toJson(user.getRoomList());
+                return gson.toJson(false);
             }
             // if public  -> enter
             //    private -> check password and send a notification to the owner of the room
@@ -112,18 +125,19 @@ public class ChatAppController {
                 joinRoom.addToUserList(username);
                 user.getRoomList().add(joinRoom);
             } else {
-                //send an invite notification
-                Notification notification = new NotificationFac().make("invite",username,joinRoom.getOwner(),roomName);
+                //send an apply notification
+                Notification notification = new NotificationFac().make("apply",username,joinRoom.getOwner(),roomName);
                 User owner = UserDB.getUsers().get(joinRoom.getOwner());
                 owner.addNotification(notification);
             }
-            return gson.toJson(user.getRoomList());
+            return gson.toJson(true);
         });
 
         post("/join/notification/accept", (request, response) -> {
             String sender = request.queryMap().value("sender"); // owner of the room
             String receiver = request.queryMap().value("receiver"); // applicant
             String roomName = request.queryMap().value("roomName");
+            User sendUser = UserDB.getUsers().get(sender);
             User receiveUser = UserDB.getUsers().get(receiver);
             GroupChat joinRoom = (GroupChat) RoomDB.make().getRooms().get(roomName);
             //add into room
@@ -132,6 +146,17 @@ public class ChatAppController {
             //send notification
             Notification notification = new NotificationFac().make("accept",sender,receiver,roomName);
             receiveUser.addNotification(notification);
+            //need to remove the ApplyNotification from room owner's notificationDB
+            ArrayList<Notification> senderNotificationList = sendUser.getNotificationsList();
+            Iterator<Notification> iterator = senderNotificationList.iterator();
+            while(iterator.hasNext()) {
+                Notification n = iterator.next();
+                if(n.getReceiver().equals(sender) && n.getSender().equals(receiver) && n.getInfo().equals(roomName) && n.getType().equals("apply")) {
+                    iterator.remove();
+                }
+            }
+            sendUser.setNotificationList(senderNotificationList);
+            //return
             return gson.toJson("successfully join the room");
         });
 
@@ -139,10 +164,22 @@ public class ChatAppController {
             String sender = request.queryMap().value("sender"); // owner of the room
             String receiver = request.queryMap().value("receiver"); // applicant
             String roomName = request.queryMap().value("roomName");
+            User sendUser = UserDB.getUsers().get(sender);
             User receiveUser = UserDB.getUsers().get(receiver);
             //send notification
             Notification notification = new NotificationFac().make("reject",sender,receiver,roomName);
             receiveUser.addNotification(notification);
+            //need to remove the ApplyNotification from room owner's notificationDB
+            ArrayList<Notification> senderNotificationList = sendUser.getNotificationsList();
+            Iterator<Notification> iterator = senderNotificationList.iterator();
+            while(iterator.hasNext()) {
+                Notification n = iterator.next();
+                if(n.getReceiver().equals(sender) && n.getSender().equals(receiver) && n.getInfo().equals(roomName) && n.getType().equals("apply")) {
+                    iterator.remove();
+                }
+            }
+            sendUser.setNotificationList(senderNotificationList);
+            //return
             return gson.toJson("fail to join the room");
         });
 
@@ -180,14 +217,26 @@ public class ChatAppController {
                     isPublic, roomPassword));
         });
 
+        /**
+         * When a new message is sent by a user, create it and store in database.
+         */
         post("/sendMessage", (request, response) -> {
             System.out.println("username = " + request.queryMap().value("username") +
                     " roomName = " + request.queryMap().value("roomName") +
                     " message = " + request.queryMap().value("message")
             );
-            return gson.toJson(true);
+            String sender = request.queryMap().value("username");
+            String room = request.queryMap().value("roomName");
+            String body = request.queryMap().value("message");
+            boolean createStatus = webSocketAdapter.createMessage(sender, room, body);
+            return gson.toJson(createStatus);
         });
 
+        get("/user/notification", (request, response) -> {
+            String username = request.queryMap().value("username");
+            User user = UserDB.getUsers().get(username);
+            return user.getNotificationsList();
+        });
     }
 
     /**

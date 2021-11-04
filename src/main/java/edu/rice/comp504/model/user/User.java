@@ -7,6 +7,7 @@ import java.beans.PropertyChangeListener;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * User abstract class to store User's related attributes.
@@ -243,6 +244,18 @@ public abstract class User implements PropertyChangeListener {
             this.notificationsList.add(n);
         } catch (NullPointerException npe) {
             System.out.println("NullPointerException, addNotification failed!");
+        }
+    }
+
+    /**
+     * set a new notifications list.
+     * @param list The Notification object.
+     */
+    public void setNotificationList(ArrayList<Notification> list) {
+        try {
+            this.notificationsList = list;
+        } catch (NullPointerException npe) {
+            System.out.println("NullPointerException, set Notification List failed!");
         }
     }
 
