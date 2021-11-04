@@ -62,4 +62,40 @@ public class CompositeMessage extends Message{
         }
     }
 
+    /**
+     * Return the whole children message ArrayList.
+     * @return ArrayList of Message
+     */
+    public ArrayList<Message> getChildrenMessageArrayList() {
+        return this.childrenMessage;
+    }
+
+
+    /**
+     * Get all content of child message into one string with separate signal between.
+     * @return one string which contains all body of children messages
+     */
+    public String getChildrenContentAsString() {
+        StringBuilder result = new StringBuilder();
+        for (Message m : this.childrenMessage) {
+            switch (m.getType()) {
+                case "text":
+                    result.append(((TextMessage) m).getBody());
+                    result.append(":sep:");
+                    break;
+
+                case "image":
+                    result.append(((ImageMessage) m).getSourceUrl());
+                    result.append(":sep:");
+                    break;
+
+                default:
+                    break;
+            }
+        }
+        return result.toString();
+    }
+
+
+
 }
