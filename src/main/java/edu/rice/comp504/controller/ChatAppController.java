@@ -186,6 +186,12 @@ public class ChatAppController {
             return gson.toJson(users);
         });
 
+        post("/create/userchat", (request, response) -> {
+            String userName = request.queryMap().value("username");
+            String friendName = request.queryMap().value("friendname");
+            String chatName = userName+" with "+ friendName + " room";
+            return gson.toJson(webSocketAdapter.createUserChat(userName,friendName));
+        });
 
         post("/sendMessage", (request, response) -> {
             System.out.println("username = " + request.queryMap().value("username") +

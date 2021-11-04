@@ -6,6 +6,7 @@ import edu.rice.comp504.model.RoomDB;
 import edu.rice.comp504.model.UserDB;
 import edu.rice.comp504.model.chatroom.ChatRoom;
 import edu.rice.comp504.model.chatroom.GroupChat;
+import edu.rice.comp504.model.chatroom.UserChat;
 import edu.rice.comp504.model.user.NullUser;
 import edu.rice.comp504.model.user.RegisteredUser;
 import edu.rice.comp504.model.user.User;
@@ -105,6 +106,23 @@ public class WebSocketAdapter {
             GroupChat room = (GroupChat) rooms.get(roomName);
             User user = UserDB.getUsers().get(ownerUsername);
             user.addAChatRoom(room);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Create a user chat, add this room to it's owner's roomList
+     * */
+    public boolean createUserChat(String userName, String friendName) {
+
+        if (RoomDB.make().addUserChat(userName,friendName)) {
+            Map<String, ChatRoom> rooms = RoomDB.make().getRooms();
+            UserChat room = (UserChat) rooms.get(userName+","+friendName);
+            User user = UserDB.getUsers().get(userName);
+            User friend = UserDB.getUsers().get(friendName);
+            user.addAChatRoom(room);
+            friend.addAChatRoom(room);
             return true;
         }
         return false;
