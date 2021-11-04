@@ -1,5 +1,6 @@
 package edu.rice.comp504.adapter;
 
+import edu.rice.comp504.model.MessageDB;
 import edu.rice.comp504.model.MsgToClientSender;
 import edu.rice.comp504.model.RoomDB;
 import edu.rice.comp504.model.UserDB;
@@ -68,4 +69,18 @@ public class WebSocketAdapter {
                                    boolean isPublic, String roomPassword) {
         return RoomDB.make().addGroupRoom(userLimit,roomName, interest, ownerUsername, isPublic, roomPassword);
     }
+
+    /**
+     * Adapter's create message function.
+     * @param sender sender's username
+     * @param room room's name
+     * @param body message body text
+     * @return true if message was created successfully, false otherwise
+     */
+    public boolean createMessage(String sender, String room, String body) {
+        return MessageDB.make().addMessage(sender, room, body, "composite");
+    }
+
+
+
 }

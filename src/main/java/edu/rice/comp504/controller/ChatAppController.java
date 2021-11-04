@@ -217,12 +217,19 @@ public class ChatAppController {
                     isPublic, roomPassword));
         });
 
+        /**
+         * When a new message is sent by a user, create it and store in database.
+         */
         post("/sendMessage", (request, response) -> {
             System.out.println("username = " + request.queryMap().value("username") +
                     " roomName = " + request.queryMap().value("roomName") +
                     " message = " + request.queryMap().value("message")
             );
-            return gson.toJson(true);
+            String sender = request.queryMap().value("username");
+            String room = request.queryMap().value("roomName");
+            String body = request.queryMap().value("message");
+            boolean createStatus = webSocketAdapter.createMessage(sender, room, body);
+            return gson.toJson(createStatus);
         });
 
         get("/user/notification", (request, response) -> {
