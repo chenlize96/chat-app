@@ -21,7 +21,7 @@ window.onload = function () {
     $("#search_btn").click(doSearch);
     member_btn.focus(doSomething);
     $("#join_room").click(joinRooms);
-    $("#chatStart").click(chatStart);
+    $("#chatStart").click(createUserChat);
     member_btn.blur(function (){
         console.log($(this).text());
         $('#btn-kick').attr('disabled',"true");
@@ -29,7 +29,7 @@ window.onload = function () {
     });
     $("#btn-join").click(getAllRooms);
     $("#btn-chat").click(getAllUsers);
-    $("#notificationInfo").click(getAllNotifications);
+    $("#notificationInfo").click(getNotification);
     $(".invite_ac").click(acceptInvite);
     $(".invite_rj").click(rejectInvite);
     $("#btn-logout").click(doLogOut);
@@ -40,8 +40,8 @@ window.onload = function () {
 /**
 * click inner chat button to begin chat
 * */
-function chatStart() {
-    $.post("/chat/start", {username: $("#user_name").val(), chatName: $("#chatWith").text()}, function (data) {
+function createUserChat() {
+    $.post("/create/userchat", {username: $("#user_name").val(), chatName: $("#chatWith").text()}, function (data) {
         console.log(data);
         if (data === true) {
             updateRoomList();
@@ -82,7 +82,7 @@ function acceptInvite() {
     $.post("/notification/invite/accept", {receiver: $("#user_name").val(),
         sender: $(this).siblings("div").children(".inviteSender").text(),
         roomName: $(this).siblings("div").children(".inviteRoomName").text(),type: true}, function (data) {
-        getAllNotifications();
+        getNotification();
         updateRoomList();
     }, "json")
 }
@@ -94,15 +94,15 @@ function rejectInvite() {
     $.post("/notification/invite/reject", {receiver: $("#user_name").val(),
         sender: $(this).siblings("div").children(".inviteSender").text(),
         roomName: $(this).siblings("div").children(".inviteRoomName").text(), type: false}, function (data) {
-        getAllNotifications();
+        getNotification();
         updateRoomList();
     }, "json")
 }
 /**
 * outside notification button
 * */
-function getAllNotifications() {
-    $.post("/notification/getNotifications", {username: $("#user_name").val()}, function (data) {
+function getNotification() {
+    $.post("/user/notification", {username: $("#user_name").val()}, function (data) {
         let notifications = $("#notificationBody");
         //clear
         //get
@@ -224,12 +224,11 @@ function setUsername() {
         $("#user_name").text(localStorage.getItem("username"));
         $("#user_name").val(localStorage.getItem("username"));
         $.post("/userInfo", {username: $("#user_name").val()},function (data) {
-            console.log(data.split(","));
-
+            console.log(data);
             $("#age").text(data.age);
             $("#school").text(data.school);
+            let newText = $("#interests").text();
             for (let i = 0; i < data.interests.length; i++) {
-                let newText = $("#interests").text();
                 if(i === data.interests.length - 1) newText += data.interests[i];
                 else newText += data.interests[i] + ", ";
             }

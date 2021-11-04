@@ -125,7 +125,7 @@ public class ChatAppController {
             }
             return gson.toJson(user.getRoomList());
         });
-        post("/chat/start", (request, response) -> {
+        post("/create/userchat", (request, response) -> {
             System.out.println("username = " + request.queryMap().value("username"));
             System.out.println("chatName = " + request.queryMap().value("chatName"));
             //return AllUser except username==username
@@ -173,7 +173,7 @@ public class ChatAppController {
             return gson.toJson("reject to be invited to the room");
         });
 
-        post("/notification/getNotifications", (request, response) -> {
+        post("/user/notification", (request, response) -> {
             String username = request.queryMap().value("username"); // owner of the room
             // TODO: return user's allNotifications
             return gson.toJson("return allNotifications");
