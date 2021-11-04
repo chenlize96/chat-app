@@ -31,6 +31,8 @@ window.onload = function () {
     $(document).on("click", "#btn_createRoomSave", createGroupChat);
     $(document).on("click", "#btn_createRoomCancel", clearCreateForm);
 
+    //$('#createModal').on('show.bs.modal', clearCreateForm);
+
 };
 
 /**
@@ -165,30 +167,39 @@ function clearCreateForm() {
     document.getElementById("interest").value = "";
     document.getElementById("maxUser").value = 1;
     document.getElementById("password").value = "";
+    document.getElementById("isPublic").checked = true;
+    document.getElementById("new_room_nameAlert").innerText = "";
+    document.getElementById("interestAlert").innerText = "";
+    document.getElementById("passwordAlert").innerText = "";
+
 }
 
 /**
  * Create a new group chat room.
  */
 function createGroupChat() {
-    $.post("/create/groupchat", {
-        username: $("#user_name").val(),
-        roomName: $("#new_room_name").val(),
-        interest: $("#interest").val(), // only one interest for each room
-        maxUser: $("#maxUser").val(),
-        isPublic: $("#isPublic").is(':checked'),
-        password: $("#password").val(),
-    }, function (data) {
-        console.log(data);
-        if (data === true) { // the size of the roomList increases
+    checkCreateRoom();
+    if(checkCreateRoomComplete()) {
+        $.post("/create/groupchat", {
+            username: $("#user_name").val(),
+            roomName: $("#new_room_name").val(),
+            interest: $("#interest").val(), // only one interest for each room
+            maxUser: $("#maxUser").val(),
+            isPublic: $("#isPublic").is(':checked'),
+            password: $("#password").val()
+        }, function (data) {
             console.log(data);
-            console.log("create room success");
-            clearCreateForm();
-            $("#createModal").modal('hide');
-        } else {
-            console.log("create room fail");
-        }
-    }, "json");
+            if (data === true) { // the size of the roomList increases
+                console.log(data);
+                console.log("create room success");
+                clearCreateForm();
+                $("#createModal").modal('hide');
+            } else {
+                document.getElementById("new_room_nameAlert").innerText = "Exist room name, create room fail";
+                console.log("create room fail");
+            }
+        }, "json");
+    }
 }
 
 /**
@@ -243,6 +254,88 @@ function onKeyPress(event) {
     }
 }
 
+/**
+ * Room name should not be empty when creating a chat room.
+ */
+function validateCreateRoomName() {
+    var a = document.getElementById("new_room_name");
+    var a2 = document.getElementById("new_room_nameAlert");
+    if (a.value === "") {
+        a2.innerText = "   !";
+        return false;
+    }
+    else {
+        a2.innerText = ": )";
+    }
+    return true;
+}
+
+/**
+ * The interest for a chat room could be empty or words seperated by comma.
+ */
+function validateCreateInterest() {
+    var a = document.getElementById("interest");
+    var a2 = document.getElementById("interestAlert");
+    if (a.value === "") {
+        a2.innerText = "No interest is OK";
+    }
+    else if(a.validity.patternMismatch && a.value !== "") {
+        a2.innerText = "Interest should be a word";
+    }
+    else {
+        a2.innerText = ": )";
+    }
+    return true;
+}
+
+/**
+ * A public chat room do not need a password but a private chat room needs.
+ */
+function validateCreatePassword() {
+    var a = document.getElementById("password");
+    var a2 = document.getElementById("passwordAlert");
+    //console.log(typeof $("#isPublic").is(':checked')); //--boolean
+    if($("#isPublic").is(':checked') === false) {
+        console.log("a.value" + a.value);
+        if(a.value === "") {
+            a2.innerText = "!";
+            return false;
+        }
+        else{
+            a2.innerText = ": )";
+            return true;
+        }
+    }
+    else{
+        a2.innerText = ": )";
+        return true;
+    }
+}
+
+/**
+ * A function to go through all checks on the create room page.
+ */
+function checkCreateRoom() {
+    validateCreateRoomName();
+    validateCreateInterest();
+    validateCreatePassword();
+}
+
+function checkCreateRoomComplete() {
+    if($("#new_room_name").val() === "") {
+        return false;
+    } else {
+        if($("#isPublic").is(':checked') === true) {
+            return true;
+        } else {
+            if($("#password").val() === "") {
+                return false;
+            } else {
+                return true;
+            }
+        }
+    }
+}
 /**
  * Enter a chatRoom
  */
