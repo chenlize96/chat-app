@@ -112,8 +112,8 @@ public class ChatAppController {
                 joinRoom.addToUserList(username);
                 user.getRoomList().add(joinRoom);
             } else {
-                //send an invite notification
-                Notification notification = new NotificationFac().make("invite",username,joinRoom.getOwner(),roomName);
+                //send an apply notification
+                Notification notification = new NotificationFac().make("apply",username,joinRoom.getOwner(),roomName);
                 User owner = UserDB.getUsers().get(joinRoom.getOwner());
                 owner.addNotification(notification);
             }

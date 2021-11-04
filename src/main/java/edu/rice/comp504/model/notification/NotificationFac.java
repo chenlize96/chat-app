@@ -19,8 +19,8 @@ public class NotificationFac implements INotificationFac{
     @Override
     public Notification make(String type, String sender, String receiver, String info) {
         switch (type) {
-            case "invite":
-                return InviteNotification.make(sender, receiver, info);
+            case "apply":
+                return ApplyNotification.make(sender, receiver, info);
             case "request":
                 return InteractNotification.make(sender, receiver, info);
             case "kick":
