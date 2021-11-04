@@ -207,7 +207,7 @@
             </button>
         </div>
         <div class="notification">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#NotificationsModal">
+            <button type="button" class="btn btn-primary" id="notificationInfo" data-toggle="modal" data-target="#NotificationsModal">
                 Notifications
             </button>
             <!-- Modal -->
@@ -221,7 +221,22 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <table>
+                            <div class="row w-100 mb-1">
+                                <div class="col-6"><span class="inviteSender">Tom</span> invite you to <span class="inviteRoomName">group 1</span></div>
+                                <button type="button" class="btn btn-outline-success btn-sm col-1 p-0 mr-2 invite_ac" style="border: none">accept</button>
+                                <button type="button" class="btn btn-outline-danger btn-sm col-1 p-0 ml-2 invite_rj" style="border: none">reject</button>
+                            </div>
+                            <div class="row w-100 mb-1">
+                                <div class="col-6"><span class="inviteSender">Jack</span> invite you to <span class="inviteRoomName">group D</span></div>
+                                <button type="button" class="btn btn-outline-success btn-sm col-1 p-0 mr-2 invite_ac" style="border: none">accept</button>
+                                <button type="button" class="btn btn-outline-danger btn-sm col-1 p-0 ml-2 invite_rj" style="border: none">reject</button>
+                            </div>
+
+
+                            <!---<table id="notificationTable">
+                                <tr>
+                                    <td></td>
+                                </tr>
                                 <tr>
                                     <th>Sender: </th>
                                     <th>Information</th>
@@ -238,7 +253,7 @@
                                     <th>Tom </th>
                                     <th>block you from group 3</th>
                                 </tr>
-                            </table>
+                            </table>--->
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -1040,7 +1055,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Start</button>
+                <button type="button" class="btn btn-primary" id="chatStart" disabled="disabled">Start</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
             </div>
         </div>
