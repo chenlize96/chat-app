@@ -1,5 +1,8 @@
 package edu.rice.comp504.model.message;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 /**
  * An abstract class to represent all messages object.
  */
@@ -15,7 +18,9 @@ public abstract class Message implements IMessageFac{
      * @param sendUser The message sender's display name
      */
     public Message(String timestamp, String sendUser, String type) {
-        this.timestamp = timestamp;
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        this.timestamp = dtf.format(now);
         this.sendUser = sendUser;
         this.type = type;
     }

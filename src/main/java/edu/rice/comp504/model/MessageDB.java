@@ -1,7 +1,6 @@
 package edu.rice.comp504.model;
 
-import edu.rice.comp504.model.chatroom.ChatRoom;
-import edu.rice.comp504.model.message.Message;
+import edu.rice.comp504.model.message.*;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -29,6 +28,46 @@ public class MessageDB {
         }
         return ONLY;
     }
+
+    /**
+     * Add message to the database and return add status.
+     * @param sender Sender's username
+     * @param room Room name
+     * @param body Message body string
+     * @param type Message type
+     * @return true if add successfully, otherwise false
+     */
+    public boolean addMessage(String sender, String room, String body, String type) {
+        Message newMessage = NullMessage.make();
+        // Attention: here using some pre-defined parameter since we did not set it up in front-end
+        switch (type) {
+            case "text":
+                newMessage = TextMessage.make("auto", sender, body, "default", "black", 12);
+                break;
+
+            case "image":
+                newMessage = ImageMessage.make("auto", sender, body, 1.0);
+                break;
+
+            case "composite":
+                newMessage = new CompositeMessage("auto", sender);
+                ((CompositeMessage) newMessage).addMultipleChildFromString(body);
+                break;
+
+            default:
+                return false;
+        }
+        // If new message is not null which means it is created successfully, return true and put it in map
+        if (!newMessage.getType().equals("null")) {
+            messageMap.put(room, newMessage);
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+
 
     /**
      * Get next message IDs.
