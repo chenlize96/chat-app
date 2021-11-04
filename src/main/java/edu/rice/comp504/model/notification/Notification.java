@@ -89,4 +89,12 @@ public abstract class Notification implements INotificationFac{
     public Notification make(String type, String sender, String receiver, String info) {
         return NullNotification.make();
     }
+
+    public String getSender() {
+        return sender;
+    }
+
+    public void setSender(String sender) {
+        this.sender = sender;
+    }
 }
