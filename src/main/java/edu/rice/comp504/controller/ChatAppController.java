@@ -69,6 +69,18 @@ public class ChatAppController {
             return gson.toJson(true);
         });
 
+        get("/room/update", (request, response) -> {
+            String username = request.queryMap().value("username");
+            User user = UserDB.getUsers().get(username);
+            return gson.toJson(user.getRoomList());
+        });
+
+        get("/userInfo", (request, response) -> {
+            String username = request.queryMap().value("username");
+            User user = UserDB.getUsers().get(username);
+            return gson.toJson(user);
+        });
+
         /* the above is the endpoint for index.html
          ****************************************************************************************
          * the below is the endpoint for main.html
@@ -104,7 +116,7 @@ public class ChatAppController {
             // check if the applicant is already a member of this group chat
             // check if userLimit of the room is still available
             if(joinRoom.getUserList().contains(username) || joinRoom.getCurNumUser() >= joinRoom.getUserLimit()) {
-                return gson.toJson(user.getRoomList());
+                return gson.toJson(false);
             }
             // if public  -> enter
             //    private -> check password and send a notification to the owner of the room
@@ -118,7 +130,7 @@ public class ChatAppController {
                 User owner = UserDB.getUsers().get(joinRoom.getOwner());
                 owner.addNotification(notification);
             }
-            return gson.toJson(user.getRoomList());
+            return gson.toJson(true);
         });
 
         post("/join/notification/accept", (request, response) -> {
@@ -213,6 +225,11 @@ public class ChatAppController {
             return gson.toJson(true);
         });
 
+        get("/user/notification", (request, response) -> {
+            String username = request.queryMap().value("username");
+            User user = UserDB.getUsers().get(username);
+            return user.getNotificationsList();
+        });
     }
 
     /**
