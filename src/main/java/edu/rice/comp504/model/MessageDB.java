@@ -2,6 +2,7 @@ package edu.rice.comp504.model;
 
 import edu.rice.comp504.model.message.*;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -9,7 +10,7 @@ public class MessageDB {
 
     private static MessageDB ONLY;
     public int nextMessageID = 1;
-    private final Map<String, Message> messageMap = new ConcurrentHashMap<>();
+    private final Map<String, ArrayList<Message>> messageMap = new ConcurrentHashMap<>();
 
     /**
      * A constructor.
@@ -59,7 +60,10 @@ public class MessageDB {
         }
         // If new message is not null which means it is created successfully, return true and put it in map
         if (!newMessage.getType().equals("null")) {
-            messageMap.put(room, newMessage);
+            if(!messageMap.containsKey(room)) {
+                messageMap.put(room, new ArrayList<>());
+            }
+            messageMap.get(room).add(newMessage);
             return true;
         } else {
             return false;
