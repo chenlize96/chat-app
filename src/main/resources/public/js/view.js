@@ -175,6 +175,7 @@ function joinRooms(){
         }
     }, "json")
 }
+
 /**
  * outside chat button
  * */
@@ -183,13 +184,14 @@ function getAllUsers(){
 
         console.log(data);// list of room info about name, type, limit, num
         //data = UserList;
+
         let userTable = $("#userTable");
         userTable.empty();
         $("#chatWith").text("");
         let html = "";
         for(let i = 0; i < data.length; i++){
             html += "<tr><th scope=\"row\"><input type=\"radio\" name=\"chat\"></th><td>" +
-                data[i] + "</td></tr>";
+                data[i].username + "</td></tr>";
         }
         userTable.append(html);
         $("input:radio[name='chat']").change(function (){
@@ -200,6 +202,7 @@ function getAllUsers(){
         });
     }, "json");
 }
+
 /**
  * outside join button
  * */
