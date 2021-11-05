@@ -226,10 +226,10 @@ function setUsername() {
         $("#user_name").text(localStorage.getItem("username"));
         $("#user_name").val(localStorage.getItem("username"));
         $.post("/userInfo", {username: $("#user_name").val()},function (data) {
-            console.log(data);
+            data = JSON.parse(data);
             $("#age").text(data.age);
             $("#school").text(data.school);
-            let newText = $("#interests").text();
+            let newText = "";
             for (let i = 0; i < data.interests.length; i++) {
                 if(i === data.interests.length - 1) newText += data.interests[i];
                 else newText += data.interests[i] + ", ";
