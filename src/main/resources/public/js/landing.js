@@ -15,7 +15,7 @@ window.onload = function() {
  */
 function doLogin(){
     checkLogin();
-    if(($("#usernameLogin").val() !== "") && ($("#passwordLogin").val() !== "")) {
+    if(($("#usernameLogin").val().trim() !== "") && ($("#passwordLogin").val().trim() !== "")) {
         $.post("/login", {username: $("#usernameLogin").val(),
             password: $("#passwordLogin").val()}, function (data) {
             console.log(data);
@@ -97,7 +97,7 @@ function clearForm() {
 function validateLoginUserName() {
     var a = document.getElementById("usernameLogin");
     var a2 = document.getElementById("usernameLoginAlert");
-    if (a.value === "") {
+    if (a.value.trim() === "") {
         a2.innerText = "!";
         return false;
     }
@@ -114,7 +114,7 @@ function validateLoginUserName() {
 function validateLoginPassword() {
     var a = document.getElementById("passwordLogin");
     var a2 = document.getElementById("passwordLoginAlert");
-    if (a.value === "") {
+    if (a.value.trim() === "") {
         a2.innerText = "!";
         return false;
     }
@@ -139,7 +139,7 @@ function checkLogin() {
 function validateRegisterUserName() {
     var a = document.getElementById("username");
     var a2 = document.getElementById("usernameAlert");
-    if (a.value === "") {
+    if (a.value.trim() === "") {
         a2.innerText = "!";
         return false;
     }
@@ -156,7 +156,7 @@ function validateRegisterUserName() {
 function validateRegisterSchool() {
     var a = document.getElementById("school");
     var a2 = document.getElementById("schoolAlert");
-    if (a.value === "") {
+    if (a.value.trim() === "") {
         a2.innerText = "!";
         return false;
     }
@@ -173,16 +173,16 @@ function validateRegisterSchool() {
 function validateRegisterAge() {
     var a = document.getElementById("age");
     var a2 = document.getElementById("ageAlert");
-    if (a.value === "") {
+    if (a.value.trim() === "") {
         a2.innerText = "!";
         return false;
     }
-    else if(isNaN(a.value)) {
+    else if(isNaN(a.value.trim())) {
         a2.innerText = "Age should be integer";
         document.getElementById("age").value = "";
         return false;
     }
-    else if(parseInt(a.value,10) < 18 || parseInt(a.value,10) > 110) {
+    else if(parseInt(a.value.trim(),10) < 18 || parseInt(a.value.trim(),10) > 110) {
         a2.innerText = "Age from 18 to 110, please";
         document.getElementById("age").value = "";
         return false;
@@ -201,11 +201,11 @@ function validateRegisterInterests() {
     var a = document.getElementById("interests");
     var a1 = document.getElementById("interestsInstr");
     var a2 = document.getElementById("interestsAlert");
-    if (a.value === "") {
+    if (a.value.trim() === "") {
         a2.innerText = "!";
         return false;
     }
-    else if(a.validity.patternMismatch && a.value !== "") {
+    else if(a.validity.patternMismatch && a.value.trim() !== "") {
         a1.innerText = "";
         a2.innerText = "Words split by comma";
     }
@@ -224,15 +224,15 @@ function validateRegisterPassword() {
     var pass2 = document.getElementById("passwordSecond");
     var alert = document.getElementById("passwordAlert");
     var alert2 = document.getElementById("passwordSecondAlert");
-    if(pass.value === "") {
+    if(pass.value.trim() === "") {
         alert.innerText = "!";
         return false;
     }
-    if(pass2.value === "") {
+    if(pass2.value.trim() === "") {
         alert2.innerText = "!";
         return false;
     }
-    if (pass.value !== pass2.value){
+    if (pass.value.trim() !== pass2.value.trim()){
         alert.innerText = "";
         alert2.innerText = ">_<";
     }
@@ -248,12 +248,12 @@ function validateRegisterPassword() {
  * @returns {boolean} Whether info for registration is complete.
  */
 function checkComplete() {
-    if($("#username").val() !== "" &&
-        $("#school").val() !== "" &&
-        $("#age").val() !== "" &&
-        $("#interests").val() !== "" &&
-        ($("#password").val() !== "" && $("#passwordSecond").val() !== "") &&
-        ($("#password").val() === $("#passwordSecond").val()))
+    if($("#username").val().trim() !== "" &&
+        $("#school").val().trim() !== "" &&
+        $("#age").val().trim() !== "" &&
+        $("#interests").val().trim() !== "" &&
+        ($("#password").val().trim() !== "" && $("#passwordSecond").val().trim() !== "") &&
+        ($("#password").val().trim() === $("#passwordSecond").val().trim()))
     {
         return true;
     }
