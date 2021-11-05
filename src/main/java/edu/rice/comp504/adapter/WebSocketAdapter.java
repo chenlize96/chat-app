@@ -82,6 +82,25 @@ public class WebSocketAdapter {
 
                 System.out.println(sender+" "+room+" "+body);
 
+                // check hate speech
+                if (body.contains("FUCK") || body.contains("Fuck") || body.contains("fuck")) {
+                    Map<String,Integer> hateSpeechCount = UserDB.getHateSpeechCount();
+                    hateSpeechCount.put(sender,hateSpeechCount.getOrDefault(sender,0)+1);
+                    if(hateSpeechCount.get(sender) == 1) {
+                        //send WarningNotification
+                        Notification notification = new NotificationFac().make("warn","",sender,room);
+                        User hateSpeaker = UserDB.getUsers().get(sender);
+                        hateSpeaker.addNotification(notification);
+                    } else if(hateSpeechCount.get(sender) == 2) {
+                        //mute by all rooms
+                        for(ChatRoom chatRoom:RoomDB.make().getRooms().values()) {
+                            if(chatRoom.getType().equals("groupchat")) {
+                                ((GroupChat)chatRoom).addToMuteList(sender);
+                            }
+                        }
+                    }
+                }
+
                 Message messageObj = createMessage(sender, room, body);
                 // check if muted or the input parameters are incorrect
                 if(messageObj instanceof NullMessage) {
