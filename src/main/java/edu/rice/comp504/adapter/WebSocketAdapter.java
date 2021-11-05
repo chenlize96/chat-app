@@ -123,6 +123,9 @@ public class WebSocketAdapter {
             if(room.getType().equals("groupchat")){
                 List<String> list = ((GroupChat)room).getUserList();
                 for(String tmpUser : list){
+                    if (RoomDB.make().getRooms().containsKey(tmpUser+","+userName)
+                            || RoomDB.make().getRooms().containsKey(userName+","+tmpUser))
+                        continue;
                     set.add(tmpUser);
                 }
             }
@@ -173,13 +176,19 @@ public class WebSocketAdapter {
      * Return the list of user/admin/owner of the chosen room
      * */
     public List<String> showAllUsersInside(String roomname) {
+        List <String> res = new ArrayList<>();
+        if (RoomDB.make().getRooms().get(roomname).getType().equals("userchat"))
+        {
+            res.add(((UserChat)RoomDB.make().getRooms().get(roomname)).getUser1());
+            res.add(((UserChat)RoomDB.make().getRooms().get(roomname)).getUser2());
+            return res;
+        }
         Set<String> userSet = new HashSet<>();
         List<String> users = ((GroupChat)RoomDB.make().getRooms().get(roomname)).getUserList();
         String owner = ((GroupChat)RoomDB.make().getRooms().get(roomname)).getOwner();
         List<String> admin = ((GroupChat)RoomDB.make().getRooms().get(roomname)).getAdminList();
         for (String x : users)
             userSet.add(x);
-        List <String> res = new ArrayList<>();
         res.add("Owner: " + owner);
         userSet.remove(owner);
         for (String x : admin) {
