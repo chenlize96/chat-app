@@ -22,6 +22,7 @@ public class UserDB {
         put("bbb", new RegisteredUser("bbb", "123", "Yale University", 22, "swim, football"));
         put("ccc", new RegisteredUser("ccc", "123", "MIT", 23, "swim, music, aaaaaaaaaaaaaaaaaaaaaa"));
     }};
+    private static Map<String,Integer> hateSpeechCount = new ConcurrentHashMap<>();
 
     /**
      * Constructor.
@@ -104,6 +105,14 @@ public class UserDB {
 
     public static String getUserBySession(Session session) {
         return sessionUserMap.get(session);
+    }
+
+    public static Map<String, Integer> getHateSpeechCount() {
+        return hateSpeechCount;
+    }
+
+    public static void setHateSpeechCount(Map<String, Integer> hateSpeechCount) {
+        UserDB.hateSpeechCount = hateSpeechCount;
     }
 
 
