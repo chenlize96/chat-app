@@ -123,6 +123,16 @@ public class GroupChat extends ChatRoom{
         return muteList;
     }
 
+    /**
+     * add a user into room's mute list
+     * @param username
+     */
+    public void addToMuteList(String username) {
+        if(!this.muteList.contains(username)) {
+            this.muteList.add(username);
+        }
+    }
+
 
     /**
      * Set number of users.

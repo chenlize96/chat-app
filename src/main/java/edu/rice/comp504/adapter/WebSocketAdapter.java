@@ -11,6 +11,7 @@ import edu.rice.comp504.model.chatroom.UserChat;
 import edu.rice.comp504.model.message.Message;
 import edu.rice.comp504.model.message.NullMessage;
 import edu.rice.comp504.model.notification.Notification;
+import edu.rice.comp504.model.notification.NotificationFac;
 import edu.rice.comp504.model.user.NullUser;
 import edu.rice.comp504.model.user.RegisteredUser;
 import edu.rice.comp504.model.user.User;
@@ -106,8 +107,14 @@ public class WebSocketAdapter {
                 break;
 
             case "mute":
-                String userMuted = jo.get("userMute").getAsString();
-                // TODO: mute function here, need notification??
+                String userMute = jo.get("userMute").getAsString();
+                String userMuted = jo.get("userMuted").getAsString();
+                String roomName = jo.get("roomName").getAsString();
+                ChatRoom chatRoom = RoomDB.getONLY().getRooms().get(roomName);
+                ((GroupChat)chatRoom).addToMuteList(userMuted);
+                //send a notification to the person who got muted
+                User mutedUser = UserDB.getUsers().get(userMuted);
+                mutedUser.addNotification(new NotificationFac().make("mute",userMute,userMuted,roomName));
                 break;
 
             case "kick":
