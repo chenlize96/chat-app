@@ -1,5 +1,5 @@
 'use strict';
-
+import {requests} from './requests.js';
 let intervalID = -1;//id of current interval
 const webSocket = new WebSocket("ws://" + location.hostname + ":" + location.port + "/chatapp");
 const UserList = ["Owner", "Admin1", "Admin2", "Member1", "Member2"];
@@ -18,6 +18,7 @@ const emojiLib = [
  * Entry point into chat room
  */
 window.onload = function () {
+
     setUsername();
     loadRoomUser();
     clearInterval(intervalID);
@@ -26,6 +27,7 @@ window.onload = function () {
     $("#search_btn").click(doSearch);
     member_btn.focus(doSomething);
     $("#join_room").click(joinRooms);
+    $("#inputArea").keydown(onKeyPress);
     $("#chatStart").click(createUserChat);
     member_btn.blur(function (){
         console.log($(this).text());
@@ -47,6 +49,17 @@ window.onload = function () {
         addOption($("#select-emoji"), emojiLib[i], emojiLib[i], "emoji-" + emojiLib[i]);
     }
 };
+
+function sendM() {
+    webSocket.send(JSON.stringify(requests.getSendMsgRequest(
+        $("#user_name").val(),
+        document.getElementById("title").innerText,
+        $("#inputArea").val()
+    )));
+}
+
+
+
 /**
  * A function to add options to a list.
  * @param list target HTML list
@@ -328,6 +341,8 @@ function doLogOut() {
  * Send a message to the server.
  */
 function sendMessage() {
+    sendM();
+    /*$.post("/sendMessage", {
     let message = $("#inputArea").val();
     for(let i = 0; i < emojiLib.length; i++) {
         message = message.replace(emojiLib[i],":sep:" + "/" + emojiLib[i]);
@@ -343,18 +358,19 @@ function sendMessage() {
         } else {
             console.log("will not be sent");
         }
-        /*
+        /!*
         if (msg !== "") {
             webSocket.send(msg);
             $("#message").val("");
         }
-        */
-    }, "json");
+        *!/
+    }, "json");*/
 }
 /**
  * Press Enter button, then send the message.
  */
-function onKeyPress(event) {
+function onKeyPress() {
+    let event = window.event;
     event = event || window.event;
     if (event.which === 13) {
         event.preventDefault();
