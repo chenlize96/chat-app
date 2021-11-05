@@ -96,6 +96,7 @@ public class UserTest {
     public void addNotification() {
         test.addNotification(SimpleNotification.make("test", "test2", "test3"));
         assertEquals(test.getNotificationsList().size(), 1);
+        test.addNotification(null);
     }
 
     @Test
