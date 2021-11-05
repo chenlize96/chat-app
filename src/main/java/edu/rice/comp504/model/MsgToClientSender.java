@@ -65,7 +65,7 @@ public class MsgToClientSender {
         jo.addProperty("message", new Gson().toJsonTree(list).toString());
         jo.addProperty("room", roomName);
         jo.addProperty("username", userName);
-        jo.addProperty("action", "invite/getUsers");
+        jo.addProperty("action", "getInviteUsers");
         UserDB.getSessions().forEach(session -> {
             String currUser = UserDB.getUserBySession(session);
             if(currUser.equals(userName)){
