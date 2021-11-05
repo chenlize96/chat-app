@@ -21,8 +21,15 @@ function doLogin(){
             console.log(data);
             // get a boolean - if true then submit, otherwise do not direct AND show error message
             if (data.username !== "null") {
+                console.log("login success");
                 localStorage.setItem("username", $("#usernameLogin").val());
                 document.getElementById("registerInfo").submit();
+            }
+            else {
+                console.log("login fail");
+                // show error messages on the form
+                document.getElementById("usernameLoginAlert").innerText = "please check";
+                document.getElementById("passwordLoginAlert").innerText = "please check";
             }
         }, "json");
     }

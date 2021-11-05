@@ -9,6 +9,11 @@ const RoomList = [{roomName: "COMP504", type: "public", limit: 200, cur: 180},
     {roomName: "Group D", type: "private", limit: 100, cur: 50},
     {roomName: "Amazon", type: "public", limit: 150, cur: 70}];
 const notiList = [{sender: "qwe", receiver: "asd", roomName: "zxc"}];
+const emojiLib = [
+    "😀", "😃", "😄", "😁", "😆", "😅", "😂", "🤣", "😊", "😇", "🙂", "🙃", "😉", "😌",
+    "😍", "🥰", "😘", "😗", "😙", "😚", "😋", "😛", "😝", "😜", "🤪", "🤨", "🧐", "🤓", "😎",
+];
+
 /**
  * Entry point into chat room
  */
@@ -39,7 +44,10 @@ window.onload = function () {
     $(document).on("click", "#btn_createRoomCancel", clearCreateForm);
 
     //$('#createModal').on('show.bs.modal', clearCreateForm);
-
+    $("#select-emoji").change(insertEmoji);
+    for (let i = 0; i < emojiLib.length; i++) {
+        addOption($("#select-emoji"), emojiLib[i], emojiLib[i], "emoji-" + emojiLib[i]);
+    }
 };
 
 function sendM() {
@@ -52,6 +60,24 @@ function sendM() {
 
 
 
+/**
+ * A function to add options to a list.
+ * @param list target HTML list
+ * @param value source value
+ * @param inner target value
+ * @param id option id
+ */
+function addOption(list, value, inner, id) {
+    list.append(`<option id=${id} value=${value}>${inner} </option>`);
+}
+/**
+ * insert emoji
+ */
+function insertEmoji() {
+    const selected = $("#select-emoji option:selected");
+    const input = $("#inputArea");
+    input.val(input.val() + selected.text());
+}
 /**
 * click inner chat button to begin chat
 * */
@@ -238,17 +264,17 @@ function setUsername() {
         console.log("set the username successfully");
         $("#user_name").text(localStorage.getItem("username"));
         $("#user_name").val(localStorage.getItem("username"));
-        /*$.post("/userInfo", {username: $("#user_name").val()},function (data) {
-            console.log(data);
+        $.post("/userInfo", {username: $("#user_name").val()},function (data) {
+            data = JSON.parse(data);
             $("#age").text(data.age);
             $("#school").text(data.school);
-            let newText = $("#interests").text();
+            let newText = "";
             for (let i = 0; i < data.interests.length; i++) {
                 if(i === data.interests.length - 1) newText += data.interests[i];
                 else newText += data.interests[i] + ", ";
             }
             $("#interests").text(newText);
-        });*/
+        });
     } else {
         console.log("do not reset the username");
     }
@@ -311,16 +337,20 @@ function doLogOut() {
         }
     }, "json");
 }
-
 /**
  * Send a message to the server.
  */
 function sendMessage() {
     sendM();
     /*$.post("/sendMessage", {
+    let message = $("#inputArea").val();
+    for(let i = 0; i < emojiLib.length; i++) {
+        message = message.replace(emojiLib[i],":sep:" + "/" + emojiLib[i]);
+    }
+    $.post("/sendMessage", {
         username: $("#user_name").val(),
         roomName:document.getElementById("title").innerText,
-        message:$("#inputArea").val()
+        message:message
     }, function (data) {
         if(data === true) {
             console.log("ready to send");
@@ -336,7 +366,6 @@ function sendMessage() {
         *!/
     }, "json");*/
 }
-
 /**
  * Press Enter button, then send the message.
  */
