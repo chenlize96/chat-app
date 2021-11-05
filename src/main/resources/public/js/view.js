@@ -1,7 +1,9 @@
 'use strict';
 import {requests} from './requests.js';
 let intervalID = -1;//id of current interval
-const webSocket = new WebSocket("ws://" + location.hostname + ":" + location.port + "/chatapp");
+let webSocket;
+let pingId;
+//const webSocket = new WebSocket("ws://" + location.hostname + ":" + location.port + "/chatapp");
 const UserList = ["Owner", "Admin1", "Admin2", "Member1", "Member2"];
 const RoomList = [{roomName: "COMP504", type: "public", limit: 200, cur: 180},
     {roomName: "Amazon", type: "public", limit: 150, cur: 70},
@@ -256,6 +258,37 @@ function doSomething(){
     }
 }
 
+function ping() {
+    webSocket.send("ping");
+}
+
+/**
+ * Set up websocket.
+ */
+async function setUpWebSocket() {
+    webSocket = new WebSocket("ws://" + location.hostname + ":" + location.port + "/chatapp");
+    //"wss://" + location.hostname + ":" + location.port + "/chatapp"
+    await new Promise((resolve) => {
+        webSocket.onopen = (e) => {
+            resolve(e.data);
+            //pingId = setInterval(, 29000);
+        }
+    })
+    /*webSocket.onopen = () => {
+        //pingId = setInterval(, 29000);
+    }*/
+    //webSocket.onmessage = (msg) => responseHandler(msg);
+    webSocket.onclose = () => {
+        setTimeout(setUpWebSocket, 2000);
+    }
+    webSocket.onerror = () => {
+        setTimeout(setUpWebSocket, 2000);
+    }
+    webSocket.send(JSON.stringify(requests.getSendLoginRequest(
+        $("#user_name").val(),
+    )));
+}
+
 /**
  * Set the username from the landing page.
  */
@@ -278,6 +311,7 @@ function setUsername() {
     } else {
         console.log("do not reset the username");
     }
+    setUpWebSocket();
 }
 
 /**
