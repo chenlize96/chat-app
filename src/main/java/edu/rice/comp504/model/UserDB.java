@@ -107,7 +107,7 @@ public class UserDB {
     }
 
 
-    public static String getUserBySession(Session session) {
+    /*public static String getUserBySession(Session session) {
         return sessionUserMap.getOrDefault(session,"null");
-    }
+    }*/
 }

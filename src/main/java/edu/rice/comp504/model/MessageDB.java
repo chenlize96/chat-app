@@ -73,7 +73,6 @@ public class MessageDB {
                 messageMap.put(room, new ArrayList<>());
             }
             messageMap.get(room).add(newMessage);
-            return newMessage;
         } else {
             return newMessage;
         }
