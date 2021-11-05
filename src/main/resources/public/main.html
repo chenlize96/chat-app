@@ -23,7 +23,7 @@
             <label>Available Rooms</label>
         </div>
         <div class="room_name">
-            <label id="title">Welcome!  <span id="roomInfo"><span id="roomName"></span>(<span id="curRoomNum"></span>/<span id="limitRoomNum"></span>)</span>
+            <label id="title"><span id="welcome">Welcome!  </span><span id="roomInfo"><span id="roomName"></span>(<span id="curRoomNum"></span>/<span id="limitRoomNum"></span>)</span>
             </label>
         </div>
         <div class="description">
@@ -1068,7 +1068,7 @@
         <div class="modal-content w-100">
             <div class="modal-header">
 
-                <h5 class="modal-title float-left" id="inviteModalLabel">Hello, xxx</h5>
+                <h5 class="modal-title float-left" id="inviteModalLabel">Invite <span id="inviteTo"></span>to <span id="roomNameInInvite"></span></h5>
                 <!---
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -1076,8 +1076,8 @@
                 --->
             </div>
             <div class="modal-body">
-                <h3>Invite some to Group XXX</h3>
                 <div class="row p-1">
+                    <!---
                     <div id="invite-list-example" class="list-group col-2 p-0" style="height: 300px;overflow: auto">
                         <a class="list-group-item list-group-item-action" href="#invite_A">A</a>
                         <a class="list-group-item list-group-item-action" href="#invite_B">B</a>
@@ -1105,15 +1105,17 @@
                         <a class="list-group-item list-group-item-action" href="#invite_X">X</a>
                         <a class="list-group-item list-group-item-action" href="#invite_Y">Y</a>
                         <a class="list-group-item list-group-item-action" href="#invite_Z">Z</a>
-                    </div>
+                    </div>--->
+                    <div class="col-1"></div>
                     <div data-spy="scroll" data-target="#chat-list-example" data-offset="0"
                          class="p-0 col-10 scrollspy-example" style="height: 300px;overflow: auto">
                         <form>
-                            <div id="invite_A"></div>
-                            <table class="table mb-0">
+                            <!---<div id="invite_A"></div>--->
+                            <table class="table mb-0" id="inviteTable">
                                 <tbody>
                                 </tbody>
                             </table>
+                            <!---
                             <div id="invite_B"></div>
                             <table class="table mb-0">
                                 <tbody>
@@ -1240,13 +1242,14 @@
                             <table class="table mb-0">
                                 <tbody>
                                 </tbody>
-                            </table>
+                            </table>--->
                         </form>
                     </div>
                 </div>
             </div>
+            </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Invite</button>
+                <button type="button" class="btn btn-primary" id="inviteReq" disabled="disabled">Invite</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
             </div>
         </div>
