@@ -3,7 +3,11 @@ package edu.rice.comp504.model;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import edu.rice.comp504.model.chatroom.ChatRoom;
+
+import edu.rice.comp504.model.chatroom.GroupChat;
+import edu.rice.comp504.model.chatroom.UserChat;
 import edu.rice.comp504.model.message.Message;
+import org.eclipse.jetty.websocket.api.Session;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +30,37 @@ public class MsgToClientSender {
             return;
         }
         ChatRoom chatRoom = RoomDB.make().getRooms().get(room);
-        UserDB.getSessions().forEach(session -> {
+        if (chatRoom.getType().equals("groupchat")) {
+            //check if the user is in the given room
+            List<String> userList = ((GroupChat)chatRoom).getUserList();
+            UserDB.getSessions().forEach(session -> {
+                String currUser = UserDB.getUserBySession(session);
+                if(!userList.contains(currUser)) {
+                    return;
+                }
+                sendJsonObject(room, message, session);
+            });
+        } else { // userchat
+            UserDB.getSessions().forEach(session -> {
+                String currUser = UserDB.getUserBySession(session);
+                if(!currUser.equals(((UserChat)chatRoom).getUser1()) && !currUser.equals(((UserChat)chatRoom).getUser2())) {
+                    return;
+                }
+                sendJsonObject(room, message, session);
+            });
+        }
+    }
+
+    private static void sendJsonObject(String room, Message message, Session session) {
+        try {
+            JsonObject jo = new JsonObject();
+            jo.addProperty("message", new Gson().toJsonTree(message).toString());
+            jo.addProperty("room", p(room).render());
+            session.getRemote().sendString(String.valueOf(jo));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        /*UserDB.getSessions().forEach(session -> {
             String curUser = UserDB.getUserBySession(session);
             try {
                 JsonObject jo = new JsonObject();
@@ -40,11 +74,7 @@ public class MsgToClientSender {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        });
+        });*/
     }
-
-
-
-
 
 }

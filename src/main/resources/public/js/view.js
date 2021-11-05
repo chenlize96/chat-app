@@ -52,11 +52,18 @@ window.onload = function () {
             data = JSON.parse(data);
             $("#curRoomNum").text(data.curNumUser);
             $("#limitRoomNum").text(data.userLimit);
-            console.log(data.owner, $("#user_name").val());
-            if(data.owner === $("#user_name").val()) {
+            if(data.type === "userchat") {
                 $("#btn-kick").removeAttr("disabled");
                 $("#btn-mute").removeAttr("disabled");
                 $("#btn-block").removeAttr("disabled");
+            }
+            else{
+                console.log(data.owner, $("#user_name").val());
+                if(data.owner === $("#user_name").val()) {
+                    $("#btn-kick").removeAttr("disabled");
+                    $("#btn-mute").removeAttr("disabled");
+                    $("#btn-block").removeAttr("disabled");
+                }
             }
         })
         console.log($("#roomName").text().replace(/[\r\n]/g,"").replace(/[ ]/g,""));
@@ -75,7 +82,8 @@ window.onload = function () {
 function sendM() {
     webSocket.send(JSON.stringify(requests.getSendMsgRequest(
         $("#user_name").val(),
-        document.getElementById("title").innerText,
+        $("#roomName").text().replace(/[\r\n]/g,"").replace(/[ ]/g,""),
+        /*document.getElementById("title").innerText,*/
         $("#inputArea").val()
     )));
 }
