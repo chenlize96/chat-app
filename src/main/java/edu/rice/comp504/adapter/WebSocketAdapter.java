@@ -123,8 +123,17 @@ public class WebSocketAdapter {
                 break;
 
             case "kick":
-                String userKicked = jo.get("userKick").getAsString();
-
+                String userKick = jo.get("userKick").getAsString();
+                String userKicked = jo.get("userKicked").getAsString();
+                String kickRoomName = jo.get("roomName").getAsString();
+                ChatRoom kickChatRoom = RoomDB.getONLY().getRooms().get(kickRoomName);
+                User kickedUser = UserDB.getUsers().get(userKicked);
+                // kick the user from the room, decrease the number of members, remove the room from user's room list
+                ((GroupChat)kickChatRoom).kickUser(userKicked);
+                //broadcast
+                MsgToClientSender.broadcastKickMessage(userKick,userKicked,kickRoomName);
+                //send a notification to the person who got kicked
+                kickedUser.addNotification(new NotificationFac().make("kick",userKick,userKicked,kickRoomName));
                 break;
 
             case "block":

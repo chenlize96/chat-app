@@ -1,5 +1,8 @@
 package edu.rice.comp504.model.chatroom;
 
+import edu.rice.comp504.model.UserDB;
+import edu.rice.comp504.model.user.User;
+
 import java.beans.PropertyChangeEvent;
 import java.util.*;
 
@@ -253,6 +256,23 @@ public class GroupChat extends ChatRoom{
 
     }
 
-
+    /**
+     * kick a user out of the room.
+     * @param kickedUser
+     */
+    public void kickUser(String kickedUser) {
+        Iterator<String> iterator = this.userList.iterator();
+        while (iterator.hasNext()) {
+            String user = iterator.next();
+            if(user.equals(kickedUser)) {
+                iterator.remove();
+            }
+        }
+        // decrease the num by 1
+        this.setCurNumUser(this.getCurNumUser() - 1);
+        // remove the room from the kicked person's room list
+        User user = UserDB.getUsers().get(kickedUser);
+        user.removeAChatRoom(this.getRoomName());
+    }
 
 }

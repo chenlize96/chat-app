@@ -139,4 +139,29 @@ public class MsgToClientSender {
             e.printStackTrace();
         }
     }
+
+    public static void broadcastKickMessage(String userKick, String userKicked, String kickRoomName) {
+        try {
+            ChatRoom chatRoom = RoomDB.make().getRooms().get(kickRoomName);
+            List<String> userList = ((GroupChat)chatRoom).getUserList();
+            UserDB.getSessions().forEach(session -> {
+                String currUser = UserDB.getUserBySession(session);
+                if(!userList.contains(currUser)) {
+                    return;
+                }
+                JsonObject jo = new JsonObject();
+                jo.addProperty("userKick", userKick);
+                jo.addProperty("userKicked", userKicked);
+                jo.addProperty("roomName", kickRoomName);
+                jo.addProperty("action", "kick");
+                try {
+                    session.getRemote().sendString(String.valueOf(jo));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
