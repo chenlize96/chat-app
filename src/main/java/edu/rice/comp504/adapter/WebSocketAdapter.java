@@ -33,8 +33,8 @@ public class WebSocketAdapter {
      */
     @OnWebSocketConnect
     public void onConnect(Session session) {
-        String username = "User" + UserDB.genNextUserId();
-        UserDB.addSessionUser(session, username);
+        //String username = "User" + UserDB.genNextUserId();
+        //UserDB.addSessionUser(session, username);
     }
 
     /**
@@ -44,7 +44,8 @@ public class WebSocketAdapter {
      */
     @OnWebSocketClose
     public void onClose(Session session, int statusCode, String reason) {
-        UserDB.removeUser(session);
+
+        //UserDB.removeUser(session);
     }
 
     /**
@@ -58,9 +59,35 @@ public class WebSocketAdapter {
         System.out.println(message);
         JsonParser parser = new JsonParser();
         JsonObject jo = (JsonObject) parser.parse(message);
-        System.out.println(jo.get("username").getAsString());
-        MsgToClientSender.broadcastMessage(UserDB.getUser(session), message);
+        //System.out.println(jo.get("username").getAsString());
+        //MsgToClientSender.broadcastMessage(UserDB.getUser(session), message);
+
+        switch (jo.get("action").getAsString()) {
+
+            case "login":
+                MsgToClientSender.broadcastMessage(UserDB.getUser(session), message);
+                break;
+
+            case "send":
+                mapSessionUser(session, jo.get("username").getAsString());
+                break;
+
+            default:
+                System.out.println("Not valid action!");
+                break;
+        }
+
     }
+
+    /**
+     * Map websocket session with current username when logging in.
+     * @param session websocket session
+     * @param username username
+     */
+    public void mapSessionUser(Session session, String username) {
+        UserDB.addSessionUser(session, username);
+    }
+
 
     public void registerUser(String username, String school, int age, String interestsTemp, String password) {
         UserDB.addUser(username, school, age, interestsTemp, password);
