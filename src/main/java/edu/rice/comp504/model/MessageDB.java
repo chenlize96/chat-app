@@ -40,14 +40,14 @@ public class MessageDB {
     }
 
     /**
-     * Add message to the database and return add status.
+     * Add message to the database and return the message.
      * @param sender Sender's username
      * @param room Room name
      * @param body Message body string
      * @param type Message type
-     * @return true if add successfully, otherwise false
+     * @return a message
      */
-    public boolean addMessage(String sender, String room, String body, String type) {
+    public Message addMessage(String sender, String room, String body, String type) {
         Message newMessage = NullMessage.make();
         // Attention: here using some pre-defined parameter since we did not set it up in front-end
         switch (type) {
@@ -65,7 +65,7 @@ public class MessageDB {
                 break;
 
             default:
-                return false;
+                return newMessage;
         }
         // If new message is not null which means it is created successfully, return true and put it in map
         if (!newMessage.getType().equals("null")) {
@@ -73,11 +73,8 @@ public class MessageDB {
                 messageMap.put(room, new ArrayList<>());
             }
             messageMap.get(room).add(newMessage);
-            return true;
-        } else {
-            return false;
         }
-
+        return newMessage;
     }
 
 

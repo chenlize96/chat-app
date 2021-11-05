@@ -95,9 +95,12 @@ public class UserDB {
      * Get open sessions.
      * @return All open sessions
      */
-    public static Set<Session> getSessions() {
+    public static Set<Session>  getSessions() {
         return sessionUserMap.keySet();
     }
 
 
+    public static String getUserBySession(Session session) {
+        return sessionUserMap.getOrDefault(session,"null");
+    }
 }
