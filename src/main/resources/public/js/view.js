@@ -3,6 +3,7 @@ import {requests} from './requests.js';
 let intervalID = -1;//id of current interval
 let webSocket;
 let pingId;
+let lastSelectedMem;
 //const webSocket = new WebSocket("ws://" + location.hostname + ":" + location.port + "/chatapp");
 const UserList = ["Owner", "Admin1", "Admin2", "Member1", "Member2"];
 const RoomList = [{roomName: "COMP504", type: "public", limit: 200, cur: 180},
@@ -34,16 +35,15 @@ window.onload = function () {
     $("#join_room").click(joinRooms);
     $("#inputArea").keydown(onKeyPress);
     $("#chatStart").click(createUserChat);
-    member_btn.blur(function (){
-        console.log($(this).text());
-        $('#btn-kick').attr('disabled',"true");
-        $('#btn-mute').attr('disabled',"true");
+    $(".members").on('click', 'button', function (){
+        lastSelectedMem = $(this).text();
     });
     $("#btn-join").click(getAllRooms);
     $("#btn-chat").click(getAllUsers);
     $("#btn-invite").click(getInviteUsers);
     $("#inviteReq").click(inviteIntoRoom);
     $("#btn-mute").click(mute);
+    $("#btn-leave").click(leaveRoom);
     $("#notificationInfo").click(getNotification);
     $(".invite_ac").click(acceptInvite);
     $(".invite_rj").click(rejectInvite);
@@ -85,12 +85,20 @@ window.onload = function () {
         addOption($("#select-emoji"), emojiLib[i], emojiLib[i], "emoji-" + emojiLib[i]);
     }
 };
-
+/**
+ * leavebutton
+ */
+function leaveRoom() {
+    webSocket.send(JSON.stringify(requests.getLeaveRequest(
+        $("#user_name").val(),
+        $("#roomName").text().replace(/[\r\n]/g,"").replace(/[ ]/g,"")
+    )));
+}
 /**
  * mute button
  */
 function mute(){
-
+    console.log(lastSelectedMem);
 }
 /**
  * invite button get users
@@ -140,6 +148,48 @@ function getInviteUsers(){
 function responseHandler(message) {
     const data = JSON.parse(message.data);
     console.log(data);
+    const msgType = data.action;
+    console.info("data received " + msgType);
+    switch (msgType) {
+        case 'send':
+            console.log(data.username);
+            console.log(data.room);
+            let message = JSON.parse(data.message);
+            console.log("childMsg: " , message);
+            console.log(message.childrenMessage[0]);
+            console.log(message.childrenMessage[0].body);
+            break;
+        case 'invite':
+            $("#inviteModal").hide();
+            break;
+        case 'getInviteUsers':
+            let inviteTable = $("#inviteTable");
+            inviteTable.empty();
+            let html = "";
+            for(let i = 0; i < data.length; i++){
+                html += "<tr><th scope=\"row\"><input type=\"radio\" name=\"invite\"></th><td>" +
+                    data[i].username + "</td></tr>";
+            }
+            inviteTable.append(html);
+            $("input:radio[name='invite']").change(function (){
+                let opt = $("input:radio[name='invite']:checked").parent("th").next("td").text();
+                $("#inviteTo").text(opt);
+                $("#inviteReq").removeAttr("disabled");
+            });
+            break;
+        case 'leave':
+            if (data === true){
+                updateRoomList();
+                $("#leaveInfo").text("Leave Success");
+            }
+            else {
+                $("#leaveInfo").text("Leave Fail");
+            }
+            updateRoomList();
+            break;
+        default:
+            console.info("Missing type: " + msgType);
+    }
 }
 
 function sendM() {
@@ -158,12 +208,16 @@ function hideRoomInfo(){
     $("#btn-kick").attr("disabled", "true");
     $("#btn-mute").attr("disabled", "true");
     $("#btn-invite").attr("disabled", "true");
+    $("#btn-history").attr("disabled", "true");
+    $("#btn-leave").attr("disabled", "true");
 }
 
 function showRoomInfo(){
     $("#welcome").hide();
     $("#roomInfo").show();
     $("#inputArea").removeAttr("disabled");
+    $("#btn-history").removeAttr("disabled");
+    $("#btn-leave").removeAttr("disabled");
 }
 
 /**
@@ -185,8 +239,8 @@ function insertEmoji() {
     input.val(input.val() + selected.text());
 }
 /**
-* click inner chat button to begin chat
-* */
+ * click inner chat button to begin chat
+ * */
 function createUserChat() {
     $.post("/create/userchat", {username: $("#user_name").val(), chatName: $("#chatWith").text()}, function (data) {
         console.log(data);
@@ -222,8 +276,8 @@ function updateRoomList() {
     }, "json");
 }
 /**
-* click invite notification accept
-* */
+ * click invite notification accept
+ * */
 function acceptInvite() {
     console.log($(this).siblings("div").children(".inviteSender").text(), $(this).siblings("div").children(".inviteRoomName").text());
     $.post("/notification/invite/accept", {receiver: $("#user_name").val(),
@@ -234,8 +288,8 @@ function acceptInvite() {
     }, "json")
 }
 /**
-* click invite notification reject
-*/
+ * click invite notification reject
+ */
 function rejectInvite() {
     console.log($(this).siblings("div").children(".inviteSender").text(), $(this).siblings("div").children(".inviteRoomName").text());
     $.post("/notification/invite/reject", {receiver: $("#user_name").val(),
@@ -246,8 +300,8 @@ function rejectInvite() {
     }, "json")
 }
 /**
-* outside notification button
-* */
+ * outside notification button
+ * */
 function getNotification() {
     $.post("/user/notification", {username: $("#user_name").val()}, function (data) {
         let notifications = $("#notificationBody");
@@ -335,7 +389,7 @@ function loadRoomUser() {
         $(".members .member_btn").remove();
         let html = '';
         for(let i = 0; i < data.length; i++){
-            html += "<button class=\"member_btn btn-outline-primary\" id='" + data[i] +"'>" + data[i] + "</button>";
+            html += "<button type='radio' name='member' class=\"member_btn btn-outline-primary\" id='" + data[i] +"'>" + data[i] + "</button>";
         }
         $(".members").append(html);
     })

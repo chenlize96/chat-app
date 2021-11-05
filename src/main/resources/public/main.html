@@ -159,7 +159,10 @@
                     </button>
                 </div>
                 <div class="col-6 p-0">
-                    <button class="btn btn-primary u_btn" id="btn-mute" data-toggle="modal" data-target="#muteModal">
+                    <!---<button class="btn btn-primary u_btn" id="btn-mute" data-toggle="modal" data-target="#muteModal">
+                        Mute
+                    </button>--->
+                    <button class="btn btn-primary u_btn" id="btn-mute">
                         Mute
                     </button>
                 </div>
@@ -860,14 +863,16 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content w-75">
             <div class="modal-body">
-                <h5 class="float-left mt-2">Hello xxx:</h5>
+                <!---<h5 class="float-left mt-2">Hello xxx:</h5>
 
                 <p class="text-left mt-5">Other members in the room will be notified. If you want to chat with a user or
-                    a group, you should login again</p>
+                    a group, you should login again</p>--->
+                <h5 class="float-left mt-2" id="leaveInfo"></h5>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Leave</button>
-                <button type="button" class="btn btn-primary">Stay</button>
+                <!---<button type="button" class="btn btn-primary">Leave</button>
+                <button type="button" class="btn btn-primary">Stay</button>--->
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
             </div>
         </div>
     </div>
@@ -1247,13 +1252,13 @@
                     </div>
                 </div>
             </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="inviteReq" disabled="disabled">Invite</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" id="inviteReq" disabled="disabled">Invite</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
         </div>
     </div>
+</div>
 </div>
 <div class="modal fade" id="historyModal" tabindex="-1" aria-labelledby="exampleModalLabel">
     <div class="modal-dialog">
