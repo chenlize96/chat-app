@@ -7,8 +7,10 @@ import edu.rice.comp504.model.chatroom.ChatRoom;
 import edu.rice.comp504.model.chatroom.GroupChat;
 import edu.rice.comp504.model.chatroom.UserChat;
 import edu.rice.comp504.model.message.Message;
+import edu.rice.comp504.model.notification.Notification;
 import org.eclipse.jetty.websocket.api.Session;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -79,4 +81,25 @@ public class MsgToClientSender {
         });*/
     }
 
+    public static void sendNotificationList(String username, List<Notification> notificationList) {
+        try {
+            UserDB.getSessions().forEach(session -> {
+                String currUser = UserDB.getUserBySession(session);
+                if(!currUser.equals(username)) {
+                    return;
+                }
+                JsonObject jo = new JsonObject();
+                jo.addProperty("username",username);
+                jo.addProperty("notificationList",new Gson().toJsonTree(notificationList).toString());
+                jo.addProperty("action","notification");
+                try {
+                    session.getRemote().sendString(String.valueOf(jo));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

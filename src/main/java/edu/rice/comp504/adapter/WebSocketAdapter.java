@@ -10,6 +10,7 @@ import edu.rice.comp504.model.chatroom.GroupChat;
 import edu.rice.comp504.model.chatroom.UserChat;
 import edu.rice.comp504.model.message.Message;
 import edu.rice.comp504.model.message.NullMessage;
+import edu.rice.comp504.model.notification.Notification;
 import edu.rice.comp504.model.user.NullUser;
 import edu.rice.comp504.model.user.RegisteredUser;
 import edu.rice.comp504.model.user.User;
@@ -88,6 +89,14 @@ public class WebSocketAdapter {
             case "updateMessage":
                 // TODO: update message function here, broadcast message list, History is also here
                 String updateRoom = jo.get("roomName").getAsString();
+                break;
+
+            case "notification":
+                // TODO: update the notifications of a given user
+                String username = jo.get("username").getAsString();
+                User user = UserDB.getUsers().get(username);
+                List<Notification> notificationList = user.getNotificationsList();
+                MsgToClientSender.sendNotificationList(username,notificationList);
                 break;
 
             case "invite":
