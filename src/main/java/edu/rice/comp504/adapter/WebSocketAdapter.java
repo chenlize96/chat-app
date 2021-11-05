@@ -85,9 +85,9 @@ public class WebSocketAdapter {
                 }
                 break;
 
-            case "updatemessage":
+            case "updateMessage":
                 // TODO: update message function here, broadcast message list, History is also here
-                String updateroom = jo.get("roomName").getAsString();
+                String updateRoom = jo.get("roomName").getAsString();
                 break;
 
             case "invite":
@@ -112,7 +112,7 @@ public class WebSocketAdapter {
                 break;
 
             case "leave":
-                String roomleft = jo.get("roomName").getAsString();
+                String roomLeft = jo.get("roomName").getAsString();
                 String userLeft = jo.get("username").getAsString();
                 // TODO: leave function here, need notification or message?
                 break;
