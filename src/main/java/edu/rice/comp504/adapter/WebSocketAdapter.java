@@ -8,6 +8,7 @@ import edu.rice.comp504.model.UserDB;
 import edu.rice.comp504.model.chatroom.ChatRoom;
 import edu.rice.comp504.model.chatroom.GroupChat;
 import edu.rice.comp504.model.chatroom.UserChat;
+import edu.rice.comp504.model.message.Message;
 import edu.rice.comp504.model.user.NullUser;
 import edu.rice.comp504.model.user.RegisteredUser;
 import edu.rice.comp504.model.user.User;
@@ -64,11 +65,15 @@ public class WebSocketAdapter {
 
         switch (jo.get("action").getAsString()) {
 
-            case "login":
-                MsgToClientSender.broadcastMessage(UserDB.getUser(session), message);
+            case "send":
+                String sender = jo.get("username").getAsString();
+                String room = jo.get("roomName").getAsString();
+                String body = jo.get("message").getAsString();
+                Message messageObj = createMessage(sender, room, body);
+                MsgToClientSender.broadcastMessage(UserDB.getUser(session), room,  messageObj);
                 break;
 
-            case "send":
+            case "login":
                 mapSessionUser(session, jo.get("username").getAsString());
                 break;
 
@@ -199,14 +204,14 @@ public class WebSocketAdapter {
      * @param body message body text
      * @return true if message was created successfully, false otherwise
      */
-    public boolean createMessage(String sender, String room, String body) {
+    public Message createMessage(String sender, String room, String body) {
         //MUTE : check if the sender is muted in the given room
         //BTW, BLOCK will be checked in /updateMessage
         ChatRoom chatRoom = RoomDB.make().getRooms().get(room);
         if(chatRoom.getType().equals("groupchat")) { //check mute
             List<String> mutedUsers = ((GroupChat)chatRoom).getMuteList();
             if(mutedUsers.contains(sender)) {
-                return false;
+                return MessageDB.make().addMessage(sender, room, body, "null");
             }
         }
         return MessageDB.make().addMessage(sender, room, body, "composite");
