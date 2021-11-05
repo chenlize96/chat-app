@@ -2,9 +2,11 @@ package edu.rice.comp504.model;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import edu.rice.comp504.model.chatroom.ChatRoom;
 import edu.rice.comp504.model.message.Message;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import static j2html.TagCreator.p;
@@ -23,7 +25,9 @@ public class MsgToClientSender {
         if (message.getType().equals("null")) {
             return;
         }
+        ChatRoom chatRoom = RoomDB.make().getRooms().get(room);
         UserDB.getSessions().forEach(session -> {
+            String curUser = UserDB.getUserBySession(session);
             try {
                 JsonObject jo = new JsonObject();
                 // TODO: use .addProperty(key, value) add a JSON object property that has a key "userMessage"
@@ -38,6 +42,8 @@ public class MsgToClientSender {
             }
         });
     }
+
+
 
 
 
