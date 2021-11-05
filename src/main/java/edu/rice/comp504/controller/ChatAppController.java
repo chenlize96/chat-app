@@ -72,7 +72,12 @@ public class ChatAppController {
          ****************************************************************************************
          * the below is the endpoint for main.html
          */
-
+        post("/userInfo", (request, response) -> {
+            String username = request.queryMap().value("username");
+            User user = UserDB.getUsers().get(username);
+            System.out.println(gson.toJson(user));
+            return gson.toJson(user);
+        });
         post("/join/getRooms", (request, response) -> {
             String username = request.queryMap().value("username");
             User user = UserDB.getUsers().get(username);
