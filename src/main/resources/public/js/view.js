@@ -79,6 +79,14 @@ window.onload = function () {
     }
 };
 
+/**
+ * Handle the Responses
+ */
+function responseHandler(message) {
+    const data = JSON.parse(message.data);
+    console.log(data);
+}
+
 function sendM() {
     webSocket.send(JSON.stringify(requests.getSendMsgRequest(
         $("#user_name").val(),
@@ -310,6 +318,8 @@ function ping() {
     webSocket.send("ping");
 }
 
+
+
 /**
  * Set up websocket.
  */
@@ -325,14 +335,14 @@ async function setUpWebSocket() {
     /*webSocket.onopen = () => {
         //pingId = setInterval(, 29000);
     }*/
-    //webSocket.onmessage = (msg) => responseHandler(msg);
+    webSocket.onmessage = (msg) => responseHandler(msg);
     webSocket.onclose = () => {
         setTimeout(setUpWebSocket, 2000);
     }
     webSocket.onerror = () => {
         setTimeout(setUpWebSocket, 2000);
     }
-    webSocket.send(JSON.stringify(requests.getSendLoginRequest(
+    webSocket.send(JSON.stringify(requests.getLoginRequest(
         $("#user_name").val(),
     )));
 }
