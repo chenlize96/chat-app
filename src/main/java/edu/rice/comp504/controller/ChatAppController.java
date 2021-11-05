@@ -81,6 +81,10 @@ public class ChatAppController {
             System.out.println(gson.toJson(user));
             return gson.toJson(user);
         });
+        post("/roomInfo", (request, response) -> {
+            String roomName = request.queryMap().value("roomName");
+            return gson.toJson(RoomDB.make().getRooms().get(roomName));
+        });
         post("/join/getRooms", (request, response) -> {
             String username = request.queryMap().value("username");
             User user = UserDB.getUsers().get(username);
