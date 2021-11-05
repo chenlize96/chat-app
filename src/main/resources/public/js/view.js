@@ -420,7 +420,7 @@ function onKeyPress() {
 function validateCreateRoomName() {
     var a = document.getElementById("new_room_name");
     var a2 = document.getElementById("new_room_nameAlert");
-    if (a.value === "") {
+    if (a.value.trim() === "") {
         a2.innerText = "   !";
         return false;
     }
@@ -436,10 +436,10 @@ function validateCreateRoomName() {
 function validateCreateInterest() {
     var a = document.getElementById("interest");
     var a2 = document.getElementById("interestAlert");
-    if (a.value === "") {
+    if (a.value.trim() === "") {
         a2.innerText = "No interest is OK";
     }
-    else if(a.validity.patternMismatch && a.value !== "") {
+    else if(a.validity.patternMismatch && a.value.trim() !== "") {
         a2.innerText = "Interest should be a word";
     }
     else {
@@ -457,7 +457,7 @@ function validateCreatePassword() {
     //console.log(typeof $("#isPublic").is(':checked')); //--boolean
     if($("#isPublic").is(':checked') === false) {
         console.log("a.value" + a.value);
-        if(a.value === "") {
+        if(a.value.trim() === "") {
             a2.innerText = "!";
             return false;
         }
@@ -482,13 +482,13 @@ function checkCreateRoom() {
 }
 
 function checkCreateRoomComplete() {
-    if($("#new_room_name").val() === "") {
+    if($("#new_room_name").val().trim() === "") {
         return false;
     } else {
         if($("#isPublic").is(':checked') === true) {
             return true;
         } else {
-            if($("#password").val() === "") {
+            if($("#password").val().trim() === "") {
                 return false;
             } else {
                 return true;
