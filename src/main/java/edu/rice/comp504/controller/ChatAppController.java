@@ -214,8 +214,8 @@ public class ChatAppController {
             String sender = request.queryMap().value("username");
             String room = request.queryMap().value("roomName");
             String body = request.queryMap().value("message");
-            boolean createStatus = webSocketAdapter.createMessage(sender, room, body);
-            return gson.toJson(createStatus);
+            Message messageObj = webSocketAdapter.createMessage(sender, room, body);
+            return gson.toJson(messageObj);
         });
 
         get("/updateMessage", (request, response) -> {
