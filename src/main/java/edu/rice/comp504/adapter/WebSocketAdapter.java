@@ -9,6 +9,7 @@ import edu.rice.comp504.model.chatroom.ChatRoom;
 import edu.rice.comp504.model.chatroom.GroupChat;
 import edu.rice.comp504.model.chatroom.UserChat;
 import edu.rice.comp504.model.message.Message;
+import edu.rice.comp504.model.message.NullMessage;
 import edu.rice.comp504.model.user.NullUser;
 import edu.rice.comp504.model.user.RegisteredUser;
 import edu.rice.comp504.model.user.User;
@@ -64,7 +65,6 @@ public class WebSocketAdapter {
         //MsgToClientSender.broadcastMessage(UserDB.getUser(session), message);
 
         switch (jo.get("action").getAsString()) {
-
             case "login":
                 mapSessionUser(session, jo.get("username").getAsString());
                 break;
@@ -73,8 +73,16 @@ public class WebSocketAdapter {
                 String sender = jo.get("username").getAsString();
                 String room = jo.get("roomName").getAsString();
                 String body = jo.get("message").getAsString();
+
+                System.out.println(sender+" "+room+" "+body);
+
                 Message messageObj = createMessage(sender, room, body);
-                MsgToClientSender.broadcastMessage(UserDB.getUser(session), room,  messageObj);
+                // check if muted or the input parameters are incorrect
+                if(messageObj instanceof NullMessage) {
+                    break;
+                } else { // broadcast to every one in the room
+                    MsgToClientSender.broadcastMessage(UserDB.getUser(session), room,  messageObj);
+                }
                 break;
 
             case "updatemessage":
@@ -234,7 +242,7 @@ public class WebSocketAdapter {
      * @param sender sender's username
      * @param room room's name
      * @param body message body text
-     * @return true if message was created successfully, false otherwise
+     * @return a message
      */
     public Message createMessage(String sender, String room, String body) {
         //MUTE : check if the sender is muted in the given room
@@ -243,7 +251,9 @@ public class WebSocketAdapter {
         if(chatRoom.getType().equals("groupchat")) { //check mute
             List<String> mutedUsers = ((GroupChat)chatRoom).getMuteList();
             if(mutedUsers.contains(sender)) {
-                return MessageDB.make().addMessage(sender, room, body, "null");
+                return NullMessage.make();
+               // return MessageDB.make().addMessage(sender, room, body, "null");
+
             }
         }
         return MessageDB.make().addMessage(sender, room, body, "composite");

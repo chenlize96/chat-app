@@ -40,12 +40,12 @@ public class MessageDB {
     }
 
     /**
-     * Add message to the database and return add status.
+     * Add message to the database and return the message.
      * @param sender Sender's username
      * @param room Room name
      * @param body Message body string
      * @param type Message type
-     * @return true if add successfully, otherwise false
+     * @return a message
      */
     public Message addMessage(String sender, String room, String body, String type) {
         Message newMessage = NullMessage.make();
@@ -77,7 +77,7 @@ public class MessageDB {
         } else {
             return newMessage;
         }
-
+        return newMessage;
     }
 
 
