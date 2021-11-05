@@ -54,9 +54,10 @@ public class MsgToClientSender {
     private static void sendJsonObject(String room, Message message, String sender, Session session) {
         try {
             JsonObject jo = new JsonObject();
-            jo.addProperty("username", p(sender).render());
+            jo.addProperty("username", sender);
             jo.addProperty("message", new Gson().toJsonTree(message).toString());
-            jo.addProperty("room", p(room).render());
+            jo.addProperty("room", room);
+            jo.addProperty("action", "send");
             session.getRemote().sendString(String.valueOf(jo));
         } catch (Exception e) {
             e.printStackTrace();
