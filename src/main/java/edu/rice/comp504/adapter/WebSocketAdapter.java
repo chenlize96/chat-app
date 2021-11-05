@@ -65,6 +65,9 @@ public class WebSocketAdapter {
         //MsgToClientSender.broadcastMessage(UserDB.getUser(session), message);
 
         switch (jo.get("action").getAsString()) {
+            case "login":
+                mapSessionUser(session, jo.get("username").getAsString());
+                break;
 
             case "send":
                 String sender = jo.get("username").getAsString();
@@ -82,8 +85,36 @@ public class WebSocketAdapter {
                 }
                 break;
 
-            case "login":
-                mapSessionUser(session, jo.get("username").getAsString());
+            case "updatemessage":
+                // TODO: update message function here, broadcast message list, History is also here
+                String updateroom = jo.get("roomName").getAsString();
+                break;
+
+            case "invite":
+                String inviteTarget = jo.get("userGetInvite").getAsString();
+                String inviteSource = jo.get("userSendInvite").getAsString();
+                // TODO: invite function here, need notification
+                break;
+
+            case "mute":
+                String userMuted = jo.get("userMute").getAsString();
+                // TODO: mute function here, need notification??
+                break;
+
+            case "kick":
+                String userKicked = jo.get("userKick").getAsString();
+                // TODO: kick function here, need notification
+                break;
+
+            case "block":
+                String userBlocked = jo.get("userBlock").getAsString();
+                // TODO: block function here, need notification
+                break;
+
+            case "leave":
+                String roomleft = jo.get("roomName").getAsString();
+                String userLeft = jo.get("username").getAsString();
+                // TODO: leave function here, need notification or message?
                 break;
 
             default:
@@ -221,6 +252,8 @@ public class WebSocketAdapter {
             List<String> mutedUsers = ((GroupChat)chatRoom).getMuteList();
             if(mutedUsers.contains(sender)) {
                 return NullMessage.make();
+               // return MessageDB.make().addMessage(sender, room, body, "null");
+
             }
         }
         return MessageDB.make().addMessage(sender, room, body, "composite");

@@ -102,6 +102,10 @@ public class UserDB {
         return sessionUserMap.keySet();
     }
 
+    public static String getUserBySession(Session session) {
+        return sessionUserMap.get(session);
+    }
+
 
     public static String getUserBySession(Session session) {
         return sessionUserMap.getOrDefault(session,"null");
