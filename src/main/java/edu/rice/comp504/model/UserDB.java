@@ -18,6 +18,9 @@ public class UserDB {
     //      and their relationship to their chatroom.
     private static final Map<String, User> users = new ConcurrentHashMap<>(){{
         put("admin", new RegisteredUser("admin", "123", "Rice University", 20, "swim, music"));
+        put("aaa", new RegisteredUser("aaa", "123", "Nanjing University", 21, "swim"));
+        put("bbb", new RegisteredUser("bbb", "123", "Yale University", 22, "swim, football"));
+        put("ccc", new RegisteredUser("ccc", "123", "MIT", 23, "swim, music, aaaaaaaaaaaaaaaaaaaaaa"));
     }};
 
     /**
