@@ -102,4 +102,29 @@ public class MsgToClientSender {
             e.printStackTrace();
         }
     }
+
+    public static void broadcastMuteMessage(String userMute, String userMuted, String roomName) {
+        try {
+            ChatRoom chatRoom = RoomDB.make().getRooms().get(roomName);
+            List<String> userList = ((GroupChat)chatRoom).getUserList();
+            UserDB.getSessions().forEach(session -> {
+                String currUser = UserDB.getUserBySession(session);
+                if(!userList.contains(currUser)) {
+                    return;
+                }
+                JsonObject jo = new JsonObject();
+                jo.addProperty("userMute", userMute);
+                jo.addProperty("userMuted", userMuted);
+                jo.addProperty("roomName", roomName);
+                jo.addProperty("action", "mute");
+                try {
+                    session.getRemote().sendString(String.valueOf(jo));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

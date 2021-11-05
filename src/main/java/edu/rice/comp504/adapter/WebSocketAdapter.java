@@ -112,6 +112,8 @@ public class WebSocketAdapter {
                 String roomName = jo.get("roomName").getAsString();
                 ChatRoom chatRoom = RoomDB.getONLY().getRooms().get(roomName);
                 ((GroupChat)chatRoom).addToMuteList(userMuted);
+                //broadcast
+                MsgToClientSender.broadcastMuteMessage(userMute,userMuted,roomName);
                 //send a notification to the person who got muted
                 User mutedUser = UserDB.getUsers().get(userMuted);
                 mutedUser.addNotification(new NotificationFac().make("mute",userMute,userMuted,roomName));
@@ -119,7 +121,7 @@ public class WebSocketAdapter {
 
             case "kick":
                 String userKicked = jo.get("userKick").getAsString();
-                // TODO: kick function here, need notification
+
                 break;
 
             case "block":
