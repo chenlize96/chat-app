@@ -7,7 +7,10 @@ import edu.rice.comp504.model.chatroom.ChatRoom;
 import edu.rice.comp504.model.chatroom.GroupChat;
 import edu.rice.comp504.model.chatroom.UserChat;
 import edu.rice.comp504.model.message.Message;
+import edu.rice.comp504.model.notification.InviteNotification;
 import edu.rice.comp504.model.notification.Notification;
+import edu.rice.comp504.model.notification.SimpleNotification;
+import edu.rice.comp504.model.user.User;
 import org.eclipse.jetty.websocket.api.Session;
 
 import java.io.IOException;
@@ -56,6 +59,79 @@ public class MsgToClientSender {
             });
         }
     }
+
+    public static void sendInviteList(String roomName, List<User> list, String userName){
+        JsonObject jo = new JsonObject();
+        jo.addProperty("message", new Gson().toJsonTree(list).toString());
+        jo.addProperty("room", roomName);
+        jo.addProperty("username", userName);
+        jo.addProperty("action", "invite/getUsers");
+        UserDB.getSessions().forEach(session -> {
+            String currUser = UserDB.getUserBySession(session);
+            if(currUser.equals(userName)){
+                try {
+                    session.getRemote().sendString(String.valueOf(jo));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public static void sendInviteNotification(String roomName, InviteNotification invite, String userName){
+        JsonObject jo = new JsonObject();
+        jo.addProperty("message", new Gson().toJsonTree(invite).toString());
+        jo.addProperty("room", roomName);
+        jo.addProperty("username", userName);
+        jo.addProperty("action", "invite");
+        UserDB.getSessions().forEach(session -> {
+            String currUser = UserDB.getUserBySession(session);
+            if(currUser.equals(userName)){
+                try {
+                    session.getRemote().sendString(String.valueOf(jo));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public static void sendSimpleNotification(SimpleNotification notification, String userName){
+        JsonObject jo = new JsonObject();
+        jo.addProperty("message", new Gson().toJsonTree(notification).toString());
+        jo.addProperty("username", userName);
+        jo.addProperty("action", "simpleNotification");
+        UserDB.getSessions().forEach(session -> {
+            String currUser = UserDB.getUserBySession(session);
+            if(currUser.equals(userName)){
+                try {
+                    session.getRemote().sendString(String.valueOf(jo));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public static void setLeaveResult(String roomName, boolean res, String userName){
+        JsonObject jo = new JsonObject();
+        jo.addProperty("message", new Gson().toJsonTree(res).toString());
+        jo.addProperty("room", roomName);
+        jo.addProperty("username", userName);
+        jo.addProperty("action", "leave");
+        UserDB.getSessions().forEach(session -> {
+            String currUser = UserDB.getUserBySession(session);
+            if(currUser.equals(userName)){
+                try {
+                    session.getRemote().sendString(String.valueOf(jo));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+
 
     private static void sendJsonObject(String room, Message message, String sender, Session session) {
         try {

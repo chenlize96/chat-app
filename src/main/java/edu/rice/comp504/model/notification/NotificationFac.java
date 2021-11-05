@@ -29,6 +29,10 @@ public class NotificationFac implements INotificationFac{
                 return RejectNotification.make(sender, receiver, info);
             case "accept":
                 return AcceptNotification.make(sender, receiver, info);
+            case "simple":
+                return SimpleNotification.make(sender,receiver,info);
+            case "invite":
+                return InviteNotification.make(sender, receiver, info);
             case "mute":
                 return MuteNotification.make(sender, receiver, info);
             default:

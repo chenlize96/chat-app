@@ -231,8 +231,9 @@ public abstract class User implements PropertyChangeListener {
      * Remove a chat room by its room id.
      * @return A ChatRoom object
      */
-    public ChatRoom removeAChatRoom(int roomId) {
+    public ChatRoom removeAChatRoom(ChatRoom room) {
         //TODO: Remove a specific chat room for this user
+        this.roomList.remove(room);
         return null;
     }
 

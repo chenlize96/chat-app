@@ -11,8 +11,11 @@ import edu.rice.comp504.model.chatroom.GroupChat;
 import edu.rice.comp504.model.chatroom.UserChat;
 import edu.rice.comp504.model.message.Message;
 import edu.rice.comp504.model.message.NullMessage;
+import edu.rice.comp504.model.message.TextMessage;
+import edu.rice.comp504.model.notification.InviteNotification;
 import edu.rice.comp504.model.notification.Notification;
 import edu.rice.comp504.model.notification.NotificationFac;
+import edu.rice.comp504.model.notification.SimpleNotification;
 import edu.rice.comp504.model.user.NullUser;
 import edu.rice.comp504.model.user.RegisteredUser;
 import edu.rice.comp504.model.user.User;
@@ -107,19 +110,26 @@ public class WebSocketAdapter {
                 String inviteTarget = jo.get("userGetInvite").getAsString();
                 String inviteSource = jo.get("userSendInvite").getAsString();
                 // TODO: invite function here, need notification
+                String roomName = jo.get("roomName").getAsString();
+                RegisteredUser temp = ((RegisteredUser) UserDB.getUsers().get(inviteTarget));
+                NotificationFac fac = new NotificationFac();
+                InviteNotification invite = (InviteNotification) fac.make("invite", inviteSource, inviteTarget,
+                        inviteSource + "invite you to join" + roomName);
+                temp.addNotification(invite);
+                MsgToClientSender.sendInviteNotification(roomName,invite,inviteTarget);
                 break;
 
             case "mute":
                 String userMute = jo.get("userMute").getAsString();
                 String userMuted = jo.get("userMuted").getAsString();
-                String roomName = jo.get("roomName").getAsString();
-                ChatRoom chatRoom = RoomDB.getONLY().getRooms().get(roomName);
+                String roomName2 = jo.get("roomName").getAsString();
+                ChatRoom chatRoom = RoomDB.getONLY().getRooms().get(roomName2);
                 ((GroupChat)chatRoom).addToMuteList(userMuted);
                 //broadcast
-                MsgToClientSender.broadcastMuteMessage(userMute,userMuted,roomName);
+                MsgToClientSender.broadcastMuteMessage(userMute,userMuted,roomName2);
                 //send a notification to the person who got muted
                 User mutedUser = UserDB.getUsers().get(userMuted);
-                mutedUser.addNotification(new NotificationFac().make("mute",userMute,userMuted,roomName));
+                mutedUser.addNotification(new NotificationFac().make("mute",userMute,userMuted,roomName2));
                 break;
 
             case "kick":
@@ -141,10 +151,101 @@ public class WebSocketAdapter {
                 // TODO: block function here, need notification
                 break;
 
+            case "getInviteUsers":
+                String roomNameCurr = jo.get("roomName").getAsString();
+                String userNameCurr = jo.get("userSendInvite").getAsString();
+                GroupChat roomCurr2 = ((GroupChat) RoomDB.make().getRooms().get(roomNameCurr));
+                List<User> res = new ArrayList<>();
+                List<User> userAll = ((List<User>)(UserDB.getUsers().values()));
+                List<String> userListName = roomCurr2.getUserList();
+                Set<String> roomUserSet = new HashSet<>();
+                for (String x : userListName) {
+                    roomUserSet.add(x);
+                }
+                for (int i = 0 ; i < userAll.size() ; i++)
+                {
+                    if (roomUserSet.contains(userAll.get(i).getUsername())) {
+                        continue;
+                    }
+                    res.add(userAll.get(i));
+                }
+                MsgToClientSender.sendInviteList(roomNameCurr,res,userNameCurr);
+                break;
+
+//            case "acceptInvite":
+//                String inviteTarget3 = jo.get("userGetInvite3").getAsString();
+//                String inviteSource3 = jo.get("userSendInvite3").getAsString();
+//                String roomName3 = jo.get("roomName3").getAsString();
+//                RegisteredUser temp3 = ((RegisteredUser) UserDB.getUsers().get(inviteTarget3));
+//                NotificationFac fac3 = new NotificationFac();
+//                temp.addNotification(fac.make("invite", inviteSource3, inviteTarget3, inviteSource3 + "invite you to join" + roomName3));
+//                break;
+//
+//            case "rejectInvite":
+//                String inviteTarget2 = jo.get("userGetInvite2").getAsString();
+//                String inviteSource2 = jo.get("userSendInvite2").getAsString();
+//                String roomName2 = jo.get("roomName2").getAsString();
+//                RegisteredUser temp2 = ((RegisteredUser) UserDB.getUsers().get(inviteTarget2));
+//                NotificationFac fac2 = new NotificationFac();
+//                temp2.getNotificationsList().(fac2.make("invite", inviteSource2, inviteTarget2, inviteSource2 + "invite you to join" + roomName2));
+//                break;
             case "leave":
                 String roomLeft = jo.get("roomName").getAsString();
                 String userLeft = jo.get("username").getAsString();
                 // TODO: leave function here, need notification or message?
+                RegisteredUser userLeftCurr = ((RegisteredUser) UserDB.getUsers().get(userLeft));
+                ChatRoom roomLeftCurr = RoomDB.make().getRooms().get(roomLeft);
+                if (roomLeftCurr.getType().equals("groupchat")) {
+                    //groupchat+admin+size != 1 ===cannot leave
+                    if (((GroupChat)roomLeftCurr).getOwner().equals(userLeft) && ((GroupChat)roomLeftCurr).getCurNumUser() != 1) {
+                        MsgToClientSender.setLeaveResult(roomLeft, false, userLeft);
+                    }
+                    else {
+                        //leave meesage before left to all users in the group
+                        MsgToClientSender.broadcastMessage(roomLeftCurr.getRoomName(), roomLeft, TextMessage.make("",
+                                ((GroupChat)roomLeftCurr).getOwner() , userLeft+" leave the room by himself", "", "", 12));
+                        userLeftCurr.removeAChatRoom(roomLeftCurr);
+                        if (((GroupChat)roomLeftCurr).getOwner().equals(userLeft)) {
+                            RoomDB.make().getRooms().remove(roomLeft);
+                        }
+                        else {
+                            int currUserNum = ((GroupChat)roomLeftCurr).getCurNumUser() - 1;
+                            ((GroupChat) roomLeftCurr).setCurNumUser(currUserNum);
+                            ((GroupChat) roomLeftCurr).getUserList().remove(userLeft);
+                            ((GroupChat) roomLeftCurr).getMuteList().remove(userLeft);
+                            Map<String,List<String>> map = ((GroupChat) roomLeftCurr).getBlockMap();
+                            if(map.containsKey(userLeft)) map.remove(userLeft);
+                            for (Map.Entry<String, List<String>> entry : map.entrySet()){
+                                List<String> list = entry.getValue();
+                                list.remove(userLeft);
+                            }
+                        }
+                        MsgToClientSender.setLeaveResult(roomLeft, true, userLeft);
+                    }
+                }
+                else if(roomLeftCurr.getType().equals("userchat")){
+                    User user1 = UserDB.getUsers().get(((UserChat)roomLeftCurr).getUser1());
+                    User user2 = UserDB.getUsers().get(((UserChat)roomLeftCurr).getUser2());
+
+                    user1.getRoomList().remove(roomLeft);
+                    user2.getRoomList().remove(roomLeft);
+
+                    RoomDB.make().getRooms().remove(roomLeft);
+                    NotificationFac fac2 = new NotificationFac();
+
+                    SimpleNotification simple = (SimpleNotification) fac2.make("simple", userLeft, user1.getUsername(),
+                            userLeft + " leave room " + roomLeft);
+                    SimpleNotification simple2 = (SimpleNotification) fac2.make("simple", userLeft, user2.getUsername(),
+                            userLeft + " leave room " + roomLeft);
+
+                    user1.addNotification(simple);
+                    user2.addNotification(simple2);
+
+                    MsgToClientSender.setLeaveResult(roomLeft, true, userLeft);
+
+                    MsgToClientSender.sendSimpleNotification(simple, user1.getUsername());
+                    MsgToClientSender.sendSimpleNotification(simple2, user2.getUsername());
+                }
                 break;
 
             default:
@@ -265,7 +366,7 @@ public class WebSocketAdapter {
         for (String x : users)
             userSet.add(x);
 //        List <String> res = new ArrayList<>();
-        res.add("Owner: " + owner);
+        res.add("Owner: " + owner + "(Admin)");
         userSet.remove(owner);
         for (String x : admin) {
             res.add("Admin: " + x);
