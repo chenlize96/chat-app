@@ -145,8 +145,37 @@ public class WebSocketAdapter {
                 break;
 
             case "block":
-                String userBlocked = jo.get("userBlock").getAsString();
-                // TODO: block function here, need notification
+                String userBlock = jo.get("userBlock").getAsString();
+                String userBlocked = jo.get("userBlocked").getAsString();
+                roomName = jo.get("roomName").getAsString();
+                GroupChat blockRoom = (GroupChat)RoomDB.make().getRooms().get(roomName);
+                blockRoom.addToBlockList(userBlock,userBlocked);
+                MsgToClientSender.setBlockResult(roomName,true,userBlock);
+
+                break;
+
+            case "getBlockUsers":
+                String userCurrent = jo.get("userName").getAsString();
+                String roomCurrent = jo.get("roomName").getAsString();
+                user = UserDB.getUsers().get(userCurrent);
+                GroupChat roomNow = ((GroupChat) RoomDB.make().getRooms().get(roomCurrent));
+                List<String> userList2 = roomNow.getUserList();
+                userList2.remove(userCurrent);
+                List<String> userBlockedByCurr = roomNow.getBlockMap().get(user);
+                List<String> difference = new ArrayList<>();
+                boolean flag = false;
+                for (String x : userList2) {
+                    for (String j : userBlockedByCurr) {
+                        if (x.equals(j)) {
+                            flag = true;
+                        }
+                    }
+                    if (!flag) {
+                        difference.add(x);
+                    }
+                    flag = false;
+                }
+                MsgToClientSender.sendBlockList(roomCurrent,difference,userCurrent);
                 break;
 
             case "getInviteUsers":
@@ -154,7 +183,10 @@ public class WebSocketAdapter {
                 String userNameCurr = jo.get("userSendInvite").getAsString();
                 GroupChat roomCurr2 = ((GroupChat) RoomDB.make().getRooms().get(roomNameCurr));
                 List<User> res = new ArrayList<>();
-                List<User> userAll = ((List<User>)(UserDB.getUsers().values()));
+                List<User> userAll = new ArrayList<>();
+                for (Map.Entry<String, User> x : (UserDB.getUsers()).entrySet()) {
+                    userAll.add(x.getValue());
+                }
                 List<String> userListName = roomCurr2.getUserList();
                 Set<String> roomUserSet = new HashSet<>();
                 for (String x : userListName) {

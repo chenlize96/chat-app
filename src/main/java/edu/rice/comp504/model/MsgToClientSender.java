@@ -78,6 +78,24 @@ public class MsgToClientSender {
         });
     }
 
+    public static void sendBlockList(String roomName, List<String> list, String userName){
+        JsonObject jo = new JsonObject();
+        jo.addProperty("message", new Gson().toJsonTree(list).toString());
+        jo.addProperty("room", roomName);
+        jo.addProperty("username", userName);
+        jo.addProperty("action", "getBlockUsers");
+        UserDB.getSessions().forEach(session -> {
+            String currUser = UserDB.getUserBySession(session);
+            if(currUser.equals(userName)){
+                try {
+                    session.getRemote().sendString(String.valueOf(jo));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
     public static void sendInviteNotification(String roomName, InviteNotification invite, String userName){
         JsonObject jo = new JsonObject();
         jo.addProperty("message", new Gson().toJsonTree(invite).toString());
@@ -119,6 +137,24 @@ public class MsgToClientSender {
         jo.addProperty("room", roomName);
         jo.addProperty("username", userName);
         jo.addProperty("action", "leave");
+        UserDB.getSessions().forEach(session -> {
+            String currUser = UserDB.getUserBySession(session);
+            if(currUser.equals(userName)){
+                try {
+                    session.getRemote().sendString(String.valueOf(jo));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public static void setBlockResult(String roomName, boolean res, String userName){
+        JsonObject jo = new JsonObject();
+        jo.addProperty("message", new Gson().toJsonTree(res).toString());
+        jo.addProperty("room", roomName);
+        jo.addProperty("username", userName);
+        jo.addProperty("action", "block");
         UserDB.getSessions().forEach(session -> {
             String currUser = UserDB.getUserBySession(session);
             if(currUser.equals(userName)){

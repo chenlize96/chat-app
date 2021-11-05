@@ -223,13 +223,27 @@ public class GroupChat extends ChatRoom{
         }
     }
 
+//    /**
+//     * Add block users to blocklist.
+//     * @param blockUsers The block users as a string input like "aaa, bbb, ..."
+//     */
+//    public void addToBlockList(String blockUsers) {
+//        try {
+//            this.adminList.addAll(Arrays.asList(blockUsers.split(",")));
+//        } catch (StringIndexOutOfBoundsException sioobe) {
+//            System.out.println("IndexOutOfBoundsException, addToBlockList failed!");
+//        } catch (NullPointerException npe) {
+//            System.out.println("NullPointerException, addToBlockList failed!");
+//        }
+//    }
+
     /**
      * Add block users to blocklist.
-     * @param blockUsers The block users as a string input like "aaa, bbb, ..."
+     * @param blockUser The block users as a string input like "aaa, bbb, ..."
      */
-    public void addToBlockList(String blockUsers) {
+    public void addToBlockList(String blockUser,String blockedUser) {
         try {
-            this.adminList.addAll(Arrays.asList(blockUsers.split(",")));
+            this.blockMap.get(blockUser).add(blockedUser);
         } catch (StringIndexOutOfBoundsException sioobe) {
             System.out.println("IndexOutOfBoundsException, addToBlockList failed!");
         } catch (NullPointerException npe) {
