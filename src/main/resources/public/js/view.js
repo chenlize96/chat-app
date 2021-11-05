@@ -228,7 +228,8 @@ function responseHandler(message) {
             });
             break;
         case 'leave':
-            if (data === true){
+            console.log(data.message);
+            if (data.message === "true"){
                 updateRoomList();
                 $("#leaveInfo").text("Leave Success");
             }
