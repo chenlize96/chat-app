@@ -38,7 +38,7 @@ public class MsgToClientSender {
                 if(!userList.contains(currUser)) {
                     return;
                 }
-                sendJsonObject(room, message, session);
+                sendJsonObject(room, message, sender, session);
             });
         } else { // userchat
             UserDB.getSessions().forEach(session -> {
@@ -46,14 +46,15 @@ public class MsgToClientSender {
                 if(!currUser.equals(((UserChat)chatRoom).getUser1()) && !currUser.equals(((UserChat)chatRoom).getUser2())) {
                     return;
                 }
-                sendJsonObject(room, message, session);
+                sendJsonObject(room, message, sender, session);
             });
         }
     }
 
-    private static void sendJsonObject(String room, Message message, Session session) {
+    private static void sendJsonObject(String room, Message message, String sender, Session session) {
         try {
             JsonObject jo = new JsonObject();
+            jo.addProperty("username", p(sender).render());
             jo.addProperty("message", new Gson().toJsonTree(message).toString());
             jo.addProperty("room", p(room).render());
             session.getRemote().sendString(String.valueOf(jo));
