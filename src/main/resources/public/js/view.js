@@ -16,6 +16,7 @@ const emojiLib = [
     "😍", "🥰", "😘", "😗", "😙", "😚", "😋", "😛", "😝", "😜", "🤪", "🤨", "🧐", "🤓", "😎",
 ];
 
+
 /**
  * Entry point into chat room
  */
@@ -40,6 +41,9 @@ window.onload = function () {
     });
     $("#btn-join").click(getAllRooms);
     $("#btn-chat").click(getAllUsers);
+    $("#btn-invite").click(getInviteUsers);
+    $("#inviteReq").click(inviteIntoRoom);
+    $("#btn-mute").click(mute);
     $("#notificationInfo").click(getNotification);
     $(".invite_ac").click(acceptInvite);
     $(".invite_rj").click(rejectInvite);
@@ -50,19 +54,22 @@ window.onload = function () {
         $.post('/roomInfo', {roomName: $("#roomName").text().replace(/[\r\n]/g,"").replace(/[ ]/g,"")}, function (data){
             console.log(data);
             data = JSON.parse(data);
-            $("#curRoomNum").text(data.curNumUser);
+
             $("#limitRoomNum").text(data.userLimit);
             if(data.type === "userchat") {
-                $("#btn-kick").removeAttr("disabled");
+                $("#curRoomNum").text(2);
+                /*$("#btn-kick").removeAttr("disabled");
                 $("#btn-mute").removeAttr("disabled");
-                $("#btn-block").removeAttr("disabled");
+                $("#btn-block").removeAttr("disabled");*/
             }
             else{
                 console.log(data.owner, $("#user_name").val());
+                $("#curRoomNum").text(data.curNumUser);
                 if(data.owner === $("#user_name").val()) {
                     $("#btn-kick").removeAttr("disabled");
                     $("#btn-mute").removeAttr("disabled");
                     $("#btn-block").removeAttr("disabled");
+                    $("#btn-invite").removeAttr("disabled");
                 }
             }
         })
@@ -78,6 +85,54 @@ window.onload = function () {
         addOption($("#select-emoji"), emojiLib[i], emojiLib[i], "emoji-" + emojiLib[i]);
     }
 };
+
+/**
+ * mute button
+ */
+function mute(){
+
+}
+/**
+ * invite button get users
+ */
+function inviteIntoRoom(){
+    if($("#curRoomNum").text() !== $("#limitRoomNum").text()) {
+        /*$.post("/invite", {sender: $("#user_name").val(), receiver: $("#inviteTo").text(), roomName:$("#roomName").text().replace(/[\r\n]/g,"").replace(/[ ]/g,"")}, function (){
+            $("#inviteModal").hide();
+        })*/
+        webSocket.send(JSON.stringify(requests.getInviteRequest(
+            $("#user_name").val(),
+            $("#roomName").text().replace(/[\r\n]/g,"").replace(/[ ]/g,""),
+            $("#inviteTo").text()
+        )));
+    }
+}
+function getInviteUsers(){
+    $("#roomNameInInvite").text($("#roomName").text().replace(/[\r\n]/g,"").replace(/[ ]/g,""));
+    webSocket.send(JSON.stringify(requests.getInviteUsersRequest(
+        $("#user_name").val(),
+        $("#roomName").text().replace(/[\r\n]/g,"").replace(/[ ]/g,"")
+    )));
+    /*$.post("/invite/getUsers", {roomName: $("#roomName").text().replace(/[\r\n]/g,"").replace(/[ ]/g,"")}, function (data){
+        console.log(data);// list of room info about name, type, limit, num
+        //data = UserList;
+
+        let inviteTable = $("#inviteTable");
+        inviteTable.empty();
+        let html = "";
+        for(let i = 0; i < data.length; i++){
+            html += "<tr><th scope=\"row\"><input type=\"radio\" name=\"invite\"></th><td>" +
+                data[i].username + "</td></tr>";
+        }
+        inviteTable.append(html);
+        $("input:radio[name='invite']").change(function (){
+            let opt = $("input:radio[name='invite']:checked").parent("th").next("td").text();
+            $("#inviteTo").text(opt);
+            $("#inviteReq").removeAttr("disabled");
+        });
+    })*/
+}
+
 
 /**
  * Handle the Responses
@@ -102,9 +157,11 @@ function hideRoomInfo(){
     $("#btn-block").attr("disabled", "true");
     $("#btn-kick").attr("disabled", "true");
     $("#btn-mute").attr("disabled", "true");
+    $("#btn-invite").attr("disabled", "true");
 }
 
 function showRoomInfo(){
+    $("#welcome").hide();
     $("#roomInfo").show();
     $("#inputArea").removeAttr("disabled");
 }
