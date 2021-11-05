@@ -40,6 +40,10 @@ public class MsgToClientSender {
                 if(!userList.contains(currUser)) {
                     return;
                 }
+                //check block list
+                List<String> blockList = ((GroupChat) chatRoom).getBlockMap().getOrDefault(room, new ArrayList<>());
+                if(blockList.contains(sender)) return;
+                //send
                 sendJsonObject(room, message, sender, session);
             });
         } else { // userchat
