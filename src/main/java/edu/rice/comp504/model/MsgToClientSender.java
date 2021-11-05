@@ -127,4 +127,16 @@ public class MsgToClientSender {
             e.printStackTrace();
         }
     }
+
+    public static void updateMessages(Session session, String updateRoom, List<Message> messageList) {
+        JsonObject returnJO = new JsonObject();
+        returnJO.addProperty("roomName", updateRoom);
+        returnJO.addProperty("messages", new Gson().toJsonTree(messageList).toString());
+        returnJO.addProperty("action", "updateMessage");
+        try {
+            session.getRemote().sendString(String.valueOf(returnJO));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

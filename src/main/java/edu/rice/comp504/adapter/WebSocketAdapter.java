@@ -1,5 +1,6 @@
 package edu.rice.comp504.adapter;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonParser;
 import edu.rice.comp504.model.MessageDB;
 import edu.rice.comp504.model.MsgToClientSender;
@@ -90,6 +91,8 @@ public class WebSocketAdapter {
             case "updateMessage":
                 // TODO: update message function here, broadcast message list, History is also here
                 String updateRoom = jo.get("roomName").getAsString();
+                List<Message> messageList = MessageDB.make().getMessageMap().get(updateRoom);
+                MsgToClientSender.updateMessages(session,updateRoom,messageList);
                 break;
 
             case "notification":
