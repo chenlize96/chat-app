@@ -85,6 +85,20 @@ window.onload = function () {
 function responseHandler(message) {
     const data = JSON.parse(message.data);
     console.log(data);
+    const msgType = data.action;
+    console.info("data received " + msgType);
+    switch (msgType) {
+        case 'send':
+            console.log(data.username);
+            console.log(data.room);
+            let message = JSON.parse(data.message);
+            console.log("childMsg: " , message);
+            console.log(message.childrenMessage[0]);
+            console.log(message.childrenMessage[0].body);
+            break;
+        default:
+            console.info("Missing type: " + msgType);
+    }
 }
 
 function sendM() {
