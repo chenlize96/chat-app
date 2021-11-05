@@ -1,5 +1,5 @@
 'use strict';
-
+import {requests} from './requests.js';
 let intervalID = -1;//id of current interval
 const webSocket = new WebSocket("ws://" + location.hostname + ":" + location.port + "/chatapp");
 const UserList = ["Owner", "Admin1", "Admin2", "Member1", "Member2"];
@@ -13,6 +13,7 @@ const notiList = [{sender: "qwe", receiver: "asd", roomName: "zxc"}];
  * Entry point into chat room
  */
 window.onload = function () {
+
     setUsername();
     loadRoomUser();
     clearInterval(intervalID);
@@ -21,6 +22,7 @@ window.onload = function () {
     $("#search_btn").click(doSearch);
     member_btn.focus(doSomething);
     $("#join_room").click(joinRooms);
+    $("#inputArea").keydown(onKeyPress);
     $("#chatStart").click(createUserChat);
     member_btn.blur(function (){
         console.log($(this).text());
@@ -39,6 +41,17 @@ window.onload = function () {
     //$('#createModal').on('show.bs.modal', clearCreateForm);
 
 };
+
+function sendM() {
+    webSocket.send(JSON.stringify(requests.getSendMsgRequest(
+        $("#user_name").val(),
+        document.getElementById("title").innerText,
+        $("#inputArea").val()
+    )));
+}
+
+
+
 /**
 * click inner chat button to begin chat
 * */
@@ -225,7 +238,7 @@ function setUsername() {
         console.log("set the username successfully");
         $("#user_name").text(localStorage.getItem("username"));
         $("#user_name").val(localStorage.getItem("username"));
-        $.post("/userInfo", {username: $("#user_name").val()},function (data) {
+        /*$.post("/userInfo", {username: $("#user_name").val()},function (data) {
             console.log(data);
             $("#age").text(data.age);
             $("#school").text(data.school);
@@ -235,7 +248,7 @@ function setUsername() {
                 else newText += data.interests[i] + ", ";
             }
             $("#interests").text(newText);
-        });
+        });*/
     } else {
         console.log("do not reset the username");
     }
@@ -303,7 +316,8 @@ function doLogOut() {
  * Send a message to the server.
  */
 function sendMessage() {
-    $.post("/sendMessage", {
+    sendM();
+    /*$.post("/sendMessage", {
         username: $("#user_name").val(),
         roomName:document.getElementById("title").innerText,
         message:$("#inputArea").val()
@@ -314,19 +328,20 @@ function sendMessage() {
         } else {
             console.log("will not be sent");
         }
-        /*
+        /!*
         if (msg !== "") {
             webSocket.send(msg);
             $("#message").val("");
         }
-        */
-    }, "json");
+        *!/
+    }, "json");*/
 }
 
 /**
  * Press Enter button, then send the message.
  */
-function onKeyPress(event) {
+function onKeyPress() {
+    let event = window.event;
     event = event || window.event;
     if (event.which === 13) {
         event.preventDefault();

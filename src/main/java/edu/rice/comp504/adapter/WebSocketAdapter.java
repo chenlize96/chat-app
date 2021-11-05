@@ -1,5 +1,6 @@
 package edu.rice.comp504.adapter;
 
+import com.google.gson.JsonParser;
 import edu.rice.comp504.model.MessageDB;
 import edu.rice.comp504.model.MsgToClientSender;
 import edu.rice.comp504.model.RoomDB;
@@ -15,6 +16,7 @@ import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
+import com.google.gson.JsonObject;
 
 import java.util.*;
 
@@ -53,6 +55,10 @@ public class WebSocketAdapter {
      */
     @OnWebSocketMessage
     public void onMessage(Session session, String message) {
+        System.out.println(message);
+        JsonParser parser = new JsonParser();
+        JsonObject jo = (JsonObject) parser.parse(message);
+        System.out.println(jo.get("username").getAsString());
         MsgToClientSender.broadcastMessage(UserDB.getUser(session), message);
     }
 
