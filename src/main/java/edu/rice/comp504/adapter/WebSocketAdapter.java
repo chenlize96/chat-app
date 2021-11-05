@@ -189,6 +189,7 @@ public class WebSocketAdapter {
         List<String> admin = ((GroupChat)RoomDB.make().getRooms().get(roomname)).getAdminList();
         for (String x : users)
             userSet.add(x);
+//        List <String> res = new ArrayList<>();
         res.add("Owner: " + owner);
         userSet.remove(owner);
         for (String x : admin) {
