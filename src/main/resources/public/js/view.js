@@ -23,6 +23,7 @@ window.onload = function () {
 
     setUsername();
     //loadRoomUser();
+    hideRoomInfo();
     updateRoomList();
     clearInterval(intervalID);
     intervalID = setInterval(updateRoomList, 3000);
@@ -44,7 +45,20 @@ window.onload = function () {
     $(".invite_rj").click(rejectInvite);
     $("#btn-logout").click(doLogOut);
     $(".rooms").on('click', 'button', function (){
+        showRoomInfo();
         $("#roomName").text($(this).text());
+        $.post('/roomInfo', {roomName: $("#roomName").text().replace(/[\r\n]/g,"").replace(/[ ]/g,"")}, function (data){
+            console.log(data);
+            data = JSON.parse(data);
+            $("#curRoomNum").text(data.curNumUser);
+            $("#limitRoomNum").text(data.userLimit);
+            console.log(data.owner, $("#user_name").val());
+            if(data.owner === $("#user_name").val()) {
+                $("#btn-kick").removeAttr("disabled");
+                $("#btn-mute").removeAttr("disabled");
+                $("#btn-block").removeAttr("disabled");
+            }
+        })
         console.log($("#roomName").text().replace(/[\r\n]/g,"").replace(/[ ]/g,""));
         loadRoomUser();
     });
@@ -66,7 +80,18 @@ function sendM() {
     )));
 }
 
+function hideRoomInfo(){
+    $("#roomInfo").hide();
+    $("#inputArea").attr("disabled", "true");
+    $("#btn-block").attr("disabled", "true");
+    $("#btn-kick").attr("disabled", "true");
+    $("#btn-mute").attr("disabled", "true");
+}
 
+function showRoomInfo(){
+    $("#roomInfo").show();
+    $("#inputArea").removeAttr("disabled");
+}
 
 /**
  * A function to add options to a list.
