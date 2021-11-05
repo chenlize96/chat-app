@@ -225,8 +225,8 @@ public class WebSocketAdapter {
                     User user1 = UserDB.getUsers().get(((UserChat)roomLeftCurr).getUser1());
                     User user2 = UserDB.getUsers().get(((UserChat)roomLeftCurr).getUser2());
 
-                    user1.getRoomList().remove(roomLeft);
-                    user2.getRoomList().remove(roomLeft);
+                    user1.getRoomList().remove(roomLeftCurr);
+                    user2.getRoomList().remove(roomLeftCurr);
 
                     RoomDB.make().getRooms().remove(roomLeft);
                     NotificationFac fac2 = new NotificationFac();
