@@ -7,6 +7,7 @@ import java.beans.PropertyChangeListener;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -233,6 +234,16 @@ public abstract class User implements PropertyChangeListener {
     public ChatRoom removeAChatRoom(int roomId) {
         //TODO: Remove a specific chat room for this user
         return null;
+    }
+
+    public void removeAChatRoom(String roomName) {
+        Iterator<ChatRoom> iterator = this.getRoomList().iterator();
+        while (iterator.hasNext()) {
+            ChatRoom room = iterator.next();
+            if(room.getRoomName().equals(roomName)) {
+                iterator.remove();
+            }
+        }
     }
 
     /**
