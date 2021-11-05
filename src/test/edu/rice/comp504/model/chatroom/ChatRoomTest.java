@@ -9,13 +9,7 @@ import static org.junit.Assert.*;
 public class ChatRoomTest {
     ChatRoom test = new GroupChat(5, 1, "test", "test2", "test3",
    false, "111");
-//    @Test
-//    public void testAddBallToStore() {
-//        int num = ballWorldStoreTest.pcs.getPropertyChangeListeners().length;
-//        ballWorldStoreTest.loadBall("circle","");
-//        assertEquals(num + 1, ballWorldStoreTest.pcs.getPropertyChangeListeners().length);
-//
-//    }
+
     @Test
     public void getRoomId() {
         int testNum = test.getRoomId();
@@ -30,17 +24,23 @@ public class ChatRoomTest {
 
     @Test
     public void setUserLimit() {
+        test.setUserLimit(10);
+        assertEquals(test.getUserLimit(), 10);
     }
 
     @Test
     public void getRoomName() {
+        assertEquals(test.getRoomName(), "test");
     }
 
     @Test
     public void setRoomName() {
+        test.setRoomName("a");
+        assertEquals(test.getRoomName(), "a");
     }
 
     @Test
     public void getType() {
+        assertEquals(test.getType(), "groupchat");
     }
 }
