@@ -1,5 +1,8 @@
 package edu.rice.comp504.model.notification;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 /**
  * An abstract class to represent all notifications with invariant attributes across all types of notifications.
  */
@@ -11,6 +14,7 @@ public abstract class Notification implements INotificationFac{
     private boolean readStatus;
     private String type;
     private boolean hasButton;
+    private String timestamp;
 
     /**
      * A constructor for notification.
@@ -25,6 +29,10 @@ public abstract class Notification implements INotificationFac{
         this.readStatus = false;
         this.type = type;
         this.hasButton = hasButton;
+        //
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        this.timestamp = dtf.format(now);
     }
 
     /**
@@ -96,5 +104,13 @@ public abstract class Notification implements INotificationFac{
 
     public void setSender(String sender) {
         this.sender = sender;
+    }
+
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
     }
 }

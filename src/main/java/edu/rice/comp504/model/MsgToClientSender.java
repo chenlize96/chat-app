@@ -7,8 +7,10 @@ import edu.rice.comp504.model.chatroom.ChatRoom;
 import edu.rice.comp504.model.chatroom.GroupChat;
 import edu.rice.comp504.model.chatroom.UserChat;
 import edu.rice.comp504.model.message.Message;
+import edu.rice.comp504.model.notification.Notification;
 import org.eclipse.jetty.websocket.api.Session;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +40,10 @@ public class MsgToClientSender {
                 if(!userList.contains(currUser)) {
                     return;
                 }
+                //check block list
+                List<String> blockList = ((GroupChat) chatRoom).getBlockMap().getOrDefault(room, new ArrayList<>());
+                if(blockList.contains(sender)) return;
+                //send
                 sendJsonObject(room, message, sender, session);
             });
         } else { // userchat
@@ -79,4 +85,87 @@ public class MsgToClientSender {
         });*/
     }
 
+    public static void sendNotificationList(String username, List<Notification> notificationList) {
+        try {
+            UserDB.getSessions().forEach(session -> {
+                String currUser = UserDB.getUserBySession(session);
+                if(!currUser.equals(username)) {
+                    return;
+                }
+                JsonObject jo = new JsonObject();
+                jo.addProperty("username",username);
+                jo.addProperty("notificationList",new Gson().toJsonTree(notificationList).toString());
+                jo.addProperty("action","notification");
+                try {
+                    session.getRemote().sendString(String.valueOf(jo));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void broadcastMuteMessage(String userMute, String userMuted, String roomName) {
+        try {
+            ChatRoom chatRoom = RoomDB.make().getRooms().get(roomName);
+            List<String> userList = ((GroupChat)chatRoom).getUserList();
+            UserDB.getSessions().forEach(session -> {
+                String currUser = UserDB.getUserBySession(session);
+                if(!userList.contains(currUser)) {
+                    return;
+                }
+                JsonObject jo = new JsonObject();
+                jo.addProperty("userMute", userMute);
+                jo.addProperty("userMuted", userMuted);
+                jo.addProperty("roomName", roomName);
+                jo.addProperty("action", "mute");
+                try {
+                    session.getRemote().sendString(String.valueOf(jo));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void updateMessages(Session session, String updateRoom, List<Message> messageList) {
+        JsonObject returnJO = new JsonObject();
+        returnJO.addProperty("roomName", updateRoom);
+        returnJO.addProperty("messages", new Gson().toJsonTree(messageList).toString());
+        returnJO.addProperty("action", "updateMessage");
+        try {
+            session.getRemote().sendString(String.valueOf(returnJO));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void broadcastKickMessage(String userKick, String userKicked, String kickRoomName) {
+        try {
+            ChatRoom chatRoom = RoomDB.make().getRooms().get(kickRoomName);
+            List<String> userList = ((GroupChat)chatRoom).getUserList();
+            UserDB.getSessions().forEach(session -> {
+                String currUser = UserDB.getUserBySession(session);
+                if(!userList.contains(currUser)) {
+                    return;
+                }
+                JsonObject jo = new JsonObject();
+                jo.addProperty("userKick", userKick);
+                jo.addProperty("userKicked", userKicked);
+                jo.addProperty("roomName", kickRoomName);
+                jo.addProperty("action", "kick");
+                try {
+                    session.getRemote().sendString(String.valueOf(jo));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -1,5 +1,6 @@
 package edu.rice.comp504.adapter;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonParser;
 import edu.rice.comp504.model.MessageDB;
 import edu.rice.comp504.model.MsgToClientSender;
@@ -10,6 +11,8 @@ import edu.rice.comp504.model.chatroom.GroupChat;
 import edu.rice.comp504.model.chatroom.UserChat;
 import edu.rice.comp504.model.message.Message;
 import edu.rice.comp504.model.message.NullMessage;
+import edu.rice.comp504.model.notification.Notification;
+import edu.rice.comp504.model.notification.NotificationFac;
 import edu.rice.comp504.model.user.NullUser;
 import edu.rice.comp504.model.user.RegisteredUser;
 import edu.rice.comp504.model.user.User;
@@ -88,6 +91,16 @@ public class WebSocketAdapter {
             case "updateMessage":
                 // TODO: update message function here, broadcast message list, History is also here
                 String updateRoom = jo.get("roomName").getAsString();
+                List<Message> messageList = MessageDB.make().getMessageMap().get(updateRoom);
+                MsgToClientSender.updateMessages(session,updateRoom,messageList);
+                break;
+
+            case "notification":
+                // TODO: update the notifications of a given user
+                String username = jo.get("username").getAsString();
+                User user = UserDB.getUsers().get(username);
+                List<Notification> notificationList = user.getNotificationsList();
+                MsgToClientSender.sendNotificationList(username,notificationList);
                 break;
 
             case "invite":
@@ -97,13 +110,30 @@ public class WebSocketAdapter {
                 break;
 
             case "mute":
-                String userMuted = jo.get("userMute").getAsString();
-                // TODO: mute function here, need notification??
+                String userMute = jo.get("userMute").getAsString();
+                String userMuted = jo.get("userMuted").getAsString();
+                String roomName = jo.get("roomName").getAsString();
+                ChatRoom chatRoom = RoomDB.getONLY().getRooms().get(roomName);
+                ((GroupChat)chatRoom).addToMuteList(userMuted);
+                //broadcast
+                MsgToClientSender.broadcastMuteMessage(userMute,userMuted,roomName);
+                //send a notification to the person who got muted
+                User mutedUser = UserDB.getUsers().get(userMuted);
+                mutedUser.addNotification(new NotificationFac().make("mute",userMute,userMuted,roomName));
                 break;
 
             case "kick":
-                String userKicked = jo.get("userKick").getAsString();
-                // TODO: kick function here, need notification
+                String userKick = jo.get("userKick").getAsString();
+                String userKicked = jo.get("userKicked").getAsString();
+                String kickRoomName = jo.get("roomName").getAsString();
+                ChatRoom kickChatRoom = RoomDB.getONLY().getRooms().get(kickRoomName);
+                User kickedUser = UserDB.getUsers().get(userKicked);
+                // kick the user from the room, decrease the number of members, remove the room from user's room list
+                ((GroupChat)kickChatRoom).kickUser(userKicked);
+                //broadcast
+                MsgToClientSender.broadcastKickMessage(userKick,userKicked,kickRoomName);
+                //send a notification to the person who got kicked
+                kickedUser.addNotification(new NotificationFac().make("kick",userKick,userKicked,kickRoomName));
                 break;
 
             case "block":
