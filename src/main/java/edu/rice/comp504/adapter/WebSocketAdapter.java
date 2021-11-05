@@ -120,30 +120,28 @@ public class WebSocketAdapter {
                 break;
 
             case "mute":
-                String userMute = jo.get("userMute").getAsString();
-                String userMuted = jo.get("userMuted").getAsString();
+                String userMuted = jo.get("userMute").getAsString();
                 String roomName2 = jo.get("roomName").getAsString();
                 ChatRoom chatRoom = RoomDB.getONLY().getRooms().get(roomName2);
                 ((GroupChat)chatRoom).addToMuteList(userMuted);
                 //broadcast
-                MsgToClientSender.broadcastMuteMessage(userMute,userMuted,roomName2);
+                MsgToClientSender.broadcastMuteMessage(userMuted,roomName2);
                 //send a notification to the person who got muted
                 User mutedUser = UserDB.getUsers().get(userMuted);
-                mutedUser.addNotification(new NotificationFac().make("mute",userMute,userMuted,roomName2));
+                mutedUser.addNotification(new NotificationFac().make("mute","",userMuted,roomName2));
                 break;
 
             case "kick":
-                String userKick = jo.get("userKick").getAsString();
-                String userKicked = jo.get("userKicked").getAsString();
+                String userKicked = jo.get("userKick").getAsString();
                 String kickRoomName = jo.get("roomName").getAsString();
                 ChatRoom kickChatRoom = RoomDB.getONLY().getRooms().get(kickRoomName);
                 User kickedUser = UserDB.getUsers().get(userKicked);
                 // kick the user from the room, decrease the number of members, remove the room from user's room list
                 ((GroupChat)kickChatRoom).kickUser(userKicked);
                 //broadcast
-                MsgToClientSender.broadcastKickMessage(userKick,userKicked,kickRoomName);
+                MsgToClientSender.broadcastKickMessage(userKicked,kickRoomName);
                 //send a notification to the person who got kicked
-                kickedUser.addNotification(new NotificationFac().make("kick",userKick,userKicked,kickRoomName));
+                kickedUser.addNotification(new NotificationFac().make("kick", "",userKicked,kickRoomName));
                 break;
 
             case "block":

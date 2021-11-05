@@ -183,7 +183,7 @@ public class MsgToClientSender {
         }
     }
 
-    public static void broadcastMuteMessage(String userMute, String userMuted, String roomName) {
+    public static void broadcastMuteMessage(String userMuted, String roomName) {
         try {
             ChatRoom chatRoom = RoomDB.make().getRooms().get(roomName);
             List<String> userList = ((GroupChat)chatRoom).getUserList();
@@ -193,7 +193,6 @@ public class MsgToClientSender {
                     return;
                 }
                 JsonObject jo = new JsonObject();
-                jo.addProperty("userMute", userMute);
                 jo.addProperty("userMuted", userMuted);
                 jo.addProperty("roomName", roomName);
                 jo.addProperty("action", "mute");
@@ -220,7 +219,7 @@ public class MsgToClientSender {
         }
     }
 
-    public static void broadcastKickMessage(String userKick, String userKicked, String kickRoomName) {
+    public static void broadcastKickMessage(String userKicked, String kickRoomName) {
         try {
             ChatRoom chatRoom = RoomDB.make().getRooms().get(kickRoomName);
             List<String> userList = ((GroupChat)chatRoom).getUserList();
@@ -230,7 +229,6 @@ public class MsgToClientSender {
                     return;
                 }
                 JsonObject jo = new JsonObject();
-                jo.addProperty("userKick", userKick);
                 jo.addProperty("userKicked", userKicked);
                 jo.addProperty("roomName", kickRoomName);
                 jo.addProperty("action", "kick");
