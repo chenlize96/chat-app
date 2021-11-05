@@ -173,7 +173,10 @@ public class WebSocketAdapter {
                 String userNameCurr = jo.get("userSendInvite").getAsString();
                 GroupChat roomCurr2 = ((GroupChat) RoomDB.make().getRooms().get(roomNameCurr));
                 List<User> res = new ArrayList<>();
-                List<User> userAll = ((List<User>)(UserDB.getUsers().values()));
+                List<User> userAll = new ArrayList<>();
+                for (Map.Entry<String, User> x : (UserDB.getUsers()).entrySet()) {
+                    userAll.add(x.getValue());
+                }
                 List<String> userListName = roomCurr2.getUserList();
                 Set<String> roomUserSet = new HashSet<>();
                 for (String x : userListName) {

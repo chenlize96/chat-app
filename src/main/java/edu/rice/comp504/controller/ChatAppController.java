@@ -188,6 +188,7 @@ public class ChatAppController {
             // TODO: return the room list of the current user, which should be ArrayList<Room>
             String userName = request.queryMap().value("username");
             List<ChatRoom> roomList = webSocketAdapter.getUserRoomList(userName);
+
             return gson.toJson(roomList);
         });
 

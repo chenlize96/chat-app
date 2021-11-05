@@ -106,6 +106,14 @@ function leaveRoom() {
  */
 function mute(){
     console.log(lastSelectedMem);
+    console.log(lastSelectedMem.indexOf($("#user_name").val()));
+    if(lastSelectedMem !== "" && lastSelectedMem.indexOf($("#user_name").val()) === -1){
+        console.log(1);
+        webSocket.send(JSON.stringify(requests.getMuteRequest(
+            $("#roomName").text().replace(/[\r\n]/g,"").replace(/[ ]/g,""),
+            lastSelectedMem
+        )));
+    }
 }
 /**
  * invite button get users
@@ -213,12 +221,15 @@ function responseHandler(message) {
             $("#inviteModal").hide();
             break;
         case 'getInviteUsers':
+            console.log(data);
+            let msg = JSON.parse(data.message);
             let inviteTable = $("#inviteTable");
             inviteTable.empty();
             let html = "";
-            for(let i = 0; i < data.length; i++){
+            for(let i = 0; i < msg.length; i++){
+                console.log(msg[i]);
                 html += "<tr><th scope=\"row\"><input type=\"radio\" name=\"invite\"></th><td>" +
-                    data[i].username + "</td></tr>";
+                    msg[i].username + "</td></tr>";
             }
             inviteTable.append(html);
             $("input:radio[name='invite']").change(function (){
@@ -228,7 +239,7 @@ function responseHandler(message) {
             });
             break;
         case 'leave':
-            console.log(data.message);
+            console.log("leave", data);
             if (data.message === "true"){
                 updateRoomList();
                 $("#leaveInfo").text("Leave Success");
@@ -236,7 +247,10 @@ function responseHandler(message) {
             else {
                 $("#leaveInfo").text("Leave Fail");
             }
+            //console.log("leave")
             updateRoomList();
+            break;
+        case 'mute':
             break;
         default:
             console.info("Missing type: " + msgType);
