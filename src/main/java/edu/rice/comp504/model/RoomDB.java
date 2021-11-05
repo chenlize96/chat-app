@@ -17,7 +17,7 @@ public class RoomDB {
     private RoomDB() {
     }
 
-    public RoomDB getONLY() {
+    public static RoomDB getONLY() {
         return ONLY;
     }
 

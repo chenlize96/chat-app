@@ -1,8 +1,7 @@
 package edu.rice.comp504.model.chatroom;
 
 import java.beans.PropertyChangeEvent;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 
 /**
  * A concrete class to represent multiple users chat room.
@@ -19,7 +18,7 @@ public class GroupChat extends ChatRoom{
     private String roomPassword;
     private String interest;
     private ArrayList<String> rules;
-    private ArrayList<String> blockList;
+    private Map<String, List<String>> blockMap;
     private ArrayList<String> muteList;
 
 
@@ -45,7 +44,7 @@ public class GroupChat extends ChatRoom{
         this.adminList = new ArrayList<>();
         this.userList = new ArrayList<>();
         this.rules = new ArrayList<>();
-        this.blockList = new ArrayList<>();
+        this.blockMap = new HashMap<>();
         this.muteList = new ArrayList<>();
         // Add elements to list attributes
         this.addToUserList(ownerUsername);
@@ -60,11 +59,11 @@ public class GroupChat extends ChatRoom{
     }
 
     /**
-     * Get block list of this room.
-     * @return The block list
+     * Get block map of this room.
+     * @return The block map
      */
-    public ArrayList<String> getBlockList() {
-        return blockList;
+    public Map<String, List<String>> getBlockMap() {
+        return blockMap;
     }
 
     /**

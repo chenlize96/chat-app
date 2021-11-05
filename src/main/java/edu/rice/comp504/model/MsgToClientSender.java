@@ -21,6 +21,7 @@ public class MsgToClientSender {
                 // TODO: use .addProperty(key, value) add a JSON object property that has a key "userMessage"
                 //  and a j2html paragraph value
                 jo.addProperty("userMessage", p(sender + " says: " + message).render());
+
                 session.getRemote().sendString(String.valueOf(jo));
             } catch (Exception e) {
                 e.printStackTrace();

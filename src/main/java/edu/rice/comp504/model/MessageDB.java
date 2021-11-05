@@ -30,6 +30,15 @@ public class MessageDB {
         return ONLY;
     }
 
+
+    /**
+     * Getter for MessageMap
+     * @return map <roomname,List<Message>>
+     */
+    public Map<String, ArrayList<Message>> getMessageMap() {
+        return messageMap;
+    }
+
     /**
      * Add message to the database and return add status.
      * @param sender Sender's username

@@ -2,10 +2,12 @@ package edu.rice.comp504.controller;
 
 import com.google.gson.Gson;
 import edu.rice.comp504.adapter.WebSocketAdapter;
+import edu.rice.comp504.model.MessageDB;
 import edu.rice.comp504.model.RoomDB;
 import edu.rice.comp504.model.UserDB;
 import edu.rice.comp504.model.chatroom.ChatRoom;
 import edu.rice.comp504.model.chatroom.GroupChat;
+import edu.rice.comp504.model.message.Message;
 import edu.rice.comp504.model.notification.Notification;
 import edu.rice.comp504.model.notification.NotificationFac;
 import edu.rice.comp504.model.user.NullUser;
@@ -15,6 +17,7 @@ import spark.Session;
 import javax.servlet.http.HttpSession;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import static spark.Spark.*;
@@ -208,9 +211,38 @@ public class ChatAppController {
                     " roomName = " + request.queryMap().value("roomName") +
                     " message = " + request.queryMap().value("message")
             );
-            return gson.toJson(true);
+            String sender = request.queryMap().value("username");
+            String room = request.queryMap().value("roomName");
+            String body = request.queryMap().value("message");
+            boolean createStatus = webSocketAdapter.createMessage(sender, room, body);
+            return gson.toJson(createStatus);
         });
 
+        get("/updateMessage", (request, response) -> {
+            String userName = request.queryMap().value("username");
+            String roomName = request.queryMap().value("roomName");
+            List<Message> messages = MessageDB.make().getMessageMap().get(roomName);
+            // check if group chat, then filter those messages whose owners got blocked by the current user
+            ChatRoom room = RoomDB.getONLY().getRooms().get(roomName);
+            if(room.getType().equals("groupchat")) {
+                //filter
+                Iterator<Message> iterator = messages.iterator();
+                while (iterator.hasNext()) {
+                    Message message = iterator.next();
+                    if(((GroupChat)room).getBlockMap().containsKey(userName) && ((GroupChat)room).getBlockMap().get(userName).contains(message.getSendUser())) {
+                        iterator.remove();
+                    }
+                }
+            }
+            //return
+            return gson.toJson(messages);
+        });
+
+        get("/user/notification", (request, response) -> {
+            String username = request.queryMap().value("username");
+            User user = UserDB.getUsers().get(username);
+            return user.getNotificationsList();
+        });
     }
 
     /**
