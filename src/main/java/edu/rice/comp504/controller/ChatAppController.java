@@ -131,6 +131,7 @@ public class ChatAppController {
             String sender = request.queryMap().value("sender"); // owner of the room
             String receiver = request.queryMap().value("receiver"); // applicant
             String roomName = request.queryMap().value("roomName");
+            User sendUser = UserDB.getUsers().get(sender);
             User receiveUser = UserDB.getUsers().get(receiver);
             GroupChat joinRoom = (GroupChat) RoomDB.make().getRooms().get(roomName);
             //add into room
@@ -139,6 +140,16 @@ public class ChatAppController {
             //send notification
             Notification notification = new NotificationFac().make("accept",sender,receiver,roomName);
             receiveUser.addNotification(notification);
+            //need to remove the ApplyNotification from room owner's notificationDB
+            ArrayList<Notification> senderNotificationList = sendUser.getNotificationsList();
+            Iterator<Notification> iterator = senderNotificationList.iterator();
+            while(iterator.hasNext()) {
+                Notification n = iterator.next();
+                if(n.getReceiver().equals(sender) && n.getSender().equals(receiver) && n.getInfo().equals(roomName) && n.getType().equals("apply")) {
+                    iterator.remove();
+                }
+            }
+            sendUser.setNotificationList(senderNotificationList);
             return gson.toJson("successfully join the room");
         });
 
@@ -146,10 +157,21 @@ public class ChatAppController {
             String sender = request.queryMap().value("sender"); // owner of the room
             String receiver = request.queryMap().value("receiver"); // applicant
             String roomName = request.queryMap().value("roomName");
+            User sendUser = UserDB.getUsers().get(sender);
             User receiveUser = UserDB.getUsers().get(receiver);
             //send notification
             Notification notification = new NotificationFac().make("reject",sender,receiver,roomName);
             receiveUser.addNotification(notification);
+            //need to remove the ApplyNotification from room owner's notificationDB
+            ArrayList<Notification> senderNotificationList = sendUser.getNotificationsList();
+            Iterator<Notification> iterator = senderNotificationList.iterator();
+            while(iterator.hasNext()) {
+                Notification n = iterator.next();
+                if(n.getReceiver().equals(sender) && n.getSender().equals(receiver) && n.getInfo().equals(roomName) && n.getType().equals("apply")) {
+                    iterator.remove();
+                }
+            }
+            sendUser.setNotificationList(senderNotificationList);
             return gson.toJson("fail to join the room");
         });
 
