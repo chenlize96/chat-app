@@ -22,7 +22,8 @@ const emojiLib = [
 window.onload = function () {
 
     setUsername();
-    loadRoomUser();
+    //loadRoomUser();
+    updateRoomList();
     clearInterval(intervalID);
     intervalID = setInterval(updateRoomList, 3000);
     let member_btn = $(".member_btn");
@@ -42,6 +43,11 @@ window.onload = function () {
     $(".invite_ac").click(acceptInvite);
     $(".invite_rj").click(rejectInvite);
     $("#btn-logout").click(doLogOut);
+    $(".rooms").on('click', 'button', function (){
+        $("#roomName").text($(this).text());
+        console.log($("#roomName").text().replace(/[\r\n]/g,"").replace(/[ ]/g,""));
+        loadRoomUser();
+    });
     $(document).on("click", "#btn_createRoomSave", createGroupChat);
     $(document).on("click", "#btn_createRoomCancel", clearCreateForm);
 
@@ -108,7 +114,7 @@ function updateRoomList() {
         // update the room list from the data
         let html = "";
         for(let i = 0; i< data.length; i++){
-            html += "<span class=\"text\" id=\"btn-room1\" onclick=\"tempFunc()\">\n" +
+            html += "<span class=\"text\">\n" +
                 "                <button class=\"room_btn btn-outline-primary p-0 m-0 u_btn\">\n" +
                 data[i].roomName +
                 "                </button>\n" +
@@ -176,7 +182,7 @@ function getAllUsers(){
     $.post("/chat/getUsers", {username: $("#user_name").val()}, function (data) {
 
         console.log(data);// list of room info about name, type, limit, num
-        data = UserList;
+        //data = UserList;
         let userTable = $("#userTable");
         userTable.empty();
         $("#chatWith").text("");
@@ -221,12 +227,18 @@ function getAllRooms(){
 }
 
 function loadRoomUser() {
-    $(".members .member_btn").remove();
-    let html = '';
-    for(let i = 0; i < UserList.length; i++){
-        html += "<button class=\"member_btn btn-outline-primary\" id='" + UserList[i] +"'>" + UserList[i] + "</button>";
-    }
-    $(".members").append(html);
+    $.get("/room/members", {username: $("#user_name").val(), roomname: $("#roomName").text().replace(/[\r\n]/g,"").replace(/[ ]/g,"")}, function (data){
+        console.log(JSON.parse(data));
+        data = JSON.parse(data);
+        console.log(data[0])
+        $(".members .member_btn").remove();
+        let html = '';
+        for(let i = 0; i < data.length; i++){
+            html += "<button class=\"member_btn btn-outline-primary\" id='" + data[i] +"'>" + data[i] + "</button>";
+        }
+        $(".members").append(html);
+    })
+
 }
 
 function doSearch() {
@@ -344,6 +356,7 @@ function createGroupChat() {
             password: $("#password").val()
         }, function (data) {
             console.log(data);
+            updateRoomList();
             if (data === true) { // the size of the roomList increases
                 console.log(data);
                 console.log("create room success");
@@ -499,6 +512,7 @@ function checkCreateRoomComplete() {
 /**
  * Enter a chatRoom
  */
+/*
 function tempFunc() {
     document.getElementById("roomName").innerText = "Room 1"
 }
@@ -517,4 +531,4 @@ function tempFunc4() {
 
 function tempFunc5() {
     document.getElementById("roomName").innerText = "User 2"
-}
+}*/
