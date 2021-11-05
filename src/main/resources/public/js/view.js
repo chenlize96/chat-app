@@ -48,9 +48,16 @@ window.onload = function () {
     $(".invite_ac").click(acceptInvite);
     $(".invite_rj").click(rejectInvite);
     $("#btn-logout").click(doLogOut);
+    $('[data-toggle="popover"]').popover({
+        html: true,
+        sanitize: false,
+        content: '<button type="button" id="button-image" class="popover_btn btn-primary">recall</button>' +
+            '<button type="button" id="button-image" class="popover_btn btn-danger">delete</button>'
+    });
     $(".rooms").on('click', 'button', function (){
         showRoomInfo();
         $("#roomName").text($(this).text());
+        $("#roomName").val($(this).text().replace(/[\r\n]/g,"").replace(/[ ]/g,""));
         $.post('/roomInfo', {roomName: $("#roomName").text().replace(/[\r\n]/g,"").replace(/[ ]/g,"")}, function (data){
             console.log(data);
             data = JSON.parse(data);
@@ -141,6 +148,45 @@ function getInviteUsers(){
     })*/
 }
 
+/**
+ * Render messages
+ */
+function renderMsg(data, message) {
+    console.log($("#user_name").val());
+    if (!data/*data.msgType === 'JoinRoom' || data.msgType === 'LeaveRoom' ||
+        data.msgType === 'RecallMsg' || data.msgType === 'DeleteMsg'*/) {
+        //$("#messageList").append(`<option class="msg-sys-info" id=${data.msgId} value=${data.from}>${"System Info: " + data.msg} </option>`);
+        console.log("abc");
+    } else if (data.username === $("#user_name").val()) {
+        console.log("me");
+        let context = message.body;
+        let timestamp = message.timestamp;
+        let username = message.sendUser;
+        $("#chat-content").append("<li class=\"clearfix\">" +
+            "<div class=\"message-data text-right\">" +
+        "<span class=\"message-data-time\">" + username + ", " + timestamp + "</span>" +
+        "</div>" +
+        "<div class=\"message other-message float-right\">" + context +
+        "</div>"+
+        "</li>");
+    } else {
+        console.log("other");
+        let context = message.body;
+        let timestamp = message.timestamp;
+        let username = message.sendUser;
+        $("#chat-content").append("<li class=\"clearfix\">" +
+            "<div class=\"message-data\">" +
+            "<span class=\"message-data-time\">" + username + ", " + timestamp + "</span>" +
+            "</div>" +
+            "<div class=\"message my-message\">" +
+            "<button type = \"button\" style = \"outline: none\" class = \"text_btn outline-none\"" +
+        "data-container = \"body\" data-toggle = \"popover\" data-trigger = \"hover focus\"" +
+        "data-placement = \"top\" >" + context + "</button>" +
+            "</div>" +
+            "</li>");
+
+    }
+}
 
 /**
  * Handle the Responses
@@ -158,6 +204,10 @@ function responseHandler(message) {
             console.log("childMsg: " , message);
             console.log(message.childrenMessage[0]);
             console.log(message.childrenMessage[0].body);
+            console.log("room title = " + $("#roomName").val());
+            if (data.room === $("#roomName").val()) {
+                renderMsg(data, message.childrenMessage[0]);
+            }
             break;
         case 'invite':
             $("#inviteModal").hide();
