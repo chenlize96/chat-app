@@ -18,6 +18,88 @@ import java.util.concurrent.ConcurrentHashMap;
 import static org.junit.Assert.*;
 
 public class UserDBTest {
+    class TestSession implements org.eclipse.jetty.websocket.api.Session {
+
+        @Override
+        public void close() {
+
+        }
+
+        @Override
+        public void close(CloseStatus closeStatus) {
+
+        }
+
+        @Override
+        public void close(int i, String s) {
+
+        }
+
+        @Override
+        public void disconnect() throws IOException {
+
+        }
+
+        @Override
+        public long getIdleTimeout() {
+            return 0;
+        }
+
+        @Override
+        public InetSocketAddress getLocalAddress() {
+            return null;
+        }
+
+        @Override
+        public WebSocketPolicy getPolicy() {
+            return null;
+        }
+
+        @Override
+        public String getProtocolVersion() {
+            return null;
+        }
+
+        @Override
+        public RemoteEndpoint getRemote() {
+            return null;
+        }
+
+        @Override
+        public InetSocketAddress getRemoteAddress() {
+            return null;
+        }
+
+        @Override
+        public UpgradeRequest getUpgradeRequest() {
+            return null;
+        }
+
+        @Override
+        public UpgradeResponse getUpgradeResponse() {
+            return null;
+        }
+
+        @Override
+        public boolean isOpen() {
+            return false;
+        }
+
+        @Override
+        public boolean isSecure() {
+            return false;
+        }
+
+        @Override
+        public void setIdleTimeout(long l) {
+
+        }
+
+        @Override
+        public SuspendToken suspend() {
+            return null;
+        }
+    }
 
     @Test
     public void getUsers() {
@@ -50,88 +132,6 @@ public class UserDBTest {
 
     @Test
     public void addSessionUser() {
-        class TestSession implements org.eclipse.jetty.websocket.api.Session {
-
-            @Override
-            public void close() {
-
-            }
-
-            @Override
-            public void close(CloseStatus closeStatus) {
-
-            }
-
-            @Override
-            public void close(int i, String s) {
-
-            }
-
-            @Override
-            public void disconnect() throws IOException {
-
-            }
-
-            @Override
-            public long getIdleTimeout() {
-                return 0;
-            }
-
-            @Override
-            public InetSocketAddress getLocalAddress() {
-                return null;
-            }
-
-            @Override
-            public WebSocketPolicy getPolicy() {
-                return null;
-            }
-
-            @Override
-            public String getProtocolVersion() {
-                return null;
-            }
-
-            @Override
-            public RemoteEndpoint getRemote() {
-                return null;
-            }
-
-            @Override
-            public InetSocketAddress getRemoteAddress() {
-                return null;
-            }
-
-            @Override
-            public UpgradeRequest getUpgradeRequest() {
-                return null;
-            }
-
-            @Override
-            public UpgradeResponse getUpgradeResponse() {
-                return null;
-            }
-
-            @Override
-            public boolean isOpen() {
-                return false;
-            }
-
-            @Override
-            public boolean isSecure() {
-                return false;
-            }
-
-            @Override
-            public void setIdleTimeout(long l) {
-
-            }
-
-            @Override
-            public SuspendToken suspend() {
-                return null;
-            }
-        }
         TestSession test = new TestSession();
         UserDB.addSessionUser(test,"aaa");
         assertEquals(3,UserDB.getSessionUserMap().size());
@@ -139,176 +139,12 @@ public class UserDBTest {
 
     @Test
     public void getUser() {
-        class TestSession implements org.eclipse.jetty.websocket.api.Session {
-
-            @Override
-            public void close() {
-
-            }
-
-            @Override
-            public void close(CloseStatus closeStatus) {
-
-            }
-
-            @Override
-            public void close(int i, String s) {
-
-            }
-
-            @Override
-            public void disconnect() throws IOException {
-
-            }
-
-            @Override
-            public long getIdleTimeout() {
-                return 0;
-            }
-
-            @Override
-            public InetSocketAddress getLocalAddress() {
-                return null;
-            }
-
-            @Override
-            public WebSocketPolicy getPolicy() {
-                return null;
-            }
-
-            @Override
-            public String getProtocolVersion() {
-                return null;
-            }
-
-            @Override
-            public RemoteEndpoint getRemote() {
-                return null;
-            }
-
-            @Override
-            public InetSocketAddress getRemoteAddress() {
-                return null;
-            }
-
-            @Override
-            public UpgradeRequest getUpgradeRequest() {
-                return null;
-            }
-
-            @Override
-            public UpgradeResponse getUpgradeResponse() {
-                return null;
-            }
-
-            @Override
-            public boolean isOpen() {
-                return false;
-            }
-
-            @Override
-            public boolean isSecure() {
-                return false;
-            }
-
-            @Override
-            public void setIdleTimeout(long l) {
-
-            }
-
-            @Override
-            public SuspendToken suspend() {
-                return null;
-            }
-        }
         TestSession test = new TestSession();
         assertEquals(null,UserDB.getUser(test));
     }
 
     @Test
     public void removeUser() {
-        class TestSession implements org.eclipse.jetty.websocket.api.Session {
-
-            @Override
-            public void close() {
-
-            }
-
-            @Override
-            public void close(CloseStatus closeStatus) {
-
-            }
-
-            @Override
-            public void close(int i, String s) {
-
-            }
-
-            @Override
-            public void disconnect() throws IOException {
-
-            }
-
-            @Override
-            public long getIdleTimeout() {
-                return 0;
-            }
-
-            @Override
-            public InetSocketAddress getLocalAddress() {
-                return null;
-            }
-
-            @Override
-            public WebSocketPolicy getPolicy() {
-                return null;
-            }
-
-            @Override
-            public String getProtocolVersion() {
-                return null;
-            }
-
-            @Override
-            public RemoteEndpoint getRemote() {
-                return null;
-            }
-
-            @Override
-            public InetSocketAddress getRemoteAddress() {
-                return null;
-            }
-
-            @Override
-            public UpgradeRequest getUpgradeRequest() {
-                return null;
-            }
-
-            @Override
-            public UpgradeResponse getUpgradeResponse() {
-                return null;
-            }
-
-            @Override
-            public boolean isOpen() {
-                return false;
-            }
-
-            @Override
-            public boolean isSecure() {
-                return false;
-            }
-
-            @Override
-            public void setIdleTimeout(long l) {
-
-            }
-
-            @Override
-            public SuspendToken suspend() {
-                return null;
-            }
-        }
         TestSession test = new TestSession();
         UserDB.addUser("aaa","rice",11,"a","111");
         UserDB.addSessionUser(test,"aaa");
@@ -318,88 +154,6 @@ public class UserDBTest {
     @Test
     public void getSessions() {
         Set<Session> set = new HashSet<>();
-        class TestSession implements org.eclipse.jetty.websocket.api.Session {
-
-            @Override
-            public void close() {
-
-            }
-
-            @Override
-            public void close(CloseStatus closeStatus) {
-
-            }
-
-            @Override
-            public void close(int i, String s) {
-
-            }
-
-            @Override
-            public void disconnect() throws IOException {
-
-            }
-
-            @Override
-            public long getIdleTimeout() {
-                return 0;
-            }
-
-            @Override
-            public InetSocketAddress getLocalAddress() {
-                return null;
-            }
-
-            @Override
-            public WebSocketPolicy getPolicy() {
-                return null;
-            }
-
-            @Override
-            public String getProtocolVersion() {
-                return null;
-            }
-
-            @Override
-            public RemoteEndpoint getRemote() {
-                return null;
-            }
-
-            @Override
-            public InetSocketAddress getRemoteAddress() {
-                return null;
-            }
-
-            @Override
-            public UpgradeRequest getUpgradeRequest() {
-                return null;
-            }
-
-            @Override
-            public UpgradeResponse getUpgradeResponse() {
-                return null;
-            }
-
-            @Override
-            public boolean isOpen() {
-                return false;
-            }
-
-            @Override
-            public boolean isSecure() {
-                return false;
-            }
-
-            @Override
-            public void setIdleTimeout(long l) {
-
-            }
-
-            @Override
-            public SuspendToken suspend() {
-                return null;
-            }
-        }
         TestSession test = new TestSession();
         UserDB.addSessionUser(test,"aaa");
         set.add(test);
@@ -408,88 +162,6 @@ public class UserDBTest {
 
     @Test
     public void getUserBySession() {
-        class TestSession implements org.eclipse.jetty.websocket.api.Session {
-
-            @Override
-            public void close() {
-
-            }
-
-            @Override
-            public void close(CloseStatus closeStatus) {
-
-            }
-
-            @Override
-            public void close(int i, String s) {
-
-            }
-
-            @Override
-            public void disconnect() throws IOException {
-
-            }
-
-            @Override
-            public long getIdleTimeout() {
-                return 0;
-            }
-
-            @Override
-            public InetSocketAddress getLocalAddress() {
-                return null;
-            }
-
-            @Override
-            public WebSocketPolicy getPolicy() {
-                return null;
-            }
-
-            @Override
-            public String getProtocolVersion() {
-                return null;
-            }
-
-            @Override
-            public RemoteEndpoint getRemote() {
-                return null;
-            }
-
-            @Override
-            public InetSocketAddress getRemoteAddress() {
-                return null;
-            }
-
-            @Override
-            public UpgradeRequest getUpgradeRequest() {
-                return null;
-            }
-
-            @Override
-            public UpgradeResponse getUpgradeResponse() {
-                return null;
-            }
-
-            @Override
-            public boolean isOpen() {
-                return false;
-            }
-
-            @Override
-            public boolean isSecure() {
-                return false;
-            }
-
-            @Override
-            public void setIdleTimeout(long l) {
-
-            }
-
-            @Override
-            public SuspendToken suspend() {
-                return null;
-            }
-        }
         TestSession test = new TestSession();
         UserDB.addSessionUser(test,"aaa");
         assertEquals("aaa",UserDB.getUserBySession(test));
