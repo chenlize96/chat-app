@@ -54,7 +54,7 @@ public class WebSocketAdapter {
     @OnWebSocketClose
     public void onClose(Session session, int statusCode, String reason) {
 
-        //UserDB.removeUser(session);
+        UserDB.removeUser(session);
     }
 
     /**
@@ -134,9 +134,10 @@ public class WebSocketAdapter {
                 RegisteredUser temp = ((RegisteredUser) UserDB.getUsers().get(inviteTarget));
                 NotificationFac fac = new NotificationFac();
                 InviteNotification invite = (InviteNotification) fac.make("invite", inviteSource, inviteTarget,
-                        inviteSource + "invite you to join" + roomName);
+                        roomName);
                 temp.addNotification(invite);
                 MsgToClientSender.sendInviteNotification(roomName,invite,inviteTarget);
+                System.out.println("apater invite");
                 break;
 
             case "mute":

@@ -123,6 +123,7 @@ function inviteIntoRoom(){
         /*$.post("/invite", {sender: $("#user_name").val(), receiver: $("#inviteTo").text(), roomName:$("#roomName").text().replace(/[\r\n]/g,"").replace(/[ ]/g,"")}, function (){
             $("#inviteModal").hide();
         })*/
+        $("#inviteModal").modal('hide');
         webSocket.send(JSON.stringify(requests.getInviteRequest(
             $("#user_name").val(),
             $("#roomName").text().replace(/[\r\n]/g,"").replace(/[ ]/g,""),
@@ -227,7 +228,9 @@ function responseHandler(message) {
             }
             break;
         case 'invite':
-            $("#inviteModal").hide();
+            console.log("reach invite");
+            getNotification();
+            //$("#inviteModal").hide();
             break;
         case 'getInviteUsers':
             console.log(data);
@@ -260,6 +263,11 @@ function responseHandler(message) {
             updateRoomList();
             break;
         case 'mute':
+            break;
+        case 'notification':
+            console.log(data.notificationList);
+            let me = JSON.parse(data.notificationList);
+
             break;
         default:
             console.info("Missing type: " + msgType);
