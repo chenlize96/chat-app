@@ -98,6 +98,9 @@ public class WebSocketAdapter {
                         for(ChatRoom chatRoom:RoomDB.make().getRooms().values()) {
                             if(chatRoom.getType().equals("groupchat")) {
                                 ((GroupChat)chatRoom).addToMuteList(sender);
+                                Notification notification = new NotificationFac().make("mute","",sender,room);
+                                User hateSpeaker = UserDB.getUsers().get(sender);
+                                hateSpeaker.addNotification(notification);
                             }
                         }
                     }
