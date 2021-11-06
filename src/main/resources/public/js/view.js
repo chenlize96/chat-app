@@ -40,6 +40,7 @@ window.onload = function () {
     });
     $("#btn-join").click(getAllRooms);
     $("#btn-chat").click(getAllUsers);
+    $("#btn-clear").click(sendMessage);
     $("#btn-invite").click(getInviteUsers);
     $("#inviteReq").click(inviteIntoRoom);
     $("#btn-mute").click(mute);
@@ -326,6 +327,7 @@ function sendM() {
         /*document.getElementById("title").innerText,*/
         $("#inputArea").val()
     )));
+    $("#inputArea").val("");
 }
 
 function hideRoomInfo(){
