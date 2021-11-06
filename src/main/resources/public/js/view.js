@@ -252,6 +252,8 @@ function responseHandler(message) {
             break;
         case 'invite':
             console.log(2);
+            console.log("reach invite");
+            getNotification();
             //$("#inviteModal").hide();
             break;
         case 'getInviteUsers':
@@ -306,6 +308,11 @@ function responseHandler(message) {
             break;
         case 'kick':
             console.log("kick success");
+            break;
+        case 'notification':
+            console.log(data.notificationList);
+            let me = JSON.parse(data.notificationList);
+
             break;
         default:
             console.info("Missing type: " + msgType);
