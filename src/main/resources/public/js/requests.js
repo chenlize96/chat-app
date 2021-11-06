@@ -85,6 +85,11 @@ const getDeleteRequest = (msgId, roomName) => ({
     timeStamp: new Date().getTime(),
 });
 
+const getNotificationRequest = (username) => ({
+    username: username,
+    action: "notification"
+});
+
 const requests = {
     getSendMsgRequest,
     getLoginRequest,
@@ -97,7 +102,8 @@ const requests = {
     getLogoutRequest,
     getDeleteRequest,
     getRecallUpdateRequest,
-    getInviteUsersRequest
+    getInviteUsersRequest,
+    getNotificationRequest
 }
 
 export {requests};

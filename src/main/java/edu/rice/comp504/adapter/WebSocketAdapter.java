@@ -9,6 +9,7 @@ import edu.rice.comp504.model.UserDB;
 import edu.rice.comp504.model.chatroom.ChatRoom;
 import edu.rice.comp504.model.chatroom.GroupChat;
 import edu.rice.comp504.model.chatroom.UserChat;
+import edu.rice.comp504.model.message.CompositeMessage;
 import edu.rice.comp504.model.message.Message;
 import edu.rice.comp504.model.message.NullMessage;
 import edu.rice.comp504.model.message.TextMessage;
@@ -53,7 +54,7 @@ public class WebSocketAdapter {
     @OnWebSocketClose
     public void onClose(Session session, int statusCode, String reason) {
 
-        //UserDB.removeUser(session);
+        UserDB.removeUser(session);
     }
 
     /**
@@ -81,6 +82,25 @@ public class WebSocketAdapter {
                 String body = jo.get("message").getAsString();
 
                 System.out.println(sender+" "+room+" "+body);
+
+                // check hate speech
+                if (body.contains("FUCK") || body.contains("Fuck") || body.contains("fuck")) {
+                    Map<String,Integer> hateSpeechCount = UserDB.getHateSpeechCount();
+                    hateSpeechCount.put(sender,hateSpeechCount.getOrDefault(sender,0)+1);
+                    if(hateSpeechCount.get(sender) == 1) {
+                        //send WarningNotification
+                        Notification notification = new NotificationFac().make("warn","",sender,room);
+                        User hateSpeaker = UserDB.getUsers().get(sender);
+                        hateSpeaker.addNotification(notification);
+                    } else if(hateSpeechCount.get(sender) == 2) {
+                        //mute by all rooms
+                        for(ChatRoom chatRoom:RoomDB.make().getRooms().values()) {
+                            if(chatRoom.getType().equals("groupchat")) {
+                                ((GroupChat)chatRoom).addToMuteList(sender);
+                            }
+                        }
+                    }
+                }
 
                 Message messageObj = createMessage(sender, room, body);
                 // check if muted or the input parameters are incorrect
@@ -117,6 +137,7 @@ public class WebSocketAdapter {
                         roomName);
                 temp.addNotification(invite);
                 MsgToClientSender.sendInviteNotification(roomName,invite,inviteTarget);
+                System.out.println("apater invite");
                 break;
 
             case "mute":
@@ -283,7 +304,7 @@ public class WebSocketAdapter {
                     MsgToClientSender.sendSimpleNotification(simple2, user2.getUsername());
                 }
                 break;
-
+            
             case "leaveAll":
                 String userLeft2 = jo.get("username").getAsString();
                 ArrayList<ChatRoom> leaveAllRooms= UserDB.getUsers().get(userLeft2).getRoomList();
@@ -340,6 +361,67 @@ public class WebSocketAdapter {
                     }
                 }
                 MsgToClientSender.setLeaveAllResult(true, userLeft2);
+            
+            case "edit":
+                //need to check if the user is the sender of the message
+                String editUser = jo.get("username").getAsString();
+                String editRoomName = jo.get("roomName").getAsString();
+                String editTimestamp = jo.get("timestamp").getAsString();
+                String newText = jo.get("newText").getAsString();
+                List<Message> messages = MessageDB.make().getMessageMap().get(editRoomName);
+                Iterator<Message> iterator = messages.iterator();
+                int idx = 0;
+                while (iterator.hasNext()) {
+                    Message m = iterator.next();
+                    if(m.getTimestamp().equals(editTimestamp) && m.getSendUser().equals(editUser)) {
+                        CompositeMessage newMessage = new CompositeMessage("auto", editUser);
+                        newMessage.addMultipleChildFromString(newText);
+                        messages.set(idx, newMessage);
+                    }
+                    idx++;
+                }
+                break;
+
+            case "recall":
+                //need to check if the user is the sender of the message
+                String recallUser = jo.get("username").getAsString();
+                String recallRoomName = jo.get("roomName").getAsString();
+                String recallTimestamp = jo.get("timestamp").getAsString();
+                idx = 0;
+                List<Message> recallMessages = MessageDB.make().getMessageMap().get(recallRoomName);
+                iterator = recallMessages.iterator();
+                while (iterator.hasNext()) {
+                    Message m = iterator.next();
+                    if(m.getTimestamp().equals(recallTimestamp) && m.getSendUser().equals(recallUser)) {
+                        iterator.remove();
+                    }
+                    idx++;
+                }
+                break;
+
+            case "delete":
+                //need to check if the user is admin
+                String deleteUser = jo.get("username").getAsString();
+                String deleteRoomName = jo.get("roomName").getAsString();
+                String deleteTimestamp = jo.get("timestamp").getAsString();
+                //check if the user is admin
+                List<String> admins = ((GroupChat)RoomDB.getONLY().getRooms().get(deleteRoomName)).getAdminList();
+                if(!admins.contains(deleteUser)) {
+                    break;
+                }
+                //
+                idx = 0;
+                List<Message> deleteMessages = MessageDB.make().getMessageMap().get(deleteRoomName);
+                iterator = deleteMessages.iterator();
+                while (iterator.hasNext()) {
+                    Message m = iterator.next();
+                    if(m.getTimestamp().equals(deleteTimestamp) && m.getSendUser().equals(deleteUser)) {
+                        iterator.remove();
+                    }
+                    idx++;
+                }
+                break;
+
 
             default:
                 System.out.println("Not valid action!");
