@@ -112,14 +112,6 @@ public abstract class User implements PropertyChangeListener {
     }
 
     /**
-     * Get user ID of current user.
-     * @return The user ID
-     */
-    /*public int getUserId() {
-        return this.userId;
-    }*/
-
-    /**
      * Get username of current user.
      * @return The username
      */
@@ -151,61 +143,6 @@ public abstract class User implements PropertyChangeListener {
         this.password = password;
     }
 
-    /**
-     * Get nickname or display name of current user.
-     * @return The nickname
-     */
-    /*public String getNickname() {
-        return nickname;
-    }*/
-
-    /**
-     * Set the current user's nickname to target nickname.
-     * @param nickname The target nickname
-     */
-    /*public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }*/
-
-    /**
-     * Get date of birth of current user.
-     * @return String type of date of birth.
-     */
-    /*public String getDateOfBirth() {
-        return dateOfBirth;
-    }*/
-
-    /**
-     * Set the date of birth of current user.
-     * @param dateOfBirth The date of birth that needs to be set to current user
-     */
-    /*public void setDateOfBirth(String dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }*/
-
-    /**
-     * Get email address of current user.
-     * @return Email address
-     */
-    /*public String getEmailAddress() {
-        return emailAddress;
-    }*/
-
-    /**
-     * Set email address of current user to a new address.
-     * @param emailAddress The new email address
-     */
-    /*public void setEmailAddress(String emailAddress) {
-        this.emailAddress = emailAddress;
-    }*/
-
-    /**
-     * Get the user's type.
-     * @return User type
-     */
-    /*public String getUserType() {
-        return userType;
-    }*/
 
     /**
      * Get all rooms this user is in.
@@ -269,13 +206,6 @@ public abstract class User implements PropertyChangeListener {
         } catch (NullPointerException npe) {
             System.out.println("NullPointerException, set Notification List failed!");
         }
-    }
-
-    /**
-     * Remove all notification.
-     */
-    public void removeAllNotification() {
-        this.notificationsList.clear();
     }
 
 }
