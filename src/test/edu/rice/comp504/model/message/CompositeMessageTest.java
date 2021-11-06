@@ -18,7 +18,9 @@ public class CompositeMessageTest {
 
     @Test
     public void addMultipleChildFromString() {
-
+        compositeMessage.addMultipleChildFromString("badTest");
+        compositeMessage.addMultipleChildFromString("/:sep:");
+        compositeMessage.addMultipleChildFromString("a:sep:");
     }
 
     @Test
@@ -31,5 +33,30 @@ public class CompositeMessageTest {
 
     @Test
     public void getChildrenContentAsString() {
+        TextMessage textMessage = (TextMessage) TextMessage.make("","aaa",
+                "bbb","ccc","ddd",12);
+        compositeMessage.addChildText(textMessage);
+        
+//        public String getChildrenContentAsString() {
+//            StringBuilder result = new StringBuilder();
+//            for (Message m : this.childrenMessage) {
+//                switch (m.getType()) {
+//                    case "text":
+//                        result.append(((TextMessage) m).getBody());
+//                        result.append(":sep:");
+//                        break;
+//
+//                    case "image":
+//                        result.append(((ImageMessage) m).getSourceUrl());
+//                        result.append(":sep:");
+//                        break;
+//
+//                    default:
+//                        break;
+//                }
+//            }
+//            return result.toString();
+//        }
+
     }
 }
