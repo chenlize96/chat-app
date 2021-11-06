@@ -288,7 +288,7 @@ function renderNotification(notification) {
         let info = notification.info;
         let type = notification.type;
         $("#notificationArea").append("<div class=\"row w-100 mb-1\">" +
-            "<div class=\"col-6\"><span class=\"inviteSender\">" + senderUser +
+            "<div class=\"col-6\"><span class=\"inviteSender\">" + senderUser + " " +
             "</span>" + type + " you to <spanclassName=\"inviteRoomName\">" + info + "</span></div>" +
             "<button type=\"button\" class=\"btn btn-outline-success btn-sm col-1 p-0 mr-2 invite_ac\" style=\"border: none\">accept</button>" +
             "<button type=\"button\" class=\"btn btn-outline-danger btn-sm col-1 p-0 ml-2 invite_rj\" style=\"border: none\">reject</button>" +
@@ -300,7 +300,7 @@ function renderNotification(notification) {
         let info = notification.info;
         let type = notification.type;
         $("#notificationArea").append("<div class=\"row w-100 mb-1\">" +
-            "<div class=\"col-6\"><span class=\"inviteSender\">" + senderUser +
+            "<div class=\"col-6\"><span class=\"inviteSender\">" + senderUser + " " +
             "</span>" + type + " you to <spanclassName=\"inviteRoomName\">" + info + "</span></div>" +
             "</div>");
     }
