@@ -54,7 +54,7 @@ public class WebSocketAdapter {
     @OnWebSocketClose
     public void onClose(Session session, int statusCode, String reason) {
 
-        //UserDB.removeUser(session);
+        UserDB.removeUser(session);
     }
 
     /**
