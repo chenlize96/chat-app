@@ -133,14 +133,14 @@ public class GroupChatTest {
         assertEquals(list,test.getAdminList());
     }
 
-    @Test
-    public void addToBlockList() {
-        //todo: wrong implementation
-        ArrayList<String> list = new ArrayList<>();
-        list.add("admin");
-        test.addToBlockList("admin");
-        assertEquals(new ArrayList<String>(),new ArrayList<String>());
-    }
+//    @Test
+//    public void addToBlockList() {
+//        //todo: wrong implementation
+//        ArrayList<String> list = new ArrayList<>();
+//        list.add("admin");
+//        test.addToBlockList("admin","aaa");
+//        assertEquals(new ArrayList<String>(),new ArrayList<String>());
+//    }
 
     @Test
     public void addMuteList() {
