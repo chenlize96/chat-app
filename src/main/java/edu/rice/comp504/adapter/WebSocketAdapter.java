@@ -84,7 +84,8 @@ public class WebSocketAdapter {
                 System.out.println(sender+" "+room+" "+body);
 
                 // check hate speech
-                if (body.contains("FUCK") || body.contains("Fuck") || body.contains("fuck")) {
+                String text = new String(body);
+                if (text.equalsIgnoreCase("fuck")) {
                     Map<String,Integer> hateSpeechCount = UserDB.getHateSpeechCount();
                     hateSpeechCount.put(sender,hateSpeechCount.getOrDefault(sender,0)+1);
                     if(hateSpeechCount.get(sender) == 1) {
