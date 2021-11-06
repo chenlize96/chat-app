@@ -9,6 +9,7 @@ import edu.rice.comp504.model.UserDB;
 import edu.rice.comp504.model.chatroom.ChatRoom;
 import edu.rice.comp504.model.chatroom.GroupChat;
 import edu.rice.comp504.model.chatroom.UserChat;
+import edu.rice.comp504.model.message.CompositeMessage;
 import edu.rice.comp504.model.message.Message;
 import edu.rice.comp504.model.message.NullMessage;
 import edu.rice.comp504.model.message.TextMessage;
@@ -265,6 +266,66 @@ public class WebSocketAdapter {
 
                     MsgToClientSender.sendSimpleNotification(simple, user1.getUsername());
                     MsgToClientSender.sendSimpleNotification(simple2, user2.getUsername());
+                }
+                break;
+
+            case "edit":
+                //need to check if the user is the sender of the message
+                String editUser = jo.get("username").getAsString();
+                String editRoomName = jo.get("roomName").getAsString();
+                String editTimestamp = jo.get("timestamp").getAsString();
+                String newText = jo.get("newText").getAsString();
+                List<Message> messages = MessageDB.make().getMessageMap().get(editRoomName);
+                Iterator<Message> iterator = messages.iterator();
+                int idx = 0;
+                while (iterator.hasNext()) {
+                    Message m = iterator.next();
+                    if(m.getTimestamp().equals(editTimestamp) && m.getSendUser().equals(editUser)) {
+                        CompositeMessage newMessage = new CompositeMessage("auto", editUser);
+                        newMessage.addMultipleChildFromString(newText);
+                        messages.set(idx, newMessage);
+                    }
+                    idx++;
+                }
+                break;
+
+            case "recall":
+                //need to check if the user is the sender of the message
+                String recallUser = jo.get("username").getAsString();
+                String recallRoomName = jo.get("roomName").getAsString();
+                String recallTimestamp = jo.get("timestamp").getAsString();
+                idx = 0;
+                List<Message> recallMessages = MessageDB.make().getMessageMap().get(recallRoomName);
+                iterator = recallMessages.iterator();
+                while (iterator.hasNext()) {
+                    Message m = iterator.next();
+                    if(m.getTimestamp().equals(recallTimestamp) && m.getSendUser().equals(recallUser)) {
+                        iterator.remove();
+                    }
+                    idx++;
+                }
+                break;
+
+            case "delete":
+                //need to check if the user is admin
+                String deleteUser = jo.get("username").getAsString();
+                String deleteRoomName = jo.get("roomName").getAsString();
+                String deleteTimestamp = jo.get("timestamp").getAsString();
+                //check if the user is admin
+                List<String> admins = ((GroupChat)RoomDB.getONLY().getRooms().get(deleteRoomName)).getAdminList();
+                if(!admins.contains(deleteUser)) {
+                    break;
+                }
+                //
+                idx = 0;
+                List<Message> deleteMessages = MessageDB.make().getMessageMap().get(deleteRoomName);
+                iterator = deleteMessages.iterator();
+                while (iterator.hasNext()) {
+                    Message m = iterator.next();
+                    if(m.getTimestamp().equals(deleteTimestamp) && m.getSendUser().equals(deleteUser)) {
+                        iterator.remove();
+                    }
+                    idx++;
                 }
                 break;
 
