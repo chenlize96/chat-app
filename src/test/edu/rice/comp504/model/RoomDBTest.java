@@ -2,7 +2,7 @@ package edu.rice.comp504.model;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class RoomDBTest {
 
@@ -22,7 +22,7 @@ public class RoomDBTest {
     @Test
     public void addGroupRoom() {
         RoomDB.make().addGroupRoom(1, "name", "swim", "owner",
-        false, "111");
+                false, "111");
         assertEquals(RoomDB.make().getRooms().size(), 1);
     }
 

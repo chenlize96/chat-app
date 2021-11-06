@@ -1,5 +1,6 @@
 package edu.rice.comp504.adapter;
 
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import edu.rice.comp504.model.MessageDB;
 import edu.rice.comp504.model.RoomDB;
@@ -23,7 +24,6 @@ import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
-import com.google.gson.JsonObject;
 
 import java.util.*;
 
@@ -79,24 +79,24 @@ public class WebSocketAdapter {
                 String room = jo.get("roomName").getAsString();
                 String body = jo.get("message").getAsString();
 
-                System.out.println(sender+" "+room+" "+body);
+                System.out.println(sender + " " + room + " " + body);
 
                 // check hate speech
                 String text = new String(body);
                 if (text.equalsIgnoreCase("fuck")) {
-                    Map<String,Integer> hateSpeechCount = UserDB.getHateSpeechCount();
-                    hateSpeechCount.put(sender,hateSpeechCount.getOrDefault(sender,0)+1);
-                    if(hateSpeechCount.get(sender) == 1) {
+                    Map<String, Integer> hateSpeechCount = UserDB.getHateSpeechCount();
+                    hateSpeechCount.put(sender, hateSpeechCount.getOrDefault(sender, 0) + 1);
+                    if (hateSpeechCount.get(sender) == 1) {
                         //send WarningNotification
-                        Notification notification = new NotificationFac().make("warn","",sender,room);
+                        Notification notification = new NotificationFac().make("warn", "", sender, room);
                         User hateSpeaker = UserDB.getUsers().get(sender);
                         hateSpeaker.addNotification(notification);
-                    } else if(hateSpeechCount.get(sender) == 2) {
+                    } else if (hateSpeechCount.get(sender) == 2) {
                         //mute by all rooms
-                        for(ChatRoom chatRoom:RoomDB.make().getRooms().values()) {
-                            if(chatRoom.getType().equals("groupchat")) {
-                                ((GroupChat)chatRoom).addToMuteList(sender);
-                                Notification notification = new NotificationFac().make("mute","",sender,room);
+                        for (ChatRoom chatRoom : RoomDB.make().getRooms().values()) {
+                            if (chatRoom.getType().equals("groupchat")) {
+                                ((GroupChat) chatRoom).addToMuteList(sender);
+                                Notification notification = new NotificationFac().make("mute", "", sender, room);
                                 User hateSpeaker = UserDB.getUsers().get(sender);
                                 hateSpeaker.addNotification(notification);
                             }
@@ -106,10 +106,10 @@ public class WebSocketAdapter {
 
                 Message messageObj = createMessage(sender, room, body);
                 // check if muted or the input parameters are incorrect
-                if(messageObj instanceof NullMessage) {
+                if (messageObj instanceof NullMessage) {
                     break;
                 } else { // broadcast to every one in the room
-                    MsgToClientSender.broadcastMessage(UserDB.getUser(session), room,  messageObj);
+                    MsgToClientSender.broadcastMessage(UserDB.getUser(session), room, messageObj);
                 }
                 break;
 
@@ -117,7 +117,7 @@ public class WebSocketAdapter {
                 // TODO: update message function here, broadcast message list, History is also here
                 String updateRoom = jo.get("roomName").getAsString();
                 List<Message> messageList = MessageDB.make().getMessageMap().get(updateRoom);
-                MsgToClientSender.updateMessages(session,updateRoom,messageList);
+                MsgToClientSender.updateMessages(session, updateRoom, messageList);
                 break;
 
             case "notification":
@@ -125,7 +125,7 @@ public class WebSocketAdapter {
                 String username = jo.get("username").getAsString();
                 User user = UserDB.getUsers().get(username);
                 List<Notification> notificationList = user.getNotificationsList();
-                MsgToClientSender.sendNotificationList(username,notificationList);
+                MsgToClientSender.sendNotificationList(username, notificationList);
                 break;
 
             case "invite":
@@ -138,42 +138,42 @@ public class WebSocketAdapter {
                 InviteNotification invite = (InviteNotification) fac.make("invite", inviteSource, inviteTarget,
                         roomName);
                 temp.addNotification(invite);
-                MsgToClientSender.sendInviteNotification(roomName,invite,inviteTarget);
+                MsgToClientSender.sendInviteNotification(roomName, invite, inviteTarget);
                 System.out.println("apater invite");
                 break;
 
             case "mute":
                 String userMuted = jo.get("userMute").getAsString();
                 String roomName2 = jo.get("roomName").getAsString();
-                ChatRoom chatRoom = RoomDB.getONLY().getRooms().get(roomName2);
-                ((GroupChat)chatRoom).addToMuteList(userMuted);
+                ChatRoom chatRoom = RoomDB.getOnly().getRooms().get(roomName2);
+                ((GroupChat) chatRoom).addToMuteList(userMuted);
                 //broadcast
-                MsgToClientSender.broadcastMuteMessage(userMuted,roomName2);
+                MsgToClientSender.broadcastMuteMessage(userMuted, roomName2);
                 //send a notification to the person who got muted
                 User mutedUser = UserDB.getUsers().get(userMuted);
-                mutedUser.addNotification(new NotificationFac().make("mute","",userMuted,roomName2));
+                mutedUser.addNotification(new NotificationFac().make("mute", "", userMuted, roomName2));
                 break;
 
             case "kick":
                 String userKicked = jo.get("userKick").getAsString();
                 String kickRoomName = jo.get("roomName").getAsString();
-                ChatRoom kickChatRoom = RoomDB.getONLY().getRooms().get(kickRoomName);
+                ChatRoom kickChatRoom = RoomDB.getOnly().getRooms().get(kickRoomName);
                 User kickedUser = UserDB.getUsers().get(userKicked);
                 // kick the user from the room, decrease the number of members, remove the room from user's room list
-                ((GroupChat)kickChatRoom).kickUser(userKicked);
+                ((GroupChat) kickChatRoom).kickUser(userKicked);
                 //broadcast
-                MsgToClientSender.broadcastKickMessage(userKicked,kickRoomName);
+                MsgToClientSender.broadcastKickMessage(userKicked, kickRoomName);
                 //send a notification to the person who got kicked
-                kickedUser.addNotification(new NotificationFac().make("kick", "",userKicked,kickRoomName));
+                kickedUser.addNotification(new NotificationFac().make("kick", "", userKicked, kickRoomName));
                 break;
 
             case "block":
                 String userBlock = jo.get("userBlock").getAsString();
                 String userBlocked = jo.get("userBlocked").getAsString();
                 roomName = jo.get("roomName").getAsString();
-                GroupChat blockRoom = (GroupChat)RoomDB.make().getRooms().get(roomName);
-                blockRoom.addToBlockList(userBlock,userBlocked);
-                MsgToClientSender.setBlockResult(roomName,true,userBlock);
+                GroupChat blockRoom = (GroupChat) RoomDB.make().getRooms().get(roomName);
+                blockRoom.addToBlockList(userBlock, userBlocked);
+                MsgToClientSender.setBlockResult(roomName, true, userBlock);
 
                 break;
 
@@ -198,7 +198,7 @@ public class WebSocketAdapter {
                     }
                     flag = false;
                 }
-                MsgToClientSender.sendBlockList(roomCurrent,difference,userCurrent);
+                MsgToClientSender.sendBlockList(roomCurrent, difference, userCurrent);
                 break;
 
             case "getInviteUsers":
@@ -215,14 +215,13 @@ public class WebSocketAdapter {
                 for (String x : userListName) {
                     roomUserSet.add(x);
                 }
-                for (int i = 0 ; i < userAll.size() ; i++)
-                {
+                for (int i = 0; i < userAll.size(); i++) {
                     if (roomUserSet.contains(userAll.get(i).getUsername())) {
                         continue;
                     }
                     res.add(userAll.get(i));
                 }
-                MsgToClientSender.sendInviteList(roomNameCurr,res,userNameCurr);
+                MsgToClientSender.sendInviteList(roomNameCurr, res, userNameCurr);
                 break;
 
             case "acceptInvite":
@@ -234,7 +233,7 @@ public class WebSocketAdapter {
                 acceptJoinedRoom.addToUserList(senderT);
                 temp3.getRoomList().add(acceptJoinedRoom);
                 int num = acceptJoinedRoom.getCurNumUser();
-                acceptJoinedRoom.setCurNumUser(num+1);
+                acceptJoinedRoom.setCurNumUser(num + 1);
                 NotificationFac fac3 = new NotificationFac();
                 temp3.addNotification(fac3.make("inviteAccept", senderT, receiverT, senderT + "accept to join" + roomName3));
                 break;
@@ -256,35 +255,34 @@ public class WebSocketAdapter {
                 ChatRoom roomLeftCurr = RoomDB.make().getRooms().get(roomLeft);
                 if (roomLeftCurr.getType().equals("groupchat")) {
                     //groupchat+admin+size != 1 ===cannot leave
-                    if (((GroupChat)roomLeftCurr).getOwner().equals(userLeft) && ((GroupChat)roomLeftCurr).getCurNumUser() != 1) {
+                    if (((GroupChat) roomLeftCurr).getOwner().equals(userLeft) && ((GroupChat) roomLeftCurr).getCurNumUser() != 1) {
                         MsgToClientSender.setLeaveResult(roomLeft, false, userLeft);
-                    }
-                    else {
+                    } else {
                         //leave meesage before left to all users in the group
                         MsgToClientSender.broadcastMessage(roomLeftCurr.getRoomName(), roomLeft, TextMessage.make("",
-                                ((GroupChat)roomLeftCurr).getOwner() , userLeft+" leave the room by himself", "", "", 12));
+                                ((GroupChat) roomLeftCurr).getOwner(), userLeft + " leave the room by himself", "", "", 12));
                         userLeftCurr.removeAChatRoom(roomLeftCurr);
-                        if (((GroupChat)roomLeftCurr).getOwner().equals(userLeft)) {
+                        if (((GroupChat) roomLeftCurr).getOwner().equals(userLeft)) {
                             RoomDB.make().getRooms().remove(roomLeft);
-                        }
-                        else {
-                            int currUserNum = ((GroupChat)roomLeftCurr).getCurNumUser() - 1;
+                        } else {
+                            int currUserNum = ((GroupChat) roomLeftCurr).getCurNumUser() - 1;
                             ((GroupChat) roomLeftCurr).setCurNumUser(currUserNum);
                             ((GroupChat) roomLeftCurr).getUserList().remove(userLeft);
                             ((GroupChat) roomLeftCurr).getMuteList().remove(userLeft);
-                            Map<String,List<String>> map = ((GroupChat) roomLeftCurr).getBlockMap();
-                            if(map.containsKey(userLeft)) map.remove(userLeft);
-                            for (Map.Entry<String, List<String>> entry : map.entrySet()){
+                            Map<String, List<String>> map = ((GroupChat) roomLeftCurr).getBlockMap();
+                            if (map.containsKey(userLeft)) {
+                                map.remove(userLeft);
+                            }
+                            for (Map.Entry<String, List<String>> entry : map.entrySet()) {
                                 List<String> list = entry.getValue();
                                 list.remove(userLeft);
                             }
                         }
                         MsgToClientSender.setLeaveResult(roomLeft, true, userLeft);
                     }
-                }
-                else if(roomLeftCurr.getType().equals("userchat")){
-                    User user1 = UserDB.getUsers().get(((UserChat)roomLeftCurr).getUser1());
-                    User user2 = UserDB.getUsers().get(((UserChat)roomLeftCurr).getUser2());
+                } else if (roomLeftCurr.getType().equals("userchat")) {
+                    User user1 = UserDB.getUsers().get(((UserChat) roomLeftCurr).getUser1());
+                    User user2 = UserDB.getUsers().get(((UserChat) roomLeftCurr).getUser2());
 
                     user1.getRoomList().remove(roomLeftCurr);
                     user2.getRoomList().remove(roomLeftCurr);
@@ -306,44 +304,45 @@ public class WebSocketAdapter {
                     MsgToClientSender.sendSimpleNotification(simple2, user2.getUsername());
                 }
                 break;
-            
+
             case "leaveAll":
                 String userLeft2 = jo.get("username").getAsString();
-                ArrayList<ChatRoom> leaveAllRooms= UserDB.getUsers().get(userLeft2).getRoomList();
+                ArrayList<ChatRoom> leaveAllRooms = UserDB.getUsers().get(userLeft2).getRoomList();
                 ArrayList<ChatRoom> leaveAllRoomsTemp = new ArrayList<>();
                 RegisteredUser userLeftCurr2 = ((RegisteredUser) UserDB.getUsers().get(userLeft2));
-                for (ChatRoom x : leaveAllRooms)
+                for (ChatRoom x : leaveAllRooms) {
                     leaveAllRoomsTemp.add(x);
+                }
                 for (ChatRoom x : leaveAllRoomsTemp) {
                     if (x.getType().equals("groupchat")) {
                         //groupchat+admin+size != 1 ===cannot leave
-                        if (((GroupChat)x).getOwner().equals(userLeft2) && ((GroupChat)x).getCurNumUser() != 1) {
-                        }
-                        else {
+                        if (((GroupChat) x).getOwner().equals(userLeft2) && ((GroupChat) x).getCurNumUser() != 1) {
+                            int a = 0;
+                        } else {
                             //leave meesage before left to all users in the group
                             MsgToClientSender.broadcastMessage(x.getRoomName(), x.getRoomName(), TextMessage.make("",
-                                    ((GroupChat)x).getOwner() , userLeft2+" leave the room by himself", "", "", 12));
+                                    ((GroupChat) x).getOwner(), userLeft2 + " leave the room by himself", "", "", 12));
                             userLeftCurr2.removeAChatRoom(x);
-                            if (((GroupChat)x).getOwner().equals(userLeft2)) {
+                            if (((GroupChat) x).getOwner().equals(userLeft2)) {
                                 RoomDB.make().getRooms().remove(x.getRoomName());
-                            }
-                            else {
-                                int currUserNum = ((GroupChat)x).getCurNumUser() - 1;
+                            } else {
+                                int currUserNum = ((GroupChat) x).getCurNumUser() - 1;
                                 ((GroupChat) x).setCurNumUser(currUserNum);
                                 ((GroupChat) x).getUserList().remove(userLeft2);
                                 ((GroupChat) x).getMuteList().remove(userLeft2);
-                                Map<String,List<String>> map = ((GroupChat) x).getBlockMap();
-                                if(map.containsKey(userLeft2)) map.remove(userLeft2);
-                                for (Map.Entry<String, List<String>> entry : map.entrySet()){
+                                Map<String, List<String>> map = ((GroupChat) x).getBlockMap();
+                                if (map.containsKey(userLeft2)) {
+                                    map.remove(userLeft2);
+                                }
+                                for (Map.Entry<String, List<String>> entry : map.entrySet()) {
                                     List<String> list = entry.getValue();
                                     list.remove(userLeft2);
                                 }
                             }
                         }
-                    }
-                    else if(x.getType().equals("userchat")){
-                        User user1 = UserDB.getUsers().get(((UserChat)x).getUser1());
-                        User user2 = UserDB.getUsers().get(((UserChat)x).getUser2());
+                    } else if (x.getType().equals("userchat")) {
+                        User user1 = UserDB.getUsers().get(((UserChat) x).getUser1());
+                        User user2 = UserDB.getUsers().get(((UserChat) x).getUser2());
 
                         user1.getRoomList().remove(x);
                         user2.getRoomList().remove(x);
@@ -363,7 +362,8 @@ public class WebSocketAdapter {
                     }
                 }
                 MsgToClientSender.setLeaveAllResult(true, userLeft2);
-            
+                break;
+
             case "edit":
                 //need to check if the user is the sender of the message
                 String editUser = jo.get("username").getAsString();
@@ -375,7 +375,7 @@ public class WebSocketAdapter {
                 int idx = 0;
                 while (iterator.hasNext()) {
                     Message m = iterator.next();
-                    if(m.getTimestamp().equals(editTimestamp) && m.getSendUser().equals(editUser)) {
+                    if (m.getTimestamp().equals(editTimestamp) && m.getSendUser().equals(editUser)) {
                         CompositeMessage newMessage = new CompositeMessage("auto", editUser);
                         newMessage.addMultipleChildFromString(newText);
                         messages.set(idx, newMessage);
@@ -394,7 +394,7 @@ public class WebSocketAdapter {
                 iterator = recallMessages.iterator();
                 while (iterator.hasNext()) {
                     Message m = iterator.next();
-                    if(m.getTimestamp().equals(recallTimestamp) && m.getSendUser().equals(recallUser)) {
+                    if (m.getTimestamp().equals(recallTimestamp) && m.getSendUser().equals(recallUser)) {
                         iterator.remove();
                     }
                     idx++;
@@ -407,8 +407,8 @@ public class WebSocketAdapter {
                 String deleteRoomName = jo.get("roomName").getAsString();
                 String deleteTimestamp = jo.get("timestamp").getAsString();
                 //check if the user is admin
-                List<String> admins = ((GroupChat)RoomDB.getONLY().getRooms().get(deleteRoomName)).getAdminList();
-                if(!admins.contains(deleteUser)) {
+                List<String> admins = ((GroupChat) RoomDB.getOnly().getRooms().get(deleteRoomName)).getAdminList();
+                if (!admins.contains(deleteUser)) {
                     break;
                 }
                 //
@@ -417,7 +417,7 @@ public class WebSocketAdapter {
                 iterator = deleteMessages.iterator();
                 while (iterator.hasNext()) {
                     Message m = iterator.next();
-                    if(m.getTimestamp().equals(deleteTimestamp) && m.getSendUser().equals(deleteUser)) {
+                    if (m.getTimestamp().equals(deleteTimestamp) && m.getSendUser().equals(deleteUser)) {
                         iterator.remove();
                     }
                     idx++;
@@ -434,7 +434,8 @@ public class WebSocketAdapter {
 
     /**
      * Map websocket session with current username when logging in.
-     * @param session websocket session
+     *
+     * @param session  websocket session
      * @param username username
      */
     public void mapSessionUser(Session session, String username) {
@@ -446,11 +447,15 @@ public class WebSocketAdapter {
         UserDB.addUser(username, school, age, interestsTemp, password);
     }
 
+    /**
+     * Return the list of user/admin/owner of the chosen room.
+     */
     public User logInUser(String username, String password) {
         Map<String, User> usersTemp = UserDB.getUsers();
         if (usersTemp.containsKey(username)) {
-            if (usersTemp.get(username).getPassword().equals(password))
+            if (usersTemp.get(username).getPassword().equals(password)) {
                 return usersTemp.get(username);
+            }
         }
         return new NullUser("", "", "", 0, "");
     }
@@ -458,27 +463,28 @@ public class WebSocketAdapter {
 
     /**
      * Get room list of a user.
-     * */
-    public List<ChatRoom> getUserRoomList(String userName){
+     */
+    public List<ChatRoom> getUserRoomList(String userName) {
         return (UserDB.getUsers().get(userName)).getRoomList();
     }
 
     /**
      * Get users in same rooms.
-     * */
-    public List<User> getKnownUser(String userName){
+     */
+    public List<User> getKnownUser(String userName) {
 
         List<User> users = new ArrayList<>();
         Set<String> set = new HashSet<>();
         RegisteredUser user = (RegisteredUser) UserDB.getUsers().get(userName);
 
-        for(ChatRoom room : user.getRoomList()){
-            if(room.getType().equals("groupchat")){
-                List<String> list = ((GroupChat)room).getUserList();
-                for(String tmpUser : list){
-                    if (RoomDB.make().getRooms().containsKey(tmpUser+","+userName)
-                            || RoomDB.make().getRooms().containsKey(userName+","+tmpUser))
+        for (ChatRoom room : user.getRoomList()) {
+            if (room.getType().equals("groupchat")) {
+                List<String> list = ((GroupChat) room).getUserList();
+                for (String tmpUser : list) {
+                    if (RoomDB.make().getRooms().containsKey(tmpUser + "," + userName)
+                            || RoomDB.make().getRooms().containsKey(userName + "," + tmpUser)) {
                         continue;
+                    }
                     set.add(tmpUser);
                 }
             }
@@ -486,7 +492,7 @@ public class WebSocketAdapter {
 
         set.remove(userName);
 
-        for(String str : set ){
+        for (String str : set) {
             users.add(UserDB.getUsers().get(str));
         }
 
@@ -494,10 +500,10 @@ public class WebSocketAdapter {
     }
 
     /**
-     * Create a room, add this room to it's owner's roomList
-     * */
+     * Create a room, add this room to it's owner's roomList.
+     */
     public boolean createGroupChat(int userLimit, String roomName, String interest,
-                                String ownerUsername, boolean isPublic, String roomPassword) {
+                                   String ownerUsername, boolean isPublic, String roomPassword) {
         if (RoomDB.make().addGroupRoom(userLimit, roomName, interest, ownerUsername, isPublic, roomPassword)) {
             Map<String, ChatRoom> rooms = RoomDB.make().getRooms();
             GroupChat room = (GroupChat) rooms.get(roomName);
@@ -509,13 +515,13 @@ public class WebSocketAdapter {
     }
 
     /**
-     * Create a user chat, add this room to it's owner's roomList
-     * */
+     * Create a user chat, add this room to it's owner's roomList.
+     */
     public boolean createUserChat(String userName, String friendName) {
 
-        if (RoomDB.make().addUserChat(userName,friendName)) {
+        if (RoomDB.make().addUserChat(userName, friendName)) {
             Map<String, ChatRoom> rooms = RoomDB.make().getRooms();
-            UserChat room = (UserChat) rooms.get(userName+","+friendName);
+            UserChat room = (UserChat) rooms.get(userName + "," + friendName);
             User user = UserDB.getUsers().get(userName);
             User friend = UserDB.getUsers().get(friendName);
             user.addAChatRoom(room);
@@ -526,22 +532,22 @@ public class WebSocketAdapter {
     }
 
     /**
-     * Return the list of user/admin/owner of the chosen room
-     * */
+     * Return the list of user/admin/owner of the chosen room.
+     */
     public List<String> showAllUsersInside(String roomname) {
-        List <String> res = new ArrayList<>();
-        if (RoomDB.make().getRooms().get(roomname).getType().equals("userchat"))
-        {
-            res.add(((UserChat)RoomDB.make().getRooms().get(roomname)).getUser1());
-            res.add(((UserChat)RoomDB.make().getRooms().get(roomname)).getUser2());
+        List<String> res = new ArrayList<>();
+        if (RoomDB.make().getRooms().get(roomname).getType().equals("userchat")) {
+            res.add(((UserChat) RoomDB.make().getRooms().get(roomname)).getUser1());
+            res.add(((UserChat) RoomDB.make().getRooms().get(roomname)).getUser2());
             return res;
         }
         Set<String> userSet = new HashSet<>();
-        List<String> users = ((GroupChat)RoomDB.make().getRooms().get(roomname)).getUserList();
-        String owner = ((GroupChat)RoomDB.make().getRooms().get(roomname)).getOwner();
-        List<String> admin = ((GroupChat)RoomDB.make().getRooms().get(roomname)).getAdminList();
-        for (String x : users)
+        List<String> users = ((GroupChat) RoomDB.make().getRooms().get(roomname)).getUserList();
+        String owner = ((GroupChat) RoomDB.make().getRooms().get(roomname)).getOwner();
+        List<String> admin = ((GroupChat) RoomDB.make().getRooms().get(roomname)).getAdminList();
+        for (String x : users) {
             userSet.add(x);
+        }
 //        List <String> res = new ArrayList<>();
         res.add("Owner: " + owner + "(Admin)");
         userSet.remove(owner);
@@ -557,30 +563,30 @@ public class WebSocketAdapter {
 
     /**
      * Adapter's create message function.
+     *
      * @param sender sender's username
-     * @param room room's name
-     * @param body message body text
+     * @param room   room's name
+     * @param body   message body text
      * @return a message
      */
     public Message createMessage(String sender, String room, String body) {
         //MUTE : check if the sender is muted in the given room
         //BTW, BLOCK will be checked in /updateMessage
         ChatRoom chatRoom = RoomDB.make().getRooms().get(room);
-        if(chatRoom.getType().equals("groupchat")) { //check mute
-            List<String> mutedUsers = ((GroupChat)chatRoom).getMuteList();
-            if(mutedUsers.contains(sender)) {
+        if (chatRoom.getType().equals("groupchat")) { //check mute
+            List<String> mutedUsers = ((GroupChat) chatRoom).getMuteList();
+            if (mutedUsers.contains(sender)) {
                 //send mute notification
-                Notification notification = new NotificationFac().make("mute","",sender,room);
+                Notification notification = new NotificationFac().make("mute", "", sender, room);
                 User user = UserDB.getUsers().get(sender);
                 user.addNotification(notification);
                 return NullMessage.make();
-               // return MessageDB.make().addMessage(sender, room, body, "null");
+                // return MessageDB.make().addMessage(sender, room, body, "null");
 
             }
         }
         return MessageDB.make().addMessage(sender, room, body, "composite");
     }
-
 
 
 }

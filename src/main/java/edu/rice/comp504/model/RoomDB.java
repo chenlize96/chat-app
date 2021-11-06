@@ -3,24 +3,28 @@ package edu.rice.comp504.model;
 import edu.rice.comp504.model.chatroom.ChatRoom;
 import edu.rice.comp504.model.chatroom.GroupChat;
 import edu.rice.comp504.model.chatroom.UserChat;
-import edu.rice.comp504.model.user.User;
 
-import java.beans.PropertyChangeEvent;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class RoomDB {
     private static RoomDB ONLY;
-    public int nextRoomID = 1;
     private final Map<String, ChatRoom> rooms = new ConcurrentHashMap<>();
+    public int nextRoomID = 1;
 
     private RoomDB() {
     }
 
-    public static RoomDB getONLY() {
+    /**
+     * Return the list of user/admin/owner of the chosen room.
+     */
+    public static RoomDB getOnly() {
         return ONLY;
     }
 
+    /**
+     * Return the list of user/admin/owner of the chosen room.
+     */
     public static RoomDB make() {
         if (ONLY == null) {
             ONLY = new RoomDB();
@@ -39,7 +43,9 @@ public class RoomDB {
      */
     public boolean addGroupRoom(int userLimit, String roomName, String interest, String ownerUsername,
                                 boolean isPublic, String roomPassword) {
-        if (rooms.containsKey(roomName)) return false;
+        if (rooms.containsKey(roomName)) {
+            return false;
+        }
         GroupChat temp = new GroupChat(userLimit, this.getNextRoomID(), roomName,
                 interest, ownerUsername, isPublic, roomPassword);
         rooms.put(roomName, temp);
@@ -53,14 +59,16 @@ public class RoomDB {
      */
     public boolean addUserChat(String userName, String friendName) {
         String roomName = userName + "," + friendName;
-        if(rooms.containsKey(roomName))return false;
-        UserChat userChat = new UserChat(0,2,this.getNextRoomID(),roomName,
-                "userchat",userName,friendName);
-        rooms.put(roomName,userChat);
+        if (rooms.containsKey(roomName)) {
+            return false;
+        }
+        UserChat userChat = new UserChat(0, 2, this.getNextRoomID(), roomName,
+                "userchat", userName, friendName);
+        rooms.put(roomName, userChat);
         return true;
     }
 
     public int getNextRoomID() {
-        return this.nextRoomID ++;
+        return this.nextRoomID++;
     }
 }

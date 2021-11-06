@@ -9,8 +9,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public class MessageDB {
 
     private static MessageDB ONLY;
-    public int nextMessageID = 1;
     private final Map<String, ArrayList<Message>> messageMap = new ConcurrentHashMap<>();
+    public int nextMessageID = 1;
 
     /**
      * A constructor.
@@ -21,6 +21,7 @@ public class MessageDB {
 
     /**
      * Make function for singleton pattern.
+     *
      * @return Static MessageDB object
      */
     public static MessageDB make() {
@@ -32,8 +33,9 @@ public class MessageDB {
 
 
     /**
-     * Getter for MessageMap
-     * @return map <roomname,List<Message>>
+     * Getter for MessageMap.
+     *
+     *
      */
     public Map<String, ArrayList<Message>> getMessageMap() {
         return messageMap;
@@ -41,10 +43,11 @@ public class MessageDB {
 
     /**
      * Add message to the database and return the message.
+     *
      * @param sender Sender's username
-     * @param room Room name
-     * @param body Message body string
-     * @param type Message type
+     * @param room   Room name
+     * @param body   Message body string
+     * @param type   Message type
      * @return a message
      */
     public Message addMessage(String sender, String room, String body, String type) {
@@ -69,7 +72,7 @@ public class MessageDB {
         }
         // If new message is not null which means it is created successfully, return true and put it in map
         if (!newMessage.getType().equals("null")) {
-            if(!messageMap.containsKey(room)) {
+            if (!messageMap.containsKey(room)) {
                 messageMap.put(room, new ArrayList<>());
             }
             messageMap.get(room).add(newMessage);
@@ -80,13 +83,13 @@ public class MessageDB {
     }
 
 
-
     /**
      * Get next message IDs.
+     *
      * @return nextMessageID
      */
     public int getNextMessageID() {
-        return this.nextMessageID ++;
+        return this.nextMessageID++;
     }
 
 

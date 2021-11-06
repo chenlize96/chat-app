@@ -3,7 +3,7 @@ package edu.rice.comp504.model.notification;
 /**
  * A concrete class to represent all those non-meaningful notifications, prevent null pointer exception.
  */
-public class NullNotification extends Notification{
+public class NullNotification extends Notification {
 
     private static Notification ONLY;
 
@@ -11,11 +11,12 @@ public class NullNotification extends Notification{
      * A constructor.
      */
     private NullNotification() {
-        super("null", "null", "null", "null",false);
+        super("null", "null", "null", "null", false);
     }
 
     /**
      * Make function.
+     *
      * @return A NullNotification
      */
     public static Notification make() {

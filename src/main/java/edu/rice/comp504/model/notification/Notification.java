@@ -6,7 +6,7 @@ import java.time.format.DateTimeFormatter;
 /**
  * An abstract class to represent all notifications with invariant attributes across all types of notifications.
  */
-public abstract class Notification implements INotificationFac{
+public abstract class Notification implements INotificationFac {
 
     private String receiver;
     private String sender;
@@ -18,9 +18,10 @@ public abstract class Notification implements INotificationFac{
 
     /**
      * A constructor for notification.
+     *
      * @param receiver Receive user's username
-     * @param info The notification info
-     * @param type Type of this notification
+     * @param info     The notification info
+     * @param type     Type of this notification
      */
     public Notification(String sender, String receiver, String info, String type, boolean hasButton) {
         this.receiver = receiver;
@@ -37,6 +38,7 @@ public abstract class Notification implements INotificationFac{
 
     /**
      * Get this notification's type.
+     *
      * @return The type
      */
     public String getType() {
@@ -45,6 +47,7 @@ public abstract class Notification implements INotificationFac{
 
     /**
      * Get if this notification has buttons or not.
+     *
      * @return Has button flag
      */
     public boolean isHasButton() {
@@ -53,6 +56,7 @@ public abstract class Notification implements INotificationFac{
 
     /**
      * Get if this notification is read or not.
+     *
      * @return Read status flag
      */
     public boolean isReadStatus() {
@@ -61,6 +65,7 @@ public abstract class Notification implements INotificationFac{
 
     /**
      * Get info of this notification.
+     *
      * @return The information
      */
     public String getInfo() {
@@ -69,6 +74,7 @@ public abstract class Notification implements INotificationFac{
 
     /**
      * Get receiver of this notification.
+     *
      * @return The receiver's username
      */
     public String getReceiver() {

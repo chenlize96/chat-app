@@ -14,8 +14,6 @@ import edu.rice.comp504.model.user.NullUser;
 import edu.rice.comp504.model.user.User;
 import spark.Session;
 
-import javax.servlet.http.HttpSession;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -27,8 +25,10 @@ import static spark.Spark.*;
  */
 public class ChatAppController {
     public static WebSocketAdapter webSocketAdapter = new WebSocketAdapter();
+
     /**
      * Chat App entry point.
+     *
      * @param args The command line arguments
      */
     public static void main(String[] args) {
@@ -44,12 +44,12 @@ public class ChatAppController {
             //  return true => direct to the main page AND
             //  set the main page as the user instance => see the available rooms
             //  and update user info on the leftmost column, otherwise return false and do nothing
-            User user = webSocketAdapter.logInUser( request.queryMap().value("username"),
+            User user = webSocketAdapter.logInUser(request.queryMap().value("username"),
                     request.queryMap().value("password"));
-            if(!(user instanceof NullUser)) {
+            if (!(user instanceof NullUser)) {
                 Session session = request.session(); //  create session here
-                if(session.isNew()) {
-                    session.attribute("username",request.queryMap().value("username"));
+                if (session.isNew()) {
+                    session.attribute("username", request.queryMap().value("username"));
                 }
             }
             return gson.toJson(user);
@@ -60,7 +60,7 @@ public class ChatAppController {
             //  if in, then return false,
             //  otherwise, create a User Class in users Map in UserDB using the data,
             //  then return true => register successfully
-            if(UserDB.checkUser(request.queryMap().value("username"))) {
+            if (UserDB.checkUser(request.queryMap().value("username"))) {
                 return gson.toJson(false);
             }
             webSocketAdapter.registerUser(request.queryMap().value("username"),
@@ -92,10 +92,11 @@ public class ChatAppController {
             List<ChatRoom> allRoomList = new ArrayList<>(RoomDB.make().getRooms().values());
             // res list (allRoomList - addedRoomList)
             List<ChatRoom> res = new ArrayList<>();
-            for(ChatRoom chatRoom : allRoomList) {
-                if(!addedRoomList.contains(chatRoom) && chatRoom instanceof GroupChat) {
-                    if (((GroupChat) chatRoom).isPublic())
+            for (ChatRoom chatRoom : allRoomList) {
+                if (!addedRoomList.contains(chatRoom) && chatRoom instanceof GroupChat) {
+                    if (((GroupChat) chatRoom).isPublic()) {
                         res.add(chatRoom);
+                    }
                 }
             }
             return gson.toJson(res);
@@ -108,20 +109,20 @@ public class ChatAppController {
             GroupChat joinRoom = (GroupChat) RoomDB.make().getRooms().get(roomName);
             // check if the applicant is already a member of this group chat
             // check if userLimit of the room is still available
-            if(joinRoom.getUserList().contains(username) || joinRoom.getCurNumUser() >= joinRoom.getUserLimit()) {
+            if (joinRoom.getUserList().contains(username) || joinRoom.getCurNumUser() >= joinRoom.getUserLimit()) {
                 return gson.toJson(user.getRoomList());
             }
             // if public  -> enter
             //    private -> check password and send a notification to the owner of the room
-            if(joinRoom.isPublic()) {
+            if (joinRoom.isPublic()) {
                 //add into room
                 joinRoom.addToUserList(username);
                 user.getRoomList().add(joinRoom);
                 int num = joinRoom.getCurNumUser();
-                joinRoom.setCurNumUser(num+1);
+                joinRoom.setCurNumUser(num + 1);
             } else {
                 //send an apply notification
-                Notification notification = new NotificationFac().make("apply",username,joinRoom.getOwner(),roomName);
+                Notification notification = new NotificationFac().make("apply", username, joinRoom.getOwner(), roomName);
                 User owner = UserDB.getUsers().get(joinRoom.getOwner());
                 owner.addNotification(notification);
             }
@@ -139,14 +140,14 @@ public class ChatAppController {
             receiveUser.addAChatRoom(joinRoom);
             joinRoom.addToUserList(receiver);
             //send notification
-            Notification notification = new NotificationFac().make("accept",sender,receiver,roomName);
+            Notification notification = new NotificationFac().make("accept", sender, receiver, roomName);
             receiveUser.addNotification(notification);
             //need to remove the ApplyNotification from room owner's notificationDB
             ArrayList<Notification> senderNotificationList = sendUser.getNotificationsList();
             Iterator<Notification> iterator = senderNotificationList.iterator();
-            while(iterator.hasNext()) {
+            while (iterator.hasNext()) {
                 Notification n = iterator.next();
-                if(n.getReceiver().equals(sender) && n.getSender().equals(receiver) && n.getInfo().equals(roomName) && n.getType().equals("apply")) {
+                if (n.getReceiver().equals(sender) && n.getSender().equals(receiver) && n.getInfo().equals(roomName) && n.getType().equals("apply")) {
                     iterator.remove();
                 }
             }
@@ -161,14 +162,14 @@ public class ChatAppController {
             User sendUser = UserDB.getUsers().get(sender);
             User receiveUser = UserDB.getUsers().get(receiver);
             //send notification
-            Notification notification = new NotificationFac().make("reject",sender,receiver,roomName);
+            Notification notification = new NotificationFac().make("reject", sender, receiver, roomName);
             receiveUser.addNotification(notification);
             //need to remove the ApplyNotification from room owner's notificationDB
             ArrayList<Notification> senderNotificationList = sendUser.getNotificationsList();
             Iterator<Notification> iterator = senderNotificationList.iterator();
-            while(iterator.hasNext()) {
+            while (iterator.hasNext()) {
                 Notification n = iterator.next();
-                if(n.getReceiver().equals(sender) && n.getSender().equals(receiver) && n.getInfo().equals(roomName) && n.getType().equals("apply")) {
+                if (n.getReceiver().equals(sender) && n.getSender().equals(receiver) && n.getInfo().equals(roomName) && n.getType().equals("apply")) {
                     iterator.remove();
                 }
             }
@@ -216,7 +217,7 @@ public class ChatAppController {
             interest = interest.toLowerCase();
             interest = interest.strip();
             String ownerUsername = request.queryMap().value("username");
-            System.out.println(userLimit+" "+roomName+" "+interest+" "+ownerUsername+" "+roomPassword);
+            System.out.println(userLimit + " " + roomName + " " + interest + " " + ownerUsername + " " + roomPassword);
             return gson.toJson(webSocketAdapter.createGroupChat(userLimit, roomName, interest, ownerUsername,
                     isPublic, roomPassword));
         });
@@ -230,8 +231,8 @@ public class ChatAppController {
         post("/create/userchat", (request, response) -> {
             String userName = request.queryMap().value("username");
             String friendName = request.queryMap().value("chatName");
-            String chatName = userName+" with "+ friendName + " room";
-            return gson.toJson(webSocketAdapter.createUserChat(userName,friendName));
+            String chatName = userName + " with " + friendName + " room";
+            return gson.toJson(webSocketAdapter.createUserChat(userName, friendName));
         });
 
         post("/sendMessage", (request, response) -> {
@@ -253,13 +254,13 @@ public class ChatAppController {
             String roomName = request.queryMap().value("roomName");
             List<Message> messages = MessageDB.make().getMessageMap().get(roomName);
             // check if group chat, then filter those messages whose owners got blocked by the current user
-            ChatRoom room = RoomDB.getONLY().getRooms().get(roomName);
-            if(room.getType().equals("groupchat")) {
+            ChatRoom room = RoomDB.getOnly().getRooms().get(roomName);
+            if (room.getType().equals("groupchat")) {
                 //filter
                 Iterator<Message> iterator = messages.iterator();
                 while (iterator.hasNext()) {
                     Message message = iterator.next();
-                    if(((GroupChat)room).getBlockMap().containsKey(userName) && ((GroupChat)room).getBlockMap().get(userName).contains(message.getSendUser())) {
+                    if (((GroupChat) room).getBlockMap().containsKey(userName) && ((GroupChat) room).getBlockMap().get(userName).contains(message.getSendUser())) {
                         iterator.remove();
                     }
                 }
@@ -277,6 +278,7 @@ public class ChatAppController {
 
     /**
      * Get the heroku assigned port number.
+     *
      * @return The heroku assigned port number
      */
     private static int getHerokuAssignedPort() {

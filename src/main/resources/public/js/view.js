@@ -1,5 +1,6 @@
 'use strict';
 import {requests} from './requests.js';
+
 let intervalID = -1;//id of current interval
 let webSocket;
 let pingId;
@@ -35,7 +36,7 @@ window.onload = function () {
     $("#join_room").click(joinRooms);
     $("#inputArea").keydown(onKeyPress);
     $("#chatStart").click(createUserChat);
-    $(".members").on('click', 'button', function (){
+    $(".members").on('click', 'button', function () {
         lastSelectedMem = $(this).text();
     });
     $("#btn-join").click(getAllRooms);
@@ -53,26 +54,25 @@ window.onload = function () {
     $("#notificationArea").on('click', '.invite_ac', acceptInvite);
     $("#notificationArea").on('click', '.invite_rj', rejectInvite);
     $("#btn-logout").click(doLogOut);
-    $(".rooms").on('click', 'button', function (){
+    $(".rooms").on('click', 'button', function () {
         showRoomInfo();
         $("#chat-content").empty();
         $("#roomName").text($(this).text());
-        $("#roomName").val($(this).text().replace(/[\r\n]/g,"").replace(/[ ]/g,""));
-        $.post('/roomInfo', {roomName: $("#roomName").text().replace(/[\r\n]/g,"").replace(/[ ]/g,"")}, function (data){
+        $("#roomName").val($(this).text().replace(/[\r\n]/g, "").replace(/[ ]/g, ""));
+        $.post('/roomInfo', {roomName: $("#roomName").text().replace(/[\r\n]/g, "").replace(/[ ]/g, "")}, function (data) {
             console.log(data);
             data = JSON.parse(data);
 
             $("#limitRoomNum").text(data.userLimit);
-            if(data.type === "userchat") {
+            if (data.type === "userchat") {
                 $("#curRoomNum").text(2);
                 /*$("#btn-kick").removeAttr("disabled");
                 $("#btn-mute").removeAttr("disabled");
                 $("#btn-block").removeAttr("disabled");*/
-            }
-            else{
+            } else {
                 console.log(data.owner, $("#user_name").val());
                 $("#curRoomNum").text(data.curNumUser);
-                if(data.owner === $("#user_name").val()) {
+                if (data.owner === $("#user_name").val()) {
                     $("#btn-kick").removeAttr("disabled");
                     $("#btn-mute").removeAttr("disabled");
                     $("#btn-block").removeAttr("disabled");
@@ -80,7 +80,7 @@ window.onload = function () {
                 }
             }
         })
-        console.log($("#roomName").text().replace(/[\r\n]/g,"").replace(/[ ]/g,""));
+        console.log($("#roomName").text().replace(/[\r\n]/g, "").replace(/[ ]/g, ""));
         loadRoomUser();
 
     });
@@ -93,43 +93,47 @@ window.onload = function () {
         addOption($("#select-emoji"), emojiLib[i], emojiLib[i], "emoji-" + emojiLib[i]);
     }
 };
+
 /**
  * leavebutton
  */
 function leaveRoom() {
     webSocket.send(JSON.stringify(requests.getLeaveRequest(
         $("#user_name").val(),
-        $("#roomName").text().replace(/[\r\n]/g,"").replace(/[ ]/g,"")
+        $("#roomName").text().replace(/[\r\n]/g, "").replace(/[ ]/g, "")
     )));
 }
+
 /**
  * mute button
  */
-function mute(){
+function mute() {
     console.log(lastSelectedMem);
     console.log(lastSelectedMem.indexOf($("#user_name").val()));
-    if(lastSelectedMem !== "" && lastSelectedMem.indexOf($("#user_name").val()) === -1){
+    if (lastSelectedMem !== "" && lastSelectedMem.indexOf($("#user_name").val()) === -1) {
         console.log(1);
         webSocket.send(JSON.stringify(requests.getMuteRequest(
-            $("#roomName").text().replace(/[\r\n]/g,"").replace(/[ ]/g,""),
+            $("#roomName").text().replace(/[\r\n]/g, "").replace(/[ ]/g, ""),
             lastSelectedMem
         )));
     }
 }
-function kick(){
-    if(lastSelectedMem !== "" && lastSelectedMem.indexOf($("#user_name").val()) === -1){
+
+function kick() {
+    if (lastSelectedMem !== "" && lastSelectedMem.indexOf($("#user_name").val()) === -1) {
         webSocket.send(JSON.stringify(requests.getKickRequest(
-            $("#roomName").text().replace(/[\r\n]/g,"").replace(/[ ]/g,""),
+            $("#roomName").text().replace(/[\r\n]/g, "").replace(/[ ]/g, ""),
             lastSelectedMem
         )));
     }
 }
+
 /**
  * invite button get users
  */
-function inviteIntoRoom(){
+function inviteIntoRoom() {
     //console.log($("#curRoomNum").text(),$("#limitRoomNum").text())
-    if($("#curRoomNum").text() !== $("#limitRoomNum").text()) {
+    if ($("#curRoomNum").text() !== $("#limitRoomNum").text()) {
         /*$.post("/invite", {sender: $("#user_name").val(), receiver: $("#inviteTo").text(), roomName:$("#roomName").text().replace(/[\r\n]/g,"").replace(/[ ]/g,"")}, function (){
             $("#inviteModal").hide();
         })*/
@@ -137,16 +141,17 @@ function inviteIntoRoom(){
         $("#inviteModal").modal('hide');
         webSocket.send(JSON.stringify(requests.getInviteRequest(
             $("#user_name").val(),
-            $("#roomName").text().replace(/[\r\n]/g,"").replace(/[ ]/g,""),
+            $("#roomName").text().replace(/[\r\n]/g, "").replace(/[ ]/g, ""),
             $("#inviteTo").text()
         )));
     }
 }
-function getInviteUsers(){
-    $("#roomNameInInvite").text($("#roomName").text().replace(/[\r\n]/g,"").replace(/[ ]/g,""));
+
+function getInviteUsers() {
+    $("#roomNameInInvite").text($("#roomName").text().replace(/[\r\n]/g, "").replace(/[ ]/g, ""));
     webSocket.send(JSON.stringify(requests.getInviteUsersRequest(
         $("#user_name").val(),
-        $("#roomName").text().replace(/[\r\n]/g,"").replace(/[ ]/g,"")
+        $("#roomName").text().replace(/[\r\n]/g, "").replace(/[ ]/g, "")
     )));
     /*$.post("/invite/getUsers", {roomName: $("#roomName").text().replace(/[\r\n]/g,"").replace(/[ ]/g,"")}, function (data){
         console.log(data);// list of room info about name, type, limit, num
@@ -167,24 +172,28 @@ function getInviteUsers(){
         });
     })*/
 }
-function getBlockUsers(){
-    $("#roomNameInBlock").text($("#roomName").text().replace(/[\r\n]/g,"").replace(/[ ]/g,""));
+
+function getBlockUsers() {
+    $("#roomNameInBlock").text($("#roomName").text().replace(/[\r\n]/g, "").replace(/[ ]/g, ""));
     webSocket.send(JSON.stringify(requests.getBlockUsersRequest(
         $("#user_name").val(),
-        $("#roomName").text().replace(/[\r\n]/g,"").replace(/[ ]/g,"")
+        $("#roomName").text().replace(/[\r\n]/g, "").replace(/[ ]/g, "")
     )));
 }
-function blockInRoom(){
+
+function blockInRoom() {
     webSocket.send(JSON.stringify(requests.getBlockRequest(
-        $("#roomName").text().replace(/[\r\n]/g,"").replace(/[ ]/g,""),
+        $("#roomName").text().replace(/[\r\n]/g, "").replace(/[ ]/g, ""),
         $("#blockIn").text()
     )));
 }
-function showRoomHistory(){
+
+function showRoomHistory() {
     webSocket.send(JSON.stringify(requests.getHistoryRequest(
-        $("#roomName").text().replace(/[\r\n]/g,"").replace(/[ ]/g,"")
+        $("#roomName").text().replace(/[\r\n]/g, "").replace(/[ ]/g, "")
     )));
 }
+
 /**
  * Get Notifications.
  */
@@ -210,14 +219,14 @@ function renderMsg(data, message) {
         let username = message.sendUser;
         $("#chat-content").append("<li class=\"clearfix\">" +
             "<div class=\"message-data text-right\">" +
-        "<span class=\"message-data-time\">" + username + ", " + timestamp + "</span>" +
-        "</div>" +
-        "<div class=\"message other-message float-right\">" +
+            "<span class=\"message-data-time\">" + username + ", " + timestamp + "</span>" +
+            "</div>" +
+            "<div class=\"message other-message float-right\">" +
             "<button type = \"button\" style = \"outline: none\" class = \"text_btn outline-none\"" +
             "data-container = \"body\" data-toggle = \"popover\" data-trigger = \"hover focus\"" +
             "data-placement = \"top\" >" + context + "</button>" +
             "</div>" +
-        "</li>");
+            "</li>");
     } else {
         console.log("other");
         let context = message.body;
@@ -229,8 +238,8 @@ function renderMsg(data, message) {
             "</div>" +
             "<div class=\"message my-message\">" +
             "<button type = \"button\" style = \"outline: none\" class = \"text_btn outline-none\"" +
-        "data-container = \"body\" data-toggle = \"popover\" data-trigger = \"hover focus\"" +
-        "data-placement = \"top\" >" + context + "</button>" +
+            "data-container = \"body\" data-toggle = \"popover\" data-trigger = \"hover focus\"" +
+            "data-placement = \"top\" >" + context + "</button>" +
             "</div>" +
             "</li>"
         );
@@ -256,7 +265,7 @@ function responseHandler(message) {
             console.log(data.username);
             console.log(data.room);
             let message = JSON.parse(data.message);
-            console.log("childMsg: " , message);
+            console.log("childMsg: ", message);
             console.log(message.childrenMessage[0]);
             console.log(message.childrenMessage[0].body);
             console.log("room title = " + $("#roomName").val());
@@ -276,13 +285,13 @@ function responseHandler(message) {
             let inviteTable = $("#inviteTable");
             inviteTable.empty();
             let html = "";
-            for(let i = 0; i < msg.length; i++){
+            for (let i = 0; i < msg.length; i++) {
                 console.log(msg[i]);
                 html += "<tr><th scope=\"row\"><input type=\"radio\" name=\"invite\"></th><td>" +
                     msg[i].username + "</td></tr>";
             }
             inviteTable.append(html);
-            $("input:radio[name='invite']").change(function (){
+            $("input:radio[name='invite']").change(function () {
                 let opt = $("input:radio[name='invite']:checked").parent("th").next("td").text();
                 $("#inviteTo").text(opt);
                 $("#inviteReq").removeAttr("disabled");
@@ -293,13 +302,13 @@ function responseHandler(message) {
             let blockTable = $("#blockTable");
             blockTable.empty();
             let blockHtml = "";
-            for(let i = 0; i < blockMsg.length; i++){
+            for (let i = 0; i < blockMsg.length; i++) {
                 console.log(blockMsg[i]);
                 blockHtml += "<tr><th scope=\"row\"><input type=\"radio\" name=\"block\"></th><td>" +
                     blockMsg[i].username + "</td></tr>";
             }
             blockTable.append(blockHtml);
-            $("input:radio[name='block']").change(function (){
+            $("input:radio[name='block']").change(function () {
                 let opt = $("input:radio[name='block']:checked").parent("th").next("td").text();
                 $("#blockIn").text(opt);
                 $("#blockReq").removeAttr("disabled");
@@ -307,11 +316,10 @@ function responseHandler(message) {
             break;
         case 'leave':
             console.log("leave", data);
-            if (data.message === "true"){
+            if (data.message === "true") {
                 updateRoomList();
                 $("#leaveInfo").text("Leave Success");
-            }
-            else {
+            } else {
                 $("#leaveInfo").text("Leave Fail");
             }
             //console.log("leave")
@@ -339,9 +347,9 @@ function responseHandler(message) {
             let history = $("#historyList");
             history.empty();
             let historyHtml = "";
-            for(let i = 0; i < historyMsg.length; i++){
+            for (let i = 0; i < historyMsg.length; i++) {
                 console.log(historyMsg[i]);
-                historyHtml += "<li>(" +  historyMsg[i].timestamp + ") " +  historyMsg[i].sendUser + ": " + historyMsg[i].childrenMessage[0].body + "</li>";
+                historyHtml += "<li>(" + historyMsg[i].timestamp + ") " + historyMsg[i].sendUser + ": " + historyMsg[i].childrenMessage[0].body + "</li>";
             }
             history.append(historyHtml);
             break;
@@ -389,14 +397,14 @@ function renderNotification(notification) {
 function sendM() {
     webSocket.send(JSON.stringify(requests.getSendMsgRequest(
         $("#user_name").val(),
-        $("#roomName").text().replace(/[\r\n]/g,"").replace(/[ ]/g,""),
+        $("#roomName").text().replace(/[\r\n]/g, "").replace(/[ ]/g, ""),
         /*document.getElementById("title").innerText,*/
         $("#inputArea").val()
     )));
     $("#inputArea").val("");
 }
 
-function hideRoomInfo(){
+function hideRoomInfo() {
     $("#roomInfo").hide();
     $("#inputArea").attr("disabled", "true");
     $("#btn-block").attr("disabled", "true");
@@ -407,7 +415,7 @@ function hideRoomInfo(){
     $("#btn-leave").attr("disabled", "true");
 }
 
-function showRoomInfo(){
+function showRoomInfo() {
     $("#welcome").hide();
     $("#roomInfo").show();
     $("#inputArea").removeAttr("disabled");
@@ -425,6 +433,7 @@ function showRoomInfo(){
 function addOption(list, value, inner, id) {
     list.append(`<option id=${id} value=${value}>${inner} </option>`);
 }
+
 /**
  * insert emoji
  */
@@ -433,6 +442,7 @@ function insertEmoji() {
     const input = $("#inputArea");
     input.val(input.val() + selected.text());
 }
+
 /**
  * click inner chat button to begin chat
  * */
@@ -442,12 +452,12 @@ function createUserChat() {
         if (data === true) {
             updateRoomList();
             $("#chatModal").modal('hide');
-        }
-        else {
+        } else {
             //notify
         }
     }, "json")
 }
+
 /**
  * Update the room list of the current user once per 3 seconds.
  */
@@ -460,7 +470,7 @@ function updateRoomList() {
         rooms.empty();
         // update the room list from the data
         let html = "";
-        for(let i = 0; i< data.length; i++){
+        for (let i = 0; i < data.length; i++) {
             html += "<span class=\"text\">\n" +
                 "                <button class=\"room_btn btn-outline-primary p-0 m-0 u_btn\">\n" +
                 data[i].roomName +
@@ -470,13 +480,14 @@ function updateRoomList() {
         rooms.append(html);
     }, "json");
 }
+
 /**
  * click invite notification accept
  * */
 function acceptInvite() {
     console.log($(this).siblings("div").children(".inviteSender").text(), $(this).siblings("div").children(".inviteRoomName").text());
     webSocket.send(JSON.stringify(requests.acceptInviteRequest(
-        $(this).siblings("div").children(".inviteSender").text().replace(/[\r\n]/g,"").replace(/[ ]/g,""),
+        $(this).siblings("div").children(".inviteSender").text().replace(/[\r\n]/g, "").replace(/[ ]/g, ""),
         $(this).siblings("div").children(".inviteRoomName").text(),
         $("#user_name").val()
     )));
@@ -489,13 +500,14 @@ function acceptInvite() {
         updateRoomList();
     }, "json")*/
 }
+
 /**
  * click invite notification reject
  */
 function rejectInvite() {
     console.log($(this).siblings("div").children(".inviteSender").text(), $(this).siblings("div").children(".inviteRoomName").text());
     webSocket.send(JSON.stringify(requests.rejectInviteRequest(
-        $(this).siblings("div").children(".inviteSender").text().replace(/[\r\n]/g,"").replace(/[ ]/g,""),
+        $(this).siblings("div").children(".inviteSender").text().replace(/[\r\n]/g, "").replace(/[ ]/g, ""),
         $(this).siblings("div").children(".inviteRoomName").text(),
         $("#user_name").val()
     )));
@@ -507,9 +519,11 @@ function rejectInvite() {
         updateRoomList();
     }, "json")*/
 }
+
 /**
  * outside notification button
  * */
+
 /*function getNotification() {
     $.post("/user/notification", {username: $("#user_name").val()}, function (data) {
         let notifications = $("#notificationBody");
@@ -521,7 +535,7 @@ function rejectInvite() {
 /**
  * inside join button
  * */
-function joinRooms(){
+function joinRooms() {
     $.post("/join/group", {username: $("#user_name").val(), roomName: $("#roomSelection").text()}, function (data) {
         console.log(data);
         updateRoomList();
@@ -529,8 +543,7 @@ function joinRooms(){
         if (data === true) {
             updateRoomList();
             $("#joinModal").modal('hide');
-        }
-        else {
+        } else {
             //notify
         }
     }, "json")
@@ -539,7 +552,7 @@ function joinRooms(){
 /**
  * outside chat button
  * */
-function getAllUsers(){
+function getAllUsers() {
     $.post("/chat/getUsers", {username: $("#user_name").val()}, function (data) {
 
         console.log(data);// list of room info about name, type, limit, num
@@ -549,12 +562,12 @@ function getAllUsers(){
         userTable.empty();
         $("#chatWith").text("");
         let html = "";
-        for(let i = 0; i < data.length; i++){
+        for (let i = 0; i < data.length; i++) {
             html += "<tr><th scope=\"row\"><input type=\"radio\" name=\"chat\"></th><td>" +
                 data[i].username + "</td></tr>";
         }
         userTable.append(html);
-        $("input:radio[name='chat']").change(function (){
+        $("input:radio[name='chat']").change(function () {
             let opt = $("input:radio[name='chat']:checked").parent("th").next("td").text();
             console.log(opt);
             $("#chatWith").text(opt);
@@ -566,7 +579,7 @@ function getAllUsers(){
 /**
  * outside join button
  * */
-function getAllRooms(){
+function getAllRooms() {
     $.post("/join/getRooms", {username: $("#user_name").val()}, function (data) {
 
         console.log(data);// list of room info about name, type, limit, num
@@ -575,13 +588,13 @@ function getAllRooms(){
         $("#roomSelection").text("");
         roomTable.empty();
         let html = "";
-        for(let i = 0; i < data.length; i++){
+        for (let i = 0; i < data.length; i++) {
             html += "<tr><th scope=\"row\"><input type=\"radio\" name=\"join\"></th><td>" +
-                data[i].roomName + "</td><td>" +(data[i].isPublic === true?"public": "private") +
-                "</td><td>"+data[i].curNumUser+"/"+data[i].userLimit+"</td></tr>";
+                data[i].roomName + "</td><td>" + (data[i].isPublic === true ? "public" : "private") +
+                "</td><td>" + data[i].curNumUser + "/" + data[i].userLimit + "</td></tr>";
         }
         roomTable.append(html);
-        $("input:radio[name='join']").change(function (){
+        $("input:radio[name='join']").change(function () {
             let opt = $("input:radio[name='join']:checked").parent("th").next("td").text();
             $("#roomSelection").text(opt);
             $("#join_room").removeAttr("disabled");
@@ -590,14 +603,17 @@ function getAllRooms(){
 }
 
 function loadRoomUser() {
-    $.get("/room/members", {username: $("#user_name").val(), roomname: $("#roomName").text().replace(/[\r\n]/g,"").replace(/[ ]/g,"")}, function (data){
+    $.get("/room/members", {
+        username: $("#user_name").val(),
+        roomname: $("#roomName").text().replace(/[\r\n]/g, "").replace(/[ ]/g, "")
+    }, function (data) {
         console.log(JSON.parse(data));
         data = JSON.parse(data);
         console.log(data[0])
         $(".members .member_btn").remove();
         let html = '';
-        for(let i = 0; i < data.length; i++){
-            html += "<button type='radio' name='member' class=\"member_btn btn-outline-primary\" id='" + data[i] +"'>" + data[i] + "</button>";
+        for (let i = 0; i < data.length; i++) {
+            html += "<button type='radio' name='member' class=\"member_btn btn-outline-primary\" id='" + data[i] + "'>" + data[i] + "</button>";
         }
         $(".members").append(html);
     })
@@ -607,26 +623,25 @@ function loadRoomUser() {
 function doSearch() {
     let sh_input = $("#search_input").val();
     console.log(sh_input);
-    if(sh_input === ""){
-        for(let i = 0; i < UserList.length; i++){
+    if (sh_input === "") {
+        for (let i = 0; i < UserList.length; i++) {
             $("#" + UserList[i]).show();
         }
-    }
-    else{
-        for(let i = 0; i < UserList.length; i++){
-            if(UserList[i].indexOf(sh_input) >= 0) $("#" + UserList[i]).show();
+    } else {
+        for (let i = 0; i < UserList.length; i++) {
+            if (UserList[i].indexOf(sh_input) >= 0) $("#" + UserList[i]).show();
             else $("#" + UserList[i]).hide();
         }
     }
 }
 
-function doSomething(){
-    let username = $("#user_name").text().replace(/[\r\n]/g,"").replace(/[ ]/g,"");
+function doSomething() {
+    let username = $("#user_name").text().replace(/[\r\n]/g, "").replace(/[ ]/g, "");
     console.log(username);
-    if(username === "Owner" || username === "Admin1" || username === "Admin2"){
+    if (username === "Owner" || username === "Admin1" || username === "Admin2") {
 
         let btn = $(this).text();
-        if(btn === "Member1" || btn === "Member2"){
+        if (btn === "Member1" || btn === "Member2") {
             $('#btn-kick').removeAttr("disabled");
             $('#btn-mute').removeAttr("disabled");
         }
@@ -636,7 +651,6 @@ function doSomething(){
 function ping() {
     webSocket.send("ping");
 }
-
 
 
 /**
@@ -674,13 +688,13 @@ function setUsername() {
         console.log("set the username successfully");
         $("#user_name").text(localStorage.getItem("username"));
         $("#user_name").val(localStorage.getItem("username"));
-        $.post("/userInfo", {username: $("#user_name").val()},function (data) {
+        $.post("/userInfo", {username: $("#user_name").val()}, function (data) {
             data = JSON.parse(data);
             $("#age").text(data.age);
             $("#school").text(data.school);
             let newText = "";
             for (let i = 0; i < data.interests.length; i++) {
-                if(i === data.interests.length - 1) newText += data.interests[i];
+                if (i === data.interests.length - 1) newText += data.interests[i];
                 else newText += data.interests[i] + ", ";
             }
             $("#interests").text(newText);
@@ -711,7 +725,7 @@ function clearCreateForm() {
  */
 function createGroupChat() {
     checkCreateRoom();
-    if(checkCreateRoomComplete()) {
+    if (checkCreateRoomComplete()) {
         $.post("/create/groupchat", {
             username: $("#user_name").val(),
             roomName: $("#new_room_name").val(),
@@ -749,6 +763,7 @@ function doLogOut() {
         }
     }, "json");
 }
+
 /**
  * Send a message to the server.
  */
@@ -778,6 +793,7 @@ function sendMessage() {
         *!/
     }, "json");*/
 }
+
 /**
  * Press Enter button, then send the message.
  */
@@ -801,8 +817,7 @@ function validateCreateRoomName() {
     if (a.value.trim() === "") {
         a2.innerText = "   !";
         return false;
-    }
-    else {
+    } else {
         a2.innerText = ": )";
     }
     return true;
@@ -816,11 +831,9 @@ function validateCreateInterest() {
     var a2 = document.getElementById("interestAlert");
     if (a.value.trim() === "") {
         a2.innerText = "No interest is OK";
-    }
-    else if(a.validity.patternMismatch && a.value.trim() !== "") {
+    } else if (a.validity.patternMismatch && a.value.trim() !== "") {
         a2.innerText = "Interest should be a word";
-    }
-    else {
+    } else {
         a2.innerText = ": )";
     }
     return true;
@@ -833,18 +846,16 @@ function validateCreatePassword() {
     var a = document.getElementById("password");
     var a2 = document.getElementById("passwordAlert");
     //console.log(typeof $("#isPublic").is(':checked')); //--boolean
-    if($("#isPublic").is(':checked') === false) {
+    if ($("#isPublic").is(':checked') === false) {
         console.log("a.value" + a.value);
-        if(a.value.trim() === "") {
+        if (a.value.trim() === "") {
             a2.innerText = "!";
             return false;
-        }
-        else{
+        } else {
             a2.innerText = ": )";
             return true;
         }
-    }
-    else{
+    } else {
         a2.innerText = ": )";
         return true;
     }
@@ -860,13 +871,13 @@ function checkCreateRoom() {
 }
 
 function checkCreateRoomComplete() {
-    if($("#new_room_name").val().trim() === "") {
+    if ($("#new_room_name").val().trim() === "") {
         return false;
     } else {
-        if($("#isPublic").is(':checked') === true) {
+        if ($("#isPublic").is(':checked') === true) {
             return true;
         } else {
-            if($("#password").val().trim() === "") {
+            if ($("#password").val().trim() === "") {
                 return false;
             } else {
                 return true;
@@ -874,6 +885,7 @@ function checkCreateRoomComplete() {
         }
     }
 }
+
 /**
  * Enter a chatRoom
  */

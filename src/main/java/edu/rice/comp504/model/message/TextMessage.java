@@ -3,7 +3,7 @@ package edu.rice.comp504.model.message;
 /**
  * A concrete class to represent one text type message.
  */
-public class TextMessage extends Message{
+public class TextMessage extends Message {
 
 
     private final String body;
@@ -13,12 +13,13 @@ public class TextMessage extends Message{
 
     /**
      * A constructor for TextMessage.
+     *
      * @param timestamp The timestamp
-     * @param sendUser The message sender's username
-     * @param body The content of the text message
-     * @param font The font
-     * @param color The color
-     * @param size The size of text
+     * @param sendUser  The message sender's username
+     * @param body      The content of the text message
+     * @param font      The font
+     * @param color     The color
+     * @param size      The size of text
      */
     private TextMessage(String timestamp, String sendUser, String body, String font, String color, int size) {
         super(timestamp, sendUser, "text");
@@ -30,12 +31,13 @@ public class TextMessage extends Message{
 
     /**
      * Make function.
+     *
      * @param timestamp The timestamp
-     * @param sendUser The message sender's username
-     * @param body The content of the text message
-     * @param font The font
-     * @param color The color
-     * @param size The size of text
+     * @param sendUser  The message sender's username
+     * @param body      The content of the text message
+     * @param font      The font
+     * @param color     The color
+     * @param size      The size of text
      * @return TextMessage object
      */
     public static Message make(String timestamp, String sendUser, String body, String font, String color, int size) {
@@ -44,6 +46,7 @@ public class TextMessage extends Message{
 
     /**
      * Get size of text.
+     *
      * @return The size
      */
     public int getSize() {
@@ -52,6 +55,7 @@ public class TextMessage extends Message{
 
     /**
      * Get content of text.
+     *
      * @return The body content
      */
     public String getBody() {
@@ -60,6 +64,7 @@ public class TextMessage extends Message{
 
     /**
      * Get color of text.
+     *
      * @return The text color
      */
     public String getColor() {
@@ -68,6 +73,7 @@ public class TextMessage extends Message{
 
     /**
      * Get font of the text.
+     *
      * @return The font
      */
     public String getFont() {

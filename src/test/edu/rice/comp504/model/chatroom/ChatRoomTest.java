@@ -2,13 +2,11 @@ package edu.rice.comp504.model.chatroom;
 
 import org.junit.Test;
 
-import java.beans.PropertyChangeEvent;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class ChatRoomTest {
     ChatRoom test = new GroupChat(5, 1, "test", "test2", "test3",
-   false, "111");
+            false, "111");
 
     @Test
     public void getRoomId() {

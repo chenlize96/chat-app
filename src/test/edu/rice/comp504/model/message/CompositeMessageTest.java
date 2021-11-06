@@ -3,18 +3,18 @@ package edu.rice.comp504.model.message;
 import edu.rice.comp504.model.MessageDB;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class CompositeMessageTest {
 
-    CompositeMessage compositeMessage = new CompositeMessage("","aaa");
+    CompositeMessage compositeMessage = new CompositeMessage("", "aaa");
 
     @Test
     public void addChildText() {
-        TextMessage textMessage = (TextMessage) TextMessage.make("","aaa",
-                "bbb","ccc","ddd",12);
+        TextMessage textMessage = (TextMessage) TextMessage.make("", "aaa",
+                "bbb", "ccc", "ddd", 12);
         compositeMessage.addChildText(textMessage);
-        assertEquals(textMessage,compositeMessage.getChildrenMessageArrayList().get(0));
+        assertEquals(textMessage, compositeMessage.getChildrenMessageArrayList().get(0));
     }
 
     @Test
@@ -41,10 +41,10 @@ public class CompositeMessageTest {
 
     @Test
     public void getChildrenContentAsString() {
-        TextMessage textMessage = (TextMessage) TextMessage.make("","aaa",
-                "bbb","ccc","ddd",12);
+        TextMessage textMessage = (TextMessage) TextMessage.make("", "aaa",
+                "bbb", "ccc", "ddd", 12);
         compositeMessage.addChildText(textMessage);
-        
+
 //        public String getChildrenContentAsString() {
 //            StringBuilder result = new StringBuilder();
 //            for (Message m : this.childrenMessage) {

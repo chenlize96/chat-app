@@ -7,10 +7,9 @@ import edu.rice.comp504.model.notification.SimpleNotification;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class UserTest {
     User test = new RegisteredUser("test", "111", "Rice", 18, "test2");
@@ -78,14 +77,14 @@ public class UserTest {
 
     @Test
     public void getRoomList() {
-        assertEquals(test.getRoomList(), new ArrayList<ChatRoom>() );
+        assertEquals(test.getRoomList(), new ArrayList<ChatRoom>());
     }
 
     @Test
     public void addAChatRoom() {
         test.addAChatRoom(new GroupChat(5, 1, "test", "test2", "test3",
                 false, "111"));
-        assertEquals(test.getRoomList().size(),  1);
+        assertEquals(test.getRoomList().size(), 1);
     }
 
     @Test
@@ -108,11 +107,11 @@ public class UserTest {
 
     @Test
     public void removeAllNotification() {
-        User user = new RegisteredUser("","","",22,"");
+        User user = new RegisteredUser("", "", "", 22, "");
         List<ChatRoom> list = user.getRoomList();
-        list.add(new GroupChat(5,5,"room","sd","dsds",true,"XXXX"));
+        list.add(new GroupChat(5, 5, "room", "sd", "dsds", true, "XXXX"));
         user.removeAChatRoom(list.get(0).getRoomName());
-        list.add(new GroupChat(5,5,"room","sd","dsds",true,"XXXX"));
+        list.add(new GroupChat(5, 5, "room", "sd", "dsds", true, "XXXX"));
         user.removeAChatRoom(list.get(0));
     }
 

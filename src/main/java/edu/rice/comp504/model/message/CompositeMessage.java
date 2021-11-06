@@ -5,15 +5,16 @@ import java.util.ArrayList;
 /**
  * A concrete class to represent multiple text and images mixed message.
  */
-public class CompositeMessage extends Message{
+public class CompositeMessage extends Message {
 
     private ArrayList<Message> childrenMessage;
 
 
     /**
      * A constructor for composite message.
+     *
      * @param timestamp The timestamp
-     * @param sendUser The message sender's username
+     * @param sendUser  The message sender's username
      */
     public CompositeMessage(String timestamp, String sendUser) {
         super(timestamp, sendUser, "composite");
@@ -22,6 +23,7 @@ public class CompositeMessage extends Message{
 
     /**
      * Add a text message to composite message.
+     *
      * @param textMessage The textMessage object
      */
     public void addChildText(TextMessage textMessage) {
@@ -34,13 +36,14 @@ public class CompositeMessage extends Message{
 
     /**
      * Add child messages based on an input string stream.
+     *
      * @param body input string stream
      */
     public void addMultipleChildFromString(String body) {
         String[] strList = body.split(":sep:");
         for (String i : strList) {
             //empty string is possible ":sep:Hello"
-            if(i.length()==0) {
+            if (i.length() == 0) {
                 continue;
             }
             Message tempMsg = NullMessage.make();
@@ -56,6 +59,7 @@ public class CompositeMessage extends Message{
 
     /**
      * Add an image message to composite message.
+     *
      * @param imageMessage The imageMessage object
      */
     public void addChildImage(ImageMessage imageMessage) {
@@ -68,6 +72,7 @@ public class CompositeMessage extends Message{
 
     /**
      * Return the whole children message ArrayList.
+     *
      * @return ArrayList of Message
      */
     public ArrayList<Message> getChildrenMessageArrayList() {
@@ -77,6 +82,7 @@ public class CompositeMessage extends Message{
 
     /**
      * Get all content of child message into one string with separate signal between.
+     *
      * @return one string which contains all body of children messages
      */
     public String getChildrenContentAsString() {
@@ -99,7 +105,6 @@ public class CompositeMessage extends Message{
         }
         return result.toString();
     }
-
 
 
 }

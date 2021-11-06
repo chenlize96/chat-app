@@ -2,7 +2,7 @@
 /**
  * Entry point to the landing page.
  */
-window.onload = function() {
+window.onload = function () {
     clear();
     $('#registerForm').on('show.bs.modal', clearForm);
     $("#btn_log").click(doLogin);
@@ -13,19 +13,20 @@ window.onload = function() {
 /**
  * A user login to the system.
  */
-function doLogin(){
+function doLogin() {
     checkLogin();
-    if(($("#usernameLogin").val().trim() !== "") && ($("#passwordLogin").val().trim() !== "")) {
-        $.post("/login", {username: $("#usernameLogin").val(),
-            password: $("#passwordLogin").val()}, function (data) {
+    if (($("#usernameLogin").val().trim() !== "") && ($("#passwordLogin").val().trim() !== "")) {
+        $.post("/login", {
+            username: $("#usernameLogin").val(),
+            password: $("#passwordLogin").val()
+        }, function (data) {
             console.log(data);
             // get a boolean - if true then submit, otherwise do not direct AND show error message
             if (data.username !== "null") {
                 console.log("login success");
                 localStorage.setItem("username", $("#usernameLogin").val());
                 document.getElementById("registerInfo").submit();
-            }
-            else {
+            } else {
                 console.log("login fail");
                 // show error messages on the form
                 document.getElementById("usernameLoginAlert").innerText = "please check";
@@ -40,11 +41,13 @@ function doLogin(){
  */
 function doRegister() {
     checkRegister();
-    if(checkComplete()) {
+    if (checkComplete()) {
         // assume front-end can compare the password with the password confirmation
-        $.post("/register", {username: $("#username").val(), school: $("#school").val(),
+        $.post("/register", {
+            username: $("#username").val(), school: $("#school").val(),
             age: $("#age").val(), interests: $("#interests").val(),
-            password: $("#password").val()}, function (data) {
+            password: $("#password").val()
+        }, function (data) {
             console.log(data);
             // if true then register successfully, otherwise there exists the same username
             if (data === true) {
@@ -100,8 +103,7 @@ function validateLoginUserName() {
     if (a.value.trim() === "") {
         a2.innerText = "!";
         return false;
-    }
-    else {
+    } else {
         a2.innerText = "";
     }
     return true;
@@ -117,8 +119,7 @@ function validateLoginPassword() {
     if (a.value.trim() === "") {
         a2.innerText = "!";
         return false;
-    }
-    else {
+    } else {
         a2.innerText = "";
     }
     return true;
@@ -142,8 +143,7 @@ function validateRegisterUserName() {
     if (a.value.trim() === "") {
         a2.innerText = "!";
         return false;
-    }
-    else {
+    } else {
         a2.innerText = ": )";
     }
     return true;
@@ -159,8 +159,7 @@ function validateRegisterSchool() {
     if (a.value.trim() === "") {
         a2.innerText = "!";
         return false;
-    }
-    else {
+    } else {
         a2.innerText = ": )";
     }
     return true;
@@ -176,18 +175,15 @@ function validateRegisterAge() {
     if (a.value.trim() === "") {
         a2.innerText = "!";
         return false;
-    }
-    else if(isNaN(a.value.trim())) {
+    } else if (isNaN(a.value.trim())) {
         a2.innerText = "Age should be integer";
         document.getElementById("age").value = "";
         return false;
-    }
-    else if(parseInt(a.value.trim(),10) < 18 || parseInt(a.value.trim(),10) > 110) {
+    } else if (parseInt(a.value.trim(), 10) < 18 || parseInt(a.value.trim(), 10) > 110) {
         a2.innerText = "Age from 18 to 110, please";
         document.getElementById("age").value = "";
         return false;
-    }
-    else {
+    } else {
         a2.innerText = ": )";
     }
     return true;
@@ -204,12 +200,10 @@ function validateRegisterInterests() {
     if (a.value.trim() === "") {
         a2.innerText = "!";
         return false;
-    }
-    else if(a.validity.patternMismatch && a.value.trim() !== "") {
+    } else if (a.validity.patternMismatch && a.value.trim() !== "") {
         a1.innerText = "";
         a2.innerText = "Words split by comma";
-    }
-    else {
+    } else {
         a2.innerText = ": )";
     }
     return true;
@@ -224,19 +218,18 @@ function validateRegisterPassword() {
     var pass2 = document.getElementById("passwordSecond");
     var alert = document.getElementById("passwordAlert");
     var alert2 = document.getElementById("passwordSecondAlert");
-    if(pass.value.trim() === "") {
+    if (pass.value.trim() === "") {
         alert.innerText = "!";
         return false;
     }
-    if(pass2.value.trim() === "") {
+    if (pass2.value.trim() === "") {
         alert2.innerText = "!";
         return false;
     }
-    if (pass.value.trim() !== pass2.value.trim()){
+    if (pass.value.trim() !== pass2.value.trim()) {
         alert.innerText = "";
         alert2.innerText = ">_<";
-    }
-    else {
+    } else {
         alert.innerText = ": )";
         alert2.innerText = ": )";
     }
@@ -248,16 +241,14 @@ function validateRegisterPassword() {
  * @returns {boolean} Whether info for registration is complete.
  */
 function checkComplete() {
-    if($("#username").val().trim() !== "" &&
+    if ($("#username").val().trim() !== "" &&
         $("#school").val().trim() !== "" &&
         $("#age").val().trim() !== "" &&
         $("#interests").val().trim() !== "" &&
         ($("#password").val().trim() !== "" && $("#passwordSecond").val().trim() !== "") &&
-        ($("#password").val().trim() === $("#passwordSecond").val().trim()))
-    {
+        ($("#password").val().trim() === $("#passwordSecond").val().trim())) {
         return true;
-    }
-    else {
+    } else {
         return false;
     }
 }

@@ -9,7 +9,7 @@ import java.util.*;
 /**
  * A concrete class to represent multiple users chat room.
  */
-public class GroupChat extends ChatRoom{
+public class GroupChat extends ChatRoom {
 
     // owner is the username of the owner
     private String owner;
@@ -26,12 +26,13 @@ public class GroupChat extends ChatRoom{
 
 
     /**
-     * A constructor for group chat room
-     * @param userLimit The user limit
-     * @param roomName The room name
+     * A constructor for group chat room.
+     *
+     * @param userLimit     The user limit
+     * @param roomName      The room name
      * @param ownerUsername The username of first user
-     * @param isPublic If this room is public or not
-     * @param roomPassword The room password
+     * @param isPublic      If this room is public or not
+     * @param roomPassword  The room password
      */
     public GroupChat(int userLimit, int roomId, String roomName, String interest, String ownerUsername,
                      boolean isPublic, String roomPassword) {
@@ -55,6 +56,7 @@ public class GroupChat extends ChatRoom{
 
     /**
      * Get admin list of this room.
+     *
      * @return The admin list
      */
     public ArrayList<String> getAdminList() {
@@ -63,6 +65,7 @@ public class GroupChat extends ChatRoom{
 
     /**
      * Get block map of this room.
+     *
      * @return The block map
      */
     public Map<String, List<String>> getBlockMap() {
@@ -71,23 +74,29 @@ public class GroupChat extends ChatRoom{
 
     /**
      * Get all user list of this room
+     *
      * @return The user list.
      */
     public ArrayList<String> getUserList() {
         return userList;
     }
 
+    public void setUserList(ArrayList<String> userList) {
+        this.userList = userList;
+    }
+
     /**
      * Get whether this room is public or not.
+     *
      * @return A boolean flag
      */
     public boolean isPublic() {
         return isPublic;
     }
 
-
     /**
      * Get current number of all users.
+     *
      * @return The num of all users
      */
     public int getCurNumUser() {
@@ -95,50 +104,8 @@ public class GroupChat extends ChatRoom{
     }
 
     /**
-     * Get central admin of this room (room owner).
-     * @return The owner's username string
-     */
-    public String getOwner() {
-        return owner;
-    }
-
-    /**
-     * Get room's password.
-     * @return Room password string
-     */
-    public String getRoomPassword() {
-        return roomPassword;
-    }
-
-    /**
-     * Get room's rule as a list.
-     * @return Room rules ArrayList
-     */
-    public ArrayList<String> getRules() {
-        return rules;
-    }
-
-    /**
-     * get room's mute list
-     * @return Room rules ArrayList
-     */
-    public ArrayList<String> getMuteList() {
-        return muteList;
-    }
-
-    /**
-     * add a user into room's mute list
-     * @param username
-     */
-    public void addToMuteList(String username) {
-        if(!this.muteList.contains(username)) {
-            this.muteList.add(username);
-        }
-    }
-
-
-    /**
      * Set number of users.
+     *
      * @param curNumUser Number of users.
      */
     public void setCurNumUser(int curNumUser) {
@@ -146,11 +113,68 @@ public class GroupChat extends ChatRoom{
     }
 
     /**
+     * Get central admin of this room (room owner).
+     *
+     * @return The owner's username string
+     */
+    public String getOwner() {
+        return owner;
+    }
+
+    /**
      * Set this chat room's owner.
+     *
      * @param owner Owner's username
      */
     public void setOwner(String owner) {
         this.owner = owner;
+    }
+
+    /**
+     * Get room's password.
+     *
+     * @return Room password string
+     */
+    public String getRoomPassword() {
+        return roomPassword;
+    }
+
+    /**
+     * Set the password to this room.
+     *
+     * @param roomPassword The room's password.
+     */
+    public void setRoomPassword(String roomPassword) {
+        this.roomPassword = roomPassword;
+    }
+
+    /**
+     * Get room's rule as a list.
+     *
+     * @return Room rules ArrayList
+     */
+    public ArrayList<String> getRules() {
+        return rules;
+    }
+
+    /**
+     * get room's mute list.
+     *
+     * @return Room rules ArrayList
+     */
+    public ArrayList<String> getMuteList() {
+        return muteList;
+    }
+
+    /**
+     * add a user into room's mute list.
+     *
+     *
+     */
+    public void addToMuteList(String username) {
+        if (!this.muteList.contains(username)) {
+            this.muteList.add(username);
+        }
     }
 
     /**
@@ -168,15 +192,8 @@ public class GroupChat extends ChatRoom{
     }
 
     /**
-     * Set the password to this room.
-     * @param roomPassword The room's password.
-     */
-    public void setRoomPassword(String roomPassword) {
-        this.roomPassword = roomPassword;
-    }
-
-    /**
      * Add rules to rule list.
+     *
      * @param rules The rules need to be added
      */
     public void addRules(String rules) {
@@ -189,12 +206,9 @@ public class GroupChat extends ChatRoom{
         }
     }
 
-    public void setUserList(ArrayList<String> userList) {
-        this.userList = userList;
-    }
-
     /**
      * Add users to user list.
+     *
      * @param users The users as a string input like "aaa, bbb, ..."
      */
     public void addToUserList(String users) {
@@ -211,6 +225,7 @@ public class GroupChat extends ChatRoom{
 
     /**
      * Add admin to adminList.
+     *
      * @param admins The admin or admins as a string input like "aaa, bbb, ..."
      */
     public void addToAdminList(String admins) {
@@ -239,9 +254,10 @@ public class GroupChat extends ChatRoom{
 
     /**
      * Add block users to blocklist.
+     *
      * @param blockUser The block users as a string input like "aaa, bbb, ..."
      */
-    public void addToBlockList(String blockUser,String blockedUser) {
+    public void addToBlockList(String blockUser, String blockedUser) {
         try {
             this.blockMap.get(blockUser).add(blockedUser);
         } catch (StringIndexOutOfBoundsException sioobe) {
@@ -257,13 +273,14 @@ public class GroupChat extends ChatRoom{
 
     /**
      * @return room interest.
-     * */
+     */
     public String getInterest() {
         return interest;
     }
 
     /**
      * According to property change event's content to modified current chat room's instances.
+     *
      * @param evt The property change event
      */
     public void propertyChange(PropertyChangeEvent evt) {
@@ -272,13 +289,14 @@ public class GroupChat extends ChatRoom{
 
     /**
      * kick a user out of the room.
-     * @param kickedUser
+     *
+     *
      */
     public void kickUser(String kickedUser) {
         Iterator<String> iterator = this.userList.iterator();
         while (iterator.hasNext()) {
             String username = iterator.next();
-            if(username.equals(kickedUser)) {
+            if (username.equals(kickedUser)) {
                 iterator.remove();
                 // decrease the num by 1
                 this.setCurNumUser(this.getCurNumUser() - 1);

@@ -2,65 +2,66 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <meta name="author" content="Group D">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="Group D" name="author">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
     <script src="js/jquery-3.6.0.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    <script crossorigin="anonymous"
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-            crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-          crossorigin="anonymous">
+          rel="stylesheet">
     <script src="js/landing.js"></script>
-    <link rel="stylesheet" type="text/css" href="chatApp.css">
+    <link href="chatApp.css" rel="stylesheet" type="text/css">
     <title>Landing Page</title>
 </head>
 
 
 <body>
-<form class='card p-3 bg-light col-lg-6 offset-lg-3'
-      method="post" id = "registerInfo" action="main.html">
+<form action="main.html"
+      class='card p-3 bg-light col-lg-6 offset-lg-3' id="registerInfo" method="post">
     <h1 align="center">Landing Page</h1>
     <h5 align="center">
-        <label class="landing_label" for="usernameLogin" >Username</label>
-        <input rows="10" cols="10" id="usernameLogin" name="usernameLogin">
+        <label class="landing_label" for="usernameLogin">Username</label>
+        <input cols="10" id="usernameLogin" name="usernameLogin" rows="10">
         <span id="usernameLoginAlert"></span>
     </h5>
     <br>
     <h5 align="center">
-        <label class="landing_label" for="passwordLogin" >Password</label>
-        <input type="password" rows="10" cols="10" id="passwordLogin" name="passwordLogin">
+        <label class="landing_label" for="passwordLogin">Password</label>
+        <input cols="10" id="passwordLogin" name="passwordLogin" rows="10" type="password">
         <span id="passwordLoginAlert"></span>
     </h5>
     <br>
     <h5 align="center">
-        <input type="button" id="btn_log" class="landing_btn btn-primary" value="Log In">
-        <button type="button" class="landing_btn btn-primary" data-toggle="modal"
-                data-target="#registerForm">Register</button>
+        <input class="landing_btn btn-primary" id="btn_log" type="button" value="Log In">
+        <button class="landing_btn btn-primary" data-target="#registerForm" data-toggle="modal"
+                type="button">Register
+        </button>
     </h5>
 </form>
 
 <!-- Button trigger modal -->
 <!-- Modal -->
-<div class="modal fade" id="registerForm" tabindex="-1"
-     role="dialog" aria-labelledby="registerFormLabel" aria-hidden="true">
+<div aria-hidden="true" aria-labelledby="registerFormLabel" class="modal fade"
+     id="registerForm" role="dialog" tabindex="-1">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="registerFormLabel">
                     Register Page
                 </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="infoClass">
                 <br>
-                <label class="landing_label" for="username" >
+                <label class="landing_label" for="username">
                     Username:
                 </label>
-                <input rows="10" cols="10" id="username" name="username">
-                    <span id="usernameAlert"></span>
+                <input cols="10" id="username" name="username" rows="10">
+                <span id="usernameAlert"></span>
                 <br>
                 </input>
             </div>
@@ -71,30 +72,31 @@
                 </input>
             </div>-->
             <div class="infoClass">
-                <label class="landing_label" for="school" >
+                <label class="landing_label" for="school">
                     School:
                 </label>
-                <input type="text" id="school" name="school">
-                    <span id="schoolAlert"></span>
+                <input id="school" name="school" type="text">
+                <span id="schoolAlert"></span>
                 <br>
                 </input>
             </div>
             <div class="infoClass">
-                <label class="landing_label" for="age" >
+                <label class="landing_label" for="age">
                     Age:
                 </label>
-                <input type="text" id="age" name="age">
-                    <span id="ageAlert"></span>
+                <input id="age" name="age" type="text">
+                <span id="ageAlert"></span>
                 <br>
                 </input>
             </div>
             <div class="infoClass">
-                <label class="landing_label" for="interests" >
+                <label class="landing_label" for="interests">
                     Interests:
                 </label>
-                <input type="text" id="interests" name="interests" placeholder="swim, music" pattern="[a-zA-Z\s]+(,[ ]*[a-zA-Z]+)*">
-                    <span id="interestsAlert"></span>
-                    <span id="interestsInstr">split by comma</span>
+                <input id="interests" name="interests" pattern="[a-zA-Z\s]+(,[ ]*[a-zA-Z]+)*" placeholder="swim, music"
+                       type="text">
+                <span id="interestsAlert"></span>
+                <span id="interestsInstr">split by comma</span>
                 <br>
                 </input>
             </div>
@@ -112,11 +114,11 @@
                 </input>
             </div>-->
             <div class="infoClass">
-                <label class="landing_label" for="password" >
+                <label class="landing_label" for="password">
                     Password:
                 </label>
-                <input type="password" id="password" name="password">
-                    <span id="passwordAlert"></span>
+                <input id="password" name="password" type="password">
+                <span id="passwordAlert"></span>
                 <!--
                     <script>
                         let len = document.getElementById("password").innerText.length;
@@ -127,17 +129,17 @@
                     </script>
                 -->
                 <br>
-                <label class="landing_label" for="passwordSecond" >
+                <label class="landing_label" for="passwordSecond">
                     Password Confirmation:
                 </label>
-                <input type="password" id="passwordSecond" name="passwordSecond">
-                    <span id="passwordSecondAlert"></span>
+                <input id="passwordSecond" name="passwordSecond" type="password">
+                <span id="passwordSecondAlert"></span>
             </div>
             <br>
             <button class="btn btn-primary" id="btn_register">Register</button>
-            <button class="btn btn-primary" id="btn_clear" >Clear</button>
-            </div>
+            <button class="btn btn-primary" id="btn_clear">Clear</button>
         </div>
     </div>
+</div>
 </div>
 </body>

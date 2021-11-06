@@ -7,6 +7,7 @@ public interface INotificationFac {
 
     /**
      * Make function.
+     *
      * @return A notification
      */
     Notification make(String type, String sender, String receiver, String info);

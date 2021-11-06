@@ -65,7 +65,7 @@ const getKickRequest = (roomName, otherName) => ({
 });
 
 // do not do this
-const getBlockRequest= (roomName, otherName) => ({
+const getBlockRequest = (roomName, otherName) => ({
     roomName: roomName,
     userBlock: otherName,
     //timeStamp: new Date().getTime(),

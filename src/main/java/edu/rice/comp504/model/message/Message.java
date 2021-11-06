@@ -6,7 +6,7 @@ import java.time.format.DateTimeFormatter;
 /**
  * An abstract class to represent all messages object.
  */
-public abstract class Message implements IMessageFac{
+public abstract class Message implements IMessageFac {
 
     private final String timestamp;
     private final String sendUser;
@@ -14,8 +14,9 @@ public abstract class Message implements IMessageFac{
 
     /**
      * A constructor for Message.
+     *
      * @param timestamp The timestamp
-     * @param sendUser The message sender's display name
+     * @param sendUser  The message sender's display name
      */
     public Message(String timestamp, String sendUser, String type) {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
@@ -25,8 +26,13 @@ public abstract class Message implements IMessageFac{
         this.type = type;
     }
 
+    public static Message make() {
+        return NullMessage.make();
+    }
+
     /**
      * Get send user's display name.
+     *
      * @return The send user's display name
      */
     public String getSendUser() {
@@ -35,6 +41,7 @@ public abstract class Message implements IMessageFac{
 
     /**
      * Get timestamp of this message.
+     *
      * @return The timestamp
      */
     public String getTimestamp() {
@@ -43,14 +50,11 @@ public abstract class Message implements IMessageFac{
 
     /**
      * Get type of this message.
+     *
      * @return The type
      */
     public String getType() {
         return type;
-    }
-
-    public static Message make() {
-        return NullMessage.make();
     }
 
 }

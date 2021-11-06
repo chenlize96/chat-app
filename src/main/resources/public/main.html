@@ -4,26 +4,27 @@
     <meta charset="UTF-8">
     <title>Chat Rooms</title>
     <script src="js/jquery-3.6.0.min.js"></script>
-    <script type="module" src="js/view.js"></script>
+    <script src="js/view.js" type="module"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="chatApp.css">
+    <link href="chatApp.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
 <div style="position:center; top:3em; left:0em;">
     <div class="container">
-        <div id="user_name" class="user_name"></div>
+        <div class="user_name" id="user_name"></div>
         <div class="rooms_title">
             <label>Available Rooms</label>
         </div>
         <div class="room_name">
-            <label id="title"><span id="welcome">Welcome!  </span><span id="roomInfo"><span id="roomName"></span>(<span id="curRoomNum"></span>/<span id="limitRoomNum"></span>)</span>
+            <label id="title"><span id="welcome">Welcome!  </span><span id="roomInfo"><span id="roomName"></span>(<span
+                    id="curRoomNum"></span>/<span id="limitRoomNum"></span>)</span>
             </label>
         </div>
         <div class="description">
@@ -76,17 +77,19 @@
         </div>
         <div class="room_btn_container row offset-md-0">
             <div class="col-4 p-0">
-                <button class="btn btn-outline-primary p-0 u_btn" id="btn-chat" data-toggle="modal" data-target="#chatModal">
+                <button class="btn btn-outline-primary p-0 u_btn" data-target="#chatModal" data-toggle="modal"
+                        id="btn-chat">
                     Chat
                 </button>
             </div>
             <div class="col-4 p-0">
-                <button class="btn btn-outline-primary p-0 u_btn" id="btn-create" data-toggle="modal"
-                        data-target="#createModal">Create
+                <button class="btn btn-outline-primary p-0 u_btn" data-target="#createModal" data-toggle="modal"
+                        id="btn-create">Create
                 </button>
             </div>
             <div class="col-4 p-0">
-                <button class="btn btn-outline-primary p-0 u_btn" id="btn-join" data-toggle="modal" data-target="#joinModal">
+                <button class="btn btn-outline-primary p-0 u_btn" data-target="#joinModal" data-toggle="modal"
+                        id="btn-join">
                     Join
                 </button>
             </div>
@@ -97,7 +100,7 @@
             <!--<label id="outputArea">Output Area</label>-->
             <div class="chat">
                 <div class="chat-history">
-                    <ul id="chat-content" class="m-b-0">
+                    <ul class="m-b-0" id="chat-content">
                         <!--<li class="clearfix">
                             <div class="message-data text-right">
                                 <span class="message-data-time">Jason, 10:10 AM</span>
@@ -116,7 +119,9 @@
                                 <span class="message-data-time">Nix, 10:15 AM</span>
                             </div>
                             <div class="message my-message">
-                                <button type="button" style="outline: none" class="text_btn outline-none" data-container="body" data-toggle="popover" data-trigger="hover focus" data-placement="top">
+                                <button class="text_btn outline-none" data-container="body" data-placement="top"
+                                        data-toggle="popover" data-trigger="hover focus" style="outline: none"
+                                        type="button">
                                     Hi.
                                 </button>
                                 <script>
@@ -134,7 +139,8 @@
             </div>
         </div>
         <div class="members">
-            <input id="search_input" class="w-75"><span><button id="search_btn" class="btn-primary w-25">sh</button></span>
+            <input class="w-75" id="search_input"><span><button class="btn-primary w-25"
+                                                                id="search_btn">sh</button></span>
             <!---<button class="member_btn btn-outline-primary">
                 Owner
             </button>
@@ -154,8 +160,8 @@
         <div class="group_btn_container">
             <div class="row m-0" style="width: 200px;height: 50px;">
                 <div class="col-6 p-0">
-                    <button class="btn btn-primary u_btn" id="btn-invite" data-toggle="modal"
-                            data-target="#inviteModal">Invite
+                    <button class="btn btn-primary u_btn" data-target="#inviteModal" data-toggle="modal"
+                            id="btn-invite">Invite
                     </button>
                 </div>
                 <div class="col-6 p-0">
@@ -169,7 +175,7 @@
             </div>
             <div class="row m-0" style="width: 200px;height: 50px;">
                 <div class="col-6 p-0">
-                    <button class="btn btn-primary u_btn" id="btn-block" data-toggle="modal" data-target="#blockModal">
+                    <button class="btn btn-primary u_btn" data-target="#blockModal" data-toggle="modal" id="btn-block">
                         Block
                     </button>
                 </div>
@@ -184,12 +190,12 @@
             </div>
             <div class="row m-0" style="width: 200px;height: 50px;">
                 <div class="col-6 p-0">
-                    <button class="btn btn-primary u_btn" id="btn-history" data-toggle="modal"
-                            data-target="#historyModal">History
+                    <button class="btn btn-primary u_btn" data-target="#historyModal" data-toggle="modal"
+                            id="btn-history">History
                     </button>
                 </div>
                 <div class="col-6 p-0">
-                    <button class="btn btn-primary u_btn" id="btn-leave" data-toggle="modal" data-target="#leaveModal">
+                    <button class="btn btn-primary u_btn" data-target="#leaveModal" data-toggle="modal" id="btn-leave">
                         Leave
                     </button>
                 </div>
@@ -202,42 +208,54 @@
             <label> We are images</label>
         </div>
         <div class="inputArea">
-            <textarea type="text" id="inputArea" name="inputArea"></textarea>
+            <textarea id="inputArea" name="inputArea" type="text"></textarea>
         </div>
         <div class="enter">
             <button class="btn" id="btn-clear">
-                <img width="150px" height="80px" src="enter.jpg">
+                <img height="80px" src="enter.jpg" width="150px">
             </button>
         </div>
         <div class="logout_btn">
             <button class="btn" id="btn-logout">
-                <img width="120px" height="90px" src="logout.png">
+                <img height="90px" src="logout.png" width="120px">
             </button>
         </div>
         <div class="notification">
-            <button type="button" class="btn btn-primary" id="notificationInfo" data-toggle="modal" data-target="#NotificationsModal">
+            <button class="btn btn-primary" data-target="#NotificationsModal" data-toggle="modal" id="notificationInfo"
+                    type="button">
                 Notifications
             </button>
             <!-- Modal -->
-            <div class="modal fade" id="NotificationsModal" tabindex="-1" role="dialog" aria-labelledby="NotificationsModalLabel" aria-hidden="true">
+            <div aria-hidden="true" aria-labelledby="NotificationsModalLabel" class="modal fade" id="NotificationsModal"
+                 role="dialog" tabindex="-1">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="NotificationsModalLabel">Notification</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <button aria-label="Close" class="close" data-dismiss="modal" type="button">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body" id="notificationArea">
                             <div class="row w-100 mb-1">
-                                <div class="col-6"><span class="inviteSender">Tom</span> invite you to <span class="inviteRoomName">group 1</span></div>
-                                <button type="button" class="btn btn-outline-success btn-sm col-1 p-0 mr-2 invite_ac" style="border: none">accept</button>
-                                <button type="button" class="btn btn-outline-danger btn-sm col-1 p-0 ml-2 invite_rj" style="border: none">reject</button>
+                                <div class="col-6"><span class="inviteSender">Tom</span> invite you to <span
+                                        class="inviteRoomName">group 1</span></div>
+                                <button class="btn btn-outline-success btn-sm col-1 p-0 mr-2 invite_ac" style="border: none"
+                                        type="button">accept
+                                </button>
+                                <button class="btn btn-outline-danger btn-sm col-1 p-0 ml-2 invite_rj" style="border: none"
+                                        type="button">reject
+                                </button>
                             </div>
                             <div class="row w-100 mb-1">
-                                <div class="col-6"><span class="inviteSender">Jack</span> invite you to <span class="inviteRoomName">group D</span></div>
-                                <button type="button" class="btn btn-outline-success btn-sm col-1 p-0 mr-2 invite_ac" style="border: none">accept</button>
-                                <button type="button" class="btn btn-outline-danger btn-sm col-1 p-0 ml-2 invite_rj" style="border: none">reject</button>
+                                <div class="col-6"><span class="inviteSender">Jack</span> invite you to <span
+                                        class="inviteRoomName">group D</span></div>
+                                <button class="btn btn-outline-success btn-sm col-1 p-0 mr-2 invite_ac" style="border: none"
+                                        type="button">accept
+                                </button>
+                                <button class="btn btn-outline-danger btn-sm col-1 p-0 ml-2 invite_rj" style="border: none"
+                                        type="button">reject
+                                </button>
                             </div>
 
 
@@ -264,7 +282,7 @@
                             </table>--->
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button class="btn btn-secondary" data-dismiss="modal" type="button">Close</button>
                         </div>
                     </div>
                 </div>
@@ -273,7 +291,7 @@
 
     </div>
 </div>
-<div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="exampleModalLabel">
+<div aria-labelledby="exampleModalLabel" class="modal fade" id="createModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content w-100">
             <div class="modal-header">
@@ -282,34 +300,35 @@
             <div class="modal-body">
                 <form>
                     <div class="form-group row">
-                        <label for="new_room_name" class="col-3 col-form-label text-left">Room Name:</label>
-                        <input type="text" class="col-6 form-control" id="new_room_name">
+                        <label class="col-3 col-form-label text-left" for="new_room_name">Room Name:</label>
+                        <input class="col-6 form-control" id="new_room_name" type="text">
                         <span id="new_room_nameAlert"></span>
                     </div>
                     <div class="form-group row">
-                        <label for="maxUser" class="col-2 col-form-label text-left">Size:</label>
-                        <input type="number" class="form-control col-2" id="maxUser"
-                               value="1" min="1" max="50">
+                        <label class="col-2 col-form-label text-left" for="maxUser">Size:</label>
+                        <input class="form-control col-2" id="maxUser" max="50"
+                               min="1" type="number" value="1">
                     </div>
                     <div class="form-group row">
                         <label class="col-3 col-form-label text-left">Privacy:</label>
                         <div class="col-3 col-form-label">
-                            <input type="radio" name="privacy" checked="checked" id="isPublic">
+                            <input checked="checked" id="isPublic" name="privacy" type="radio">
                             <span>Public</span>
                         </div>
                         <div class="col-3 col-form-label">
-                            <input type="radio" name="privacy" id="isPrivate">
+                            <input id="isPrivate" name="privacy" type="radio">
                             <span>Private</span>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="interest" class="col-3 col-form-label text-left">Interest:</label>
-                        <input type="text" class="form-control col-6" id="interest" placeholder="swim" pattern="[a-zA-Z0-9]*">
+                        <label class="col-3 col-form-label text-left" for="interest">Interest:</label>
+                        <input class="form-control col-6" id="interest" pattern="[a-zA-Z0-9]*" placeholder="swim"
+                               type="text">
                         <span id="interestAlert"></span>
                     </div>
                     <div class="form-group row">
-                        <label for="password" class="col-3 col-form-label text-left">Password:</label>
-                        <input type="password" class="form-control col-4" id="password">
+                        <label class="col-3 col-form-label text-left" for="password">Password:</label>
+                        <input class="form-control col-4" id="password" type="password">
                         <span id="passwordAlert"></span>
                     </div>
                     <!--<div class="form-group row">
@@ -322,14 +341,15 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="btn_createRoomSave">Save</button>
-                <button type="button" class="btn btn-secondary" id="btn_createRoomCancel"
-                        data-dismiss="modal">Cancel</button>
+                <button class="btn btn-primary" id="btn_createRoomSave" type="button">Save</button>
+                <button class="btn btn-secondary" data-dismiss="modal" id="btn_createRoomCancel"
+                        type="button">Cancel
+                </button>
             </div>
         </div>
     </div>
 </div>
-<div class="modal fade" id="joinModal" tabindex="-1" aria-labelledby="exampleModalLabel">
+<div aria-labelledby="exampleModalLabel" class="modal fade" id="joinModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content w-100">
             <div class="modal-body">
@@ -364,8 +384,8 @@
                         <a class="list-group-item list-group-item-action" href="#z">Z</a>
                     </div>--->
                     <div class="col-1"></div>
-                    <div data-spy="scroll" data-target="#list-example" data-offset="0"
-                         class="p-0 col-10 scrollspy-example" style="height: 300px;overflow: auto">
+                    <div class="p-0 col-10 scrollspy-example" data-offset="0" data-spy="scroll"
+                         data-target="#list-example" style="height: 300px;overflow: auto">
                         <form>
                             <!---<div id="A"></div>--->
                             <table class="table mb-0" id="roomTable">
@@ -661,13 +681,13 @@
                     <p></p>
                 </div>
                 <!---<button type="button" class="btn btn-primary">Clear</button>--->
-                <button type="button" class="btn btn-primary" id="join_room" disabled="disabled">Join</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-primary" disabled="disabled" id="join_room" type="button">Join</button>
+                <button class="btn btn-secondary" data-dismiss="modal" type="button">Cancel</button>
             </div>
         </div>
     </div>
 </div>
-<div class="modal fade" id="muteModal" tabindex="-1" aria-labelledby="muteModalLabel">
+<div aria-labelledby="muteModalLabel" class="modal fade" id="muteModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content w-75">
             <div class="modal-header">
@@ -685,32 +705,32 @@
                         <table class="table ">
                             <tbody>
                             <tr>
-                                <th scope="row"><input type="radio" name="mute"></th>
+                                <th scope="row"><input name="mute" type="radio"></th>
                                 <td>Yvonne</td>
                                 <td></td>
                             </tr>
                             <tr>
-                                <th scope="row"><input type="radio" name="mute"></th>
+                                <th scope="row"><input name="mute" type="radio"></th>
                                 <td>Mona</td>
                                 <td>isMuted</td>
                             </tr>
                             <tr>
-                                <th scope="row"><input type="radio" name="mute"></th>
+                                <th scope="row"><input name="mute" type="radio"></th>
                                 <td>Werner</td>
                                 <td></td>
                             </tr>
                             <tr>
-                                <th scope="row"><input type="radio" name="mute"></th>
+                                <th scope="row"><input name="mute" type="radio"></th>
                                 <td>Mona</td>
                                 <td></td>
                             </tr>
                             <tr>
-                                <th scope="row"><input type="radio" name="mute"></th>
+                                <th scope="row"><input name="mute" type="radio"></th>
                                 <td>Yvonne</td>
                                 <td></td>
                             </tr>
                             <tr>
-                                <th scope="row"><input type="radio" name="mute"></th>
+                                <th scope="row"><input name="mute" type="radio"></th>
                                 <td>Ethel</td>
                                 <td>isMuted</td>
                             </tr>
@@ -721,20 +741,21 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Clear</button>
-                <button type="button" class="btn btn-primary">Mute</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-primary" type="button">Clear</button>
+                <button class="btn btn-primary" type="button">Mute</button>
+                <button class="btn btn-secondary" data-dismiss="modal" type="button">Cancel</button>
                 <small class="text-danger"><em>Selected users will be muted and cannot send messages in this group</em></small>
             </div>
         </div>
     </div>
 </div>
-<div class="modal fade" id="blockModal" tabindex="-1" aria-labelledby="blockModalLabel">
+<div aria-labelledby="blockModalLabel" class="modal fade" id="blockModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content w-75">
             <div class="modal-header">
 
-                <h5 class="modal-title" id="blockModalLabel">Block <span id="blockIn"></span> to <span id="roomNameInBlock"></span></h5>
+                <h5 class="modal-title" id="blockModalLabel">Block <span id="blockIn"></span> to <span
+                        id="roomNameInBlock"></span></h5>
                 <!---
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -753,8 +774,8 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="blockReq" disabled="disabled">Block</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-primary" disabled="disabled" id="blockReq" type="button">Block</button>
+                <button class="btn btn-secondary" data-dismiss="modal" type="button">Cancel</button>
                 <div class="row">
                     <div class="col-11">
                         <small class="text-danger"><em>Selected users cannot join this group chat.</em></small>
@@ -766,7 +787,7 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="kickModal" tabindex="-1" aria-labelledby="kickModalLabel">
+<div aria-labelledby="kickModalLabel" class="modal fade" id="kickModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content w-75">
             <div class="modal-header">
@@ -784,32 +805,32 @@
                         <table class="table ">
                             <tbody>
                             <tr>
-                                <th scope="row"><input type="radio" name="kick"></th>
+                                <th scope="row"><input name="kick" type="radio"></th>
                                 <td>Yvonne</td>
                                 <td></td>
                             </tr>
                             <tr>
-                                <th scope="row"><input type="radio" name="kick"></th>
+                                <th scope="row"><input name="kick" type="radio"></th>
                                 <td>Mona</td>
                                 <td></td>
                             </tr>
                             <tr>
-                                <th scope="row"><input type="radio" name="kick"></th>
+                                <th scope="row"><input name="kick" type="radio"></th>
                                 <td>Werner</td>
                                 <td></td>
                             </tr>
                             <tr>
-                                <th scope="row"><input type="radio" name="kick"></th>
+                                <th scope="row"><input name="kick" type="radio"></th>
                                 <td>Mona</td>
                                 <td></td>
                             </tr>
                             <tr>
-                                <th scope="row"><input type="radio" name="kick"></th>
+                                <th scope="row"><input name="kick" type="radio"></th>
                                 <td>Yvonne</td>
                                 <td></td>
                             </tr>
                             <tr>
-                                <th scope="row"><input type="radio" name="kick"></th>
+                                <th scope="row"><input name="kick" type="radio"></th>
                                 <td>Ethel</td>
                                 <td></td>
                             </tr>
@@ -819,9 +840,9 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Clear</button>
-                <button type="button" class="btn btn-primary">Kick</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-primary" type="button">Clear</button>
+                <button class="btn btn-primary" type="button">Kick</button>
+                <button class="btn btn-secondary" data-dismiss="modal" type="button">Cancel</button>
                 <div class="row">
                     <div class="col">
                         <small class="text-danger"><em>Selected users will be removed from this group chat.</em></small>
@@ -831,7 +852,7 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="leaveModal" tabindex="-1" aria-labelledby="leaveModalLabel">
+<div aria-labelledby="leaveModalLabel" class="modal fade" id="leaveModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content w-75">
             <div class="modal-body">
@@ -844,12 +865,12 @@
             <div class="modal-footer">
                 <!---<button type="button" class="btn btn-primary">Leave</button>
                 <button type="button" class="btn btn-primary">Stay</button>--->
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-secondary" data-dismiss="modal" type="button">Cancel</button>
             </div>
         </div>
     </div>
 </div>
-<div class="modal fade" id="chatModal" tabindex="-1" aria-labelledby="exampleModalLabel">
+<div aria-labelledby="exampleModalLabel" class="modal fade" id="chatModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content w-100">
             <div class="modal-header">
@@ -893,8 +914,8 @@
                         <a class="list-group-item list-group-item-action" href="#chat_Z">Z</a>
                     </div>--->
                     <div class="col-1"></div>
-                    <div data-spy="scroll" data-target="#chat-list-example" data-offset="0"
-                         class="p-0 col-10 scrollspy-example" style="height: 300px;overflow: auto">
+                    <div class="p-0 col-10 scrollspy-example" data-offset="0" data-spy="scroll"
+                         data-target="#chat-list-example" style="height: 300px;overflow: auto">
                         <form>
                             <!---<div id="chat_A"></div>--->
                             <table class="table mb-0" id="userTable">
@@ -1034,18 +1055,19 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="chatStart" disabled="disabled">Start</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-primary" disabled="disabled" id="chatStart" type="button">Start</button>
+                <button class="btn btn-secondary" data-dismiss="modal" type="button">Cancel</button>
             </div>
         </div>
     </div>
 </div>
-<div class="modal fade" id="inviteModal" tabindex="-1" aria-labelledby="exampleModalLabel">
+<div aria-labelledby="exampleModalLabel" class="modal fade" id="inviteModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content w-100">
             <div class="modal-header">
 
-                <h5 class="modal-title float-left" id="inviteModalLabel">Invite <span id="inviteTo"></span> to <span id="roomNameInInvite"></span></h5>
+                <h5 class="modal-title float-left" id="inviteModalLabel">Invite <span id="inviteTo"></span> to <span
+                        id="roomNameInInvite"></span></h5>
                 <!---
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -1055,8 +1077,8 @@
             <div class="modal-body">
                 <div class="row p-1">
                     <div class="col-1"></div>
-                    <div data-spy="scroll" data-target="#chat-list-example" data-offset="0"
-                         class="p-0 col-10 scrollspy-example" style="height: 300px;overflow: auto">
+                    <div class="p-0 col-10 scrollspy-example" data-offset="0" data-spy="scroll"
+                         data-target="#chat-list-example" style="height: 300px;overflow: auto">
                         <form>
                             <!---<div id="invite_A"></div>--->
                             <table class="table mb-0" id="inviteTable">
@@ -1068,13 +1090,13 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="inviteReq" disabled="disabled">Invite</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-primary" disabled="disabled" id="inviteReq" type="button">Invite</button>
+                <button class="btn btn-secondary" data-dismiss="modal" type="button">Cancel</button>
             </div>
         </div>
     </div>
 </div>
-<div class="modal fade" id="historyModal" tabindex="-1" aria-labelledby="exampleModalLabel">
+<div aria-labelledby="exampleModalLabel" class="modal fade" id="historyModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content w-100">
             <div class="modal-header">
@@ -1095,7 +1117,7 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button class="btn btn-secondary" data-dismiss="modal" type="button">Close</button>
             </div>
         </div>
     </div>

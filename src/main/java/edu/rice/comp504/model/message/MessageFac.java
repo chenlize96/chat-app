@@ -3,7 +3,7 @@ package edu.rice.comp504.model.message;
 /**
  * A factory class to make messages.
  */
-public class MessageFac implements IMessageFac{
+public class MessageFac implements IMessageFac {
 
     private static Message ONLY;
 
@@ -16,6 +16,7 @@ public class MessageFac implements IMessageFac{
 
     /**
      * Make function.
+     *
      * @return The default made message
      */
     public Message make(String type) {

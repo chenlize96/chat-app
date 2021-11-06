@@ -12,17 +12,12 @@ import java.util.concurrent.ConcurrentHashMap;
  * UserDB is used to store users.
  */
 public class UserDB {
-    private static final Map<Session, String> sessionUserMap =  new ConcurrentHashMap<>();
-    private static int nextUserId = 1;
+    private static final Map<Session, String> sessionUserMap = new ConcurrentHashMap<>();
     // TODO: This userDB will be implemented to something like UserStore, it will store all users
     //      and their relationship to their chatroom.
-    private static final Map<String, User> users = new ConcurrentHashMap<>(){{
-        put("admin", new RegisteredUser("admin", "123", "Rice University", 20, "swim, music"));
-        put("aaa", new RegisteredUser("aaa", "123", "Nanjing University", 21, "swim"));
-        put("bbb", new RegisteredUser("bbb", "123", "Yale University", 22, "swim, football"));
-        put("ccc", new RegisteredUser("ccc", "123", "MIT", 23, "swim, music, aaaaaaaaaaaaaaaaaaaaaa"));
-    }};
-    private static Map<String,Integer> hateSpeechCount = new ConcurrentHashMap<>();
+    private static final Map<String, User> users = new ConcurrentHashMap<>();
+    private static int nextUserId = 1;
+    private static Map<String, Integer> hateSpeechCount = new ConcurrentHashMap<>();
 
     /**
      * Constructor.
@@ -32,6 +27,7 @@ public class UserDB {
 
     /**
      * Get the username to User Class map.
+     *
      * @return The available users
      */
     public static Map<String, User> getUsers() {
@@ -55,14 +51,16 @@ public class UserDB {
 
     /**
      * Get the session to username map.
+     *
      * @return The session to username map
      */
-    public static Map<Session,String> getSessionUserMap() {
+    public static Map<Session, String> getSessionUserMap() {
         return sessionUserMap;
     }
 
     /**
      * Generate the next user id.
+     *
      * @return The next user id
      */
     public static int genNextUserId() {
@@ -71,7 +69,8 @@ public class UserDB {
 
     /**
      * Add a session user.
-     * @param session The session.
+     *
+     * @param session  The session.
      * @param username The username.
      */
     public static void addSessionUser(Session session, String username) {
@@ -80,6 +79,7 @@ public class UserDB {
 
     /**
      * Get the user.
+     *
      * @param session The session.
      * @return The username
      */
@@ -89,6 +89,7 @@ public class UserDB {
 
     /**
      * Remove user.
+     *
      * @param session The session.
      */
     public static void removeUser(Session session) {
@@ -97,9 +98,10 @@ public class UserDB {
 
     /**
      * Get open sessions.
+     *
      * @return All open sessions
      */
-    public static Set<Session>  getSessions() {
+    public static Set<Session> getSessions() {
         return sessionUserMap.keySet();
     }
 

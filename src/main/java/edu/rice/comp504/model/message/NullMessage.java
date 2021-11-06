@@ -3,7 +3,7 @@ package edu.rice.comp504.model.message;
 /**
  * A concrete class to represent one non-meaningful message, prevent null pointer exception.
  */
-public class NullMessage extends Message{
+public class NullMessage extends Message {
 
     private static Message ONLY;
 

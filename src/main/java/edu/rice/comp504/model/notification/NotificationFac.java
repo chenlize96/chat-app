@@ -3,7 +3,7 @@ package edu.rice.comp504.model.notification;
 /**
  * A factory class to make different types of notification.
  */
-public class NotificationFac implements INotificationFac{
+public class NotificationFac implements INotificationFac {
 
     /**
      * A constructor.
@@ -30,11 +30,11 @@ public class NotificationFac implements INotificationFac{
             case "accept":
                 return AcceptNotification.make(sender, receiver, info);
             case "simple":
-                return SimpleNotification.make(sender,receiver,info);
+                return SimpleNotification.make(sender, receiver, info);
             case "inviteAccept":
-                return SimpleNotification.make(sender,receiver,info);
+                return SimpleNotification.make(sender, receiver, info);
             case "inviteReject":
-                return SimpleNotification.make(sender,receiver,info);
+                return SimpleNotification.make(sender, receiver, info);
             case "invite":
                 return InviteNotification.make(sender, receiver, info);
             case "mute":

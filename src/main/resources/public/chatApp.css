@@ -65,7 +65,7 @@
     grid-area: buttons1;
     width: 250px;
     height: 133px;
-    font-size:0px;
+    font-size: 0px;
     background-color: white;
 }
 
@@ -195,7 +195,7 @@ textarea {
     background-color: lightskyblue;
     padding: 5px;
     width: 1120px;
-    margin:auto;
+    margin: auto;
 }
 
 select, label {

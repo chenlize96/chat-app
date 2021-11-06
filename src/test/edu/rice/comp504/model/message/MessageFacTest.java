@@ -2,7 +2,7 @@ package edu.rice.comp504.model.message;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class MessageFacTest {
 
@@ -10,6 +10,6 @@ public class MessageFacTest {
 
     @Test
     public void make() {
-        assertEquals(NullMessage.make(),fac.make(""));
+        assertEquals(NullMessage.make(), fac.make(""));
     }
 }

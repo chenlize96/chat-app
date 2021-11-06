@@ -57,47 +57,47 @@ public class GroupChatTest {
 
     @Test
     public void getRoomPassword() {
-        assertEquals("123",test.getRoomPassword());
+        assertEquals("123", test.getRoomPassword());
     }
 
     @Test
     public void getRules() {
-        assertEquals(new ArrayList<String>(),test.getRules());
+        assertEquals(new ArrayList<String>(), test.getRules());
     }
 
     @Test
     public void getMuteList() {
-        assertEquals(new ArrayList<String>(),test.getMuteList());
+        assertEquals(new ArrayList<String>(), test.getMuteList());
     }
 
     @Test
     public void setCurNumUser() {
         test.setCurNumUser(2);
-        assertEquals(2,test.getCurNumUser());
+        assertEquals(2, test.getCurNumUser());
     }
 
     @Test
     public void setOwner() {
         test.setOwner("admin1");
-        assertEquals("admin1",test.getOwner());
+        assertEquals("admin1", test.getOwner());
     }
 
     @Test
     public void setToPrivate() {
         test.setToPrivate();
-        assertEquals(false,test.isPublic());
+        assertEquals(false, test.isPublic());
     }
 
     @Test
     public void setToPublic() {
         test.setToPublic();
-        assertEquals(true,test.isPublic());
+        assertEquals(true, test.isPublic());
     }
 
     @Test
     public void setRoomPassword() {
         test.setRoomPassword("111");
-        assertEquals("111",test.getRoomPassword());
+        assertEquals("111", test.getRoomPassword());
     }
 
     @Test
@@ -105,7 +105,7 @@ public class GroupChatTest {
         test.addRules("aaa");
         List<String> trueList = new ArrayList<>();
         trueList.add("aaa");
-        assertEquals(trueList,test.getRules());
+        assertEquals(trueList, test.getRules());
     }
 
     @Test
@@ -113,7 +113,7 @@ public class GroupChatTest {
         ArrayList<String> list = new ArrayList<>();
         list.add("admin1");
         test.setUserList(list);
-        assertEquals(list,test.getUserList());
+        assertEquals(list, test.getUserList());
     }
 
     @Test
@@ -122,7 +122,7 @@ public class GroupChatTest {
         list.add("admin");
         list.add("admin1");
         test.addToUserList("admin1");
-        assertEquals(list,test.getUserList());
+        assertEquals(list, test.getUserList());
     }
 
     @Test
@@ -130,7 +130,7 @@ public class GroupChatTest {
         ArrayList<String> list = new ArrayList<>();
         list.add("admin");
         test.addToAdminList("admin");
-        assertEquals(list,test.getAdminList());
+        assertEquals(list, test.getAdminList());
     }
 
 //    @Test
@@ -147,12 +147,12 @@ public class GroupChatTest {
         ArrayList<String> list = new ArrayList<>();
         list.add("admin");
         test.addMuteList("admin");
-        assertEquals(list,test.getMuteList());
+        assertEquals(list, test.getMuteList());
     }
 
     @Test
     public void getInterest() {
-        assertEquals("Swim",test.getInterest());
+        assertEquals("Swim", test.getInterest());
     }
 
     @Test
@@ -167,13 +167,13 @@ public class GroupChatTest {
     @Test
     public void testAddToMute() {
         test.addToMuteList("adssss");
-        String muted = test.getMuteList().get(test.getMuteList().size()-1);
-        assertEquals(muted,"adssss");
+        String muted = test.getMuteList().get(test.getMuteList().size() - 1);
+        assertEquals(muted, "adssss");
     }
 
     @Test
     public void addToBlockList() {
-        test.addToBlockList("admin","aaaa");
+        test.addToBlockList("admin", "aaaa");
     }
 
     @Test
