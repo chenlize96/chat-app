@@ -19,6 +19,12 @@ public class UserDB {
     private static int nextUserId = 1;
     private static Map<String, Integer> hateSpeechCount = new ConcurrentHashMap<>();
 
+    static {
+        users.put("admin", new RegisteredUser("admin", "123", "Rice University", 20, "swim, music"));
+        users.put("aaa", new RegisteredUser("aaa", "123", "Nanjing University", 21, "swim"));
+        users.put("bbb", new RegisteredUser("bbb", "123", "Yale University", 22, "swim, football"));
+        users.put("ccc", new RegisteredUser("ccc", "123", "MIT", 23, "swim, music, aaaaaaaaaaaaaaaaaaaaaa"));
+    }
     /**
      * Constructor.
      */
