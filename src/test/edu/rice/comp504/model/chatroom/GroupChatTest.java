@@ -177,9 +177,7 @@ public class GroupChatTest {
     }
 
     @Test
-    public void testKick(String kicked) {
-        test.addToUserList(kicked);
-        test.kickUser(kicked);
-        assertEquals(test.getUserList().size(),0);
+    public void testKick() {
+        test.kickUser("XXX");
     }
 }
