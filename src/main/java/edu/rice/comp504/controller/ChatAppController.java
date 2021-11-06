@@ -94,7 +94,8 @@ public class ChatAppController {
             List<ChatRoom> res = new ArrayList<>();
             for(ChatRoom chatRoom : allRoomList) {
                 if(!addedRoomList.contains(chatRoom) && chatRoom instanceof GroupChat) {
-                    res.add(chatRoom);
+                    if (((GroupChat) chatRoom).isPublic())
+                        res.add(chatRoom);
                 }
             }
             return gson.toJson(res);

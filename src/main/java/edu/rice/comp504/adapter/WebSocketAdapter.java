@@ -114,7 +114,7 @@ public class WebSocketAdapter {
                 RegisteredUser temp = ((RegisteredUser) UserDB.getUsers().get(inviteTarget));
                 NotificationFac fac = new NotificationFac();
                 InviteNotification invite = (InviteNotification) fac.make("invite", inviteSource, inviteTarget,
-                        inviteSource + "invite you to join" + roomName);
+                        roomName);
                 temp.addNotification(invite);
                 MsgToClientSender.sendInviteNotification(roomName,invite,inviteTarget);
                 break;
