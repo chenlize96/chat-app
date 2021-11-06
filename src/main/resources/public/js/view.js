@@ -43,6 +43,8 @@ window.onload = function () {
     $("#btn-invite").click(getInviteUsers);
     $("#inviteReq").click(inviteIntoRoom);
     $("#btn-mute").click(mute);
+    $("#btn-kick").click(kick);
+    $("#btn-block").click(getBlockUsers);
     $("#btn-leave").click(leaveRoom);
     //$("#notificationInfo").click(getNotification);
     $(".invite_ac").click(acceptInvite);
@@ -115,14 +117,24 @@ function mute(){
         )));
     }
 }
+function kick(){
+    if(lastSelectedMem !== "" && lastSelectedMem.indexOf($("#user_name").val()) === -1){
+        webSocket.send(JSON.stringify(requests.getKickRequest(
+            $("#roomName").text().replace(/[\r\n]/g,"").replace(/[ ]/g,""),
+            lastSelectedMem
+        )));
+    }
+}
 /**
  * invite button get users
  */
 function inviteIntoRoom(){
+    //console.log($("#curRoomNum").text(),$("#limitRoomNum").text())
     if($("#curRoomNum").text() !== $("#limitRoomNum").text()) {
         /*$.post("/invite", {sender: $("#user_name").val(), receiver: $("#inviteTo").text(), roomName:$("#roomName").text().replace(/[\r\n]/g,"").replace(/[ ]/g,"")}, function (){
             $("#inviteModal").hide();
         })*/
+        console.log(1);
         $("#inviteModal").modal('hide');
         webSocket.send(JSON.stringify(requests.getInviteRequest(
             $("#user_name").val(),
@@ -156,7 +168,18 @@ function getInviteUsers(){
         });
     })*/
 }
-
+function getBlockUsers(){
+    $("#roomNameInBlock").text($("#roomName").text().replace(/[\r\n]/g,"").replace(/[ ]/g,""));
+    webSocket.send(JSON.stringify(requests.getBlockUsersRequest(
+        $("#user_name").val(),
+        $("#roomName").text().replace(/[\r\n]/g,"").replace(/[ ]/g,"")
+    )));
+}
+function blockInRoom(){
+    webSocket.send(JSON.stringify(requests.getBlockRequest(
+        $("#roomName").text().replace(/[\r\n]/g,"").replace(/[ ]/g,"")
+    )));
+}
 /**
  * Get Notifications.
  */
@@ -228,6 +251,7 @@ function responseHandler(message) {
             }
             break;
         case 'invite':
+            console.log(2);
             console.log("reach invite");
             getNotification();
             //$("#inviteModal").hide();
@@ -250,6 +274,23 @@ function responseHandler(message) {
                 $("#inviteReq").removeAttr("disabled");
             });
             break;
+        case 'getBlockUsers':
+            let blockMsg = JSON.parse(data.message);
+            let blockTable = $("#blockTable");
+            blockTable.empty();
+            let blockHtml = "";
+            for(let i = 0; i < blockMsg.length; i++){
+                console.log(blockMsg[i]);
+                blockHtml += "<tr><th scope=\"row\"><input type=\"radio\" name=\"block\"></th><td>" +
+                    blockMsg[i].username + "</td></tr>";
+            }
+            blockTable.append(blockHtml);
+            $("input:radio[name='block']").change(function (){
+                let opt = $("input:radio[name='block']:checked").parent("th").next("td").text();
+                $("#blockIn").text(opt);
+                $("#blockReq").removeAttr("disabled");
+            });
+            break;
         case 'leave':
             console.log("leave", data);
             if (data.message === "true"){
@@ -263,6 +304,10 @@ function responseHandler(message) {
             updateRoomList();
             break;
         case 'mute':
+            console.log("mute success");
+            break;
+        case 'kick':
+            console.log("kick success");
             break;
         case 'notification':
             console.log(data.notificationList);

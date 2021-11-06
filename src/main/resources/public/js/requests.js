@@ -20,11 +20,19 @@ const getInviteRequest = (username, roomName, otherName) => ({
     action: "invite"
 });
 
+
 const getInviteUsersRequest = (username, roomName) => ({
     userSendInvite: username,
     roomName: roomName,
     //timeStamp: new Date().getTime(),
     action: "getInviteUsers"
+});
+
+const getBlockUsersRequest = (username, roomName) => ({
+    userSendInvite: username,
+    roomName: roomName,
+    //timeStamp: new Date().getTime(),
+    action: "getBlockUsers"
 });
 
 const getMuteRequest = (roomName, otherName) => ({
@@ -103,6 +111,7 @@ const requests = {
     getDeleteRequest,
     getRecallUpdateRequest,
     getInviteUsersRequest,
+    getBlockUsersRequest,
     getNotificationRequest
 }
 
