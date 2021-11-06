@@ -44,7 +44,7 @@ window.onload = function () {
     $("#inviteReq").click(inviteIntoRoom);
     $("#btn-mute").click(mute);
     $("#btn-leave").click(leaveRoom);
-    $("#notificationInfo").click(getNotification);
+    //$("#notificationInfo").click(getNotification);
     $(".invite_ac").click(acceptInvite);
     $(".invite_rj").click(rejectInvite);
     $("#btn-logout").click(doLogOut);
@@ -157,7 +157,16 @@ function getInviteUsers(){
 }
 
 /**
- * Render messages
+ * Get Notifications.
+ */
+function getNotification() {
+    webSocket.send(JSON.stringify(requests.getNotificationRequest(
+        $("#user_name").val()
+    )));
+}
+
+/**
+ * Render messages.
  */
 function renderMsg(data, message) {
     console.log($("#user_name").val());
@@ -367,14 +376,14 @@ function rejectInvite() {
 /**
  * outside notification button
  * */
-function getNotification() {
+/*function getNotification() {
     $.post("/user/notification", {username: $("#user_name").val()}, function (data) {
         let notifications = $("#notificationBody");
         //clear
         //get
 
     }, "json")
-}
+}*/
 /**
  * inside join button
  * */
