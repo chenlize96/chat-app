@@ -60,6 +60,7 @@ window.onload = function () {
     });
     $(".rooms").on('click', 'button', function (){
         showRoomInfo();
+        $("#chat-content").empty();
         $("#roomName").text($(this).text());
         $("#roomName").val($(this).text().replace(/[\r\n]/g,"").replace(/[ ]/g,""));
         $.post('/roomInfo', {roomName: $("#roomName").text().replace(/[\r\n]/g,"").replace(/[ ]/g,"")}, function (data){
