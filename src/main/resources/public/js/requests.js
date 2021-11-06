@@ -98,6 +98,11 @@ const getNotificationRequest = (username) => ({
     action: "notification"
 });
 
+const getHistoryRequest = (roomName) => ({
+    roomName: roomName,
+    action: "updateMessage"
+});
+
 const requests = {
     getSendMsgRequest,
     getLoginRequest,
@@ -112,7 +117,8 @@ const requests = {
     getRecallUpdateRequest,
     getInviteUsersRequest,
     getBlockUsersRequest,
-    getNotificationRequest
+    getNotificationRequest,
+    getHistoryRequest
 }
 
 export {requests};

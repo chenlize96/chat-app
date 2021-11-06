@@ -46,6 +46,8 @@ window.onload = function () {
     $("#btn-mute").click(mute);
     $("#btn-kick").click(kick);
     $("#btn-block").click(getBlockUsers);
+    $("#blockReq").click(blockInRoom);
+    $("#btn-history").click(showRoomHistory);
     $("#btn-leave").click(leaveRoom);
     //$("#notificationInfo").click(getNotification);
     $(".invite_ac").click(acceptInvite);
@@ -59,6 +61,7 @@ window.onload = function () {
     });
     $(".rooms").on('click', 'button', function (){
         showRoomInfo();
+        $("#chat-content").empty();
         $("#roomName").text($(this).text());
         $("#roomName").val($(this).text().replace(/[\r\n]/g,"").replace(/[ ]/g,""));
         $.post('/roomInfo', {roomName: $("#roomName").text().replace(/[\r\n]/g,"").replace(/[ ]/g,"")}, function (data){
@@ -178,6 +181,12 @@ function getBlockUsers(){
 }
 function blockInRoom(){
     webSocket.send(JSON.stringify(requests.getBlockRequest(
+        $("#roomName").text().replace(/[\r\n]/g,"").replace(/[ ]/g,""),
+        $("#blockIn").text()
+    )));
+}
+function showRoomHistory(){
+    webSocket.send(JSON.stringify(requests.getHistoryRequest(
         $("#roomName").text().replace(/[\r\n]/g,"").replace(/[ ]/g,"")
     )));
 }
@@ -314,6 +323,19 @@ function responseHandler(message) {
             console.log(data.notificationList);
             let me = JSON.parse(data.notificationList);
 
+            break;
+        case 'updateMessage':
+            console.log(data);
+            let historyMsg = JSON.parse(data.messages);
+            console.log(historyMsg);
+            let history = $("#historyList");
+            history.empty();
+            let historyHtml = "";
+            for(let i = 0; i < historyMsg.length; i++){
+                console.log(historyMsg[i]);
+                historyHtml += "<li>(" +  historyMsg[i].timestamp + ") " +  historyMsg[i].sendUser + ": " + historyMsg[i].childrenMessage[0].body + "</li>";
+            }
+            history.append(historyHtml);
             break;
         default:
             console.info("Missing type: " + msgType);
