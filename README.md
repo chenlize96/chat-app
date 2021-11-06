@@ -2,7 +2,7 @@
 chatapi-team-d created by GitHub Classroom
 
 # Team Dog
-https://chatapp-api-team-dog.herokuapp.com/
+https://chatapp-final-team-dog.herokuapp.com/
 
 Team Lead: Lize Chen
 
