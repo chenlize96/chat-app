@@ -50,8 +50,8 @@ window.onload = function () {
     $("#btn-history").click(showRoomHistory);
     $("#btn-leave").click(leaveRoom);
     //$("#notificationInfo").click(getNotification);
-    $(".invite_ac").click(acceptInvite);
-    $(".invite_rj").click(rejectInvite);
+    $("#notificationArea").on('click', '.invite_ac', acceptInvite);
+    $("#notificationArea").on('click', '.invite_rj', rejectInvite);
     $("#btn-logout").click(doLogOut);
     $('[data-toggle="popover"]').popover({
         html: true,
@@ -341,6 +341,12 @@ function responseHandler(message) {
             }
             history.append(historyHtml);
             break;
+        case 'acceptInvite':
+            console.log("accept invite");
+            break;
+        case 'rejectInvite':
+            console.log("reject invite");
+            break;
         default:
             console.info("Missing type: " + msgType);
     }
@@ -348,6 +354,8 @@ function responseHandler(message) {
 
 function renderNotification(notification) {
     console.log("begin notification rendering");
+    $("#notificationArea").empty();
+    console.log(notification.type);
     if (!notification) {
         console.log("current notification is empty");
     } else if (notification.hasButton) {
@@ -357,7 +365,7 @@ function renderNotification(notification) {
         let type = notification.type;
         $("#notificationArea").append("<div class=\"row w-100 mb-1\">" +
             "<div class=\"col-6\"><span class=\"inviteSender\">" + senderUser + " " +
-            "</span>" + type + " you to <spanclassName=\"inviteRoomName\">" + info + "</span></div>" +
+            "</span>" + type + " you to <span class=\"inviteRoomName\">" + info + "</span></div>" +
             "<button type=\"button\" class=\"btn btn-outline-success btn-sm col-1 p-0 mr-2 invite_ac\" style=\"border: none\">accept</button>" +
             "<button type=\"button\" class=\"btn btn-outline-danger btn-sm col-1 p-0 ml-2 invite_rj\" style=\"border: none\">reject</button>" +
             "</div>");
@@ -369,7 +377,7 @@ function renderNotification(notification) {
         let type = notification.type;
         $("#notificationArea").append("<div class=\"row w-100 mb-1\">" +
             "<div class=\"col-6\"><span class=\"inviteSender\">" + senderUser + " " +
-            "</span>" + type + " you to <spanclassName=\"inviteRoomName\">" + info + "</span></div>" +
+            "</span>" + type + " you to <span class=\"inviteRoomName\">" + info + "</span></div>" +
             "</div>");
     }
 }
@@ -463,24 +471,37 @@ function updateRoomList() {
  * */
 function acceptInvite() {
     console.log($(this).siblings("div").children(".inviteSender").text(), $(this).siblings("div").children(".inviteRoomName").text());
-    $.post("/notification/invite/accept", {receiver: $("#user_name").val(),
+    webSocket.send(JSON.stringify(requests.acceptInviteRequest(
+        $(this).siblings("div").children(".inviteSender").text().replace(/[\r\n]/g,"").replace(/[ ]/g,""),
+        $(this).siblings("div").children(".inviteRoomName").text(),
+        $("#user_name").val()
+    )));
+    console.log("1");
+    getNotification();
+    /*$.post("/notification/invite/accept", {receiver: $("#user_name").val(),
         sender: $(this).siblings("div").children(".inviteSender").text(),
         roomName: $(this).siblings("div").children(".inviteRoomName").text(),type: true}, function (data) {
         getNotification();
         updateRoomList();
-    }, "json")
+    }, "json")*/
 }
 /**
  * click invite notification reject
  */
 function rejectInvite() {
     console.log($(this).siblings("div").children(".inviteSender").text(), $(this).siblings("div").children(".inviteRoomName").text());
-    $.post("/notification/invite/reject", {receiver: $("#user_name").val(),
+    webSocket.send(JSON.stringify(requests.rejectInviteRequest(
+        $(this).siblings("div").children(".inviteSender").text().replace(/[\r\n]/g,"").replace(/[ ]/g,""),
+        $(this).siblings("div").children(".inviteRoomName").text(),
+        $("#user_name").val()
+    )));
+    getNotification();
+    /*$.post("/notification/invite/reject", {receiver: $("#user_name").val(),
         sender: $(this).siblings("div").children(".inviteSender").text(),
         roomName: $(this).siblings("div").children(".inviteRoomName").text(), type: false}, function (data) {
         getNotification();
         updateRoomList();
-    }, "json")
+    }, "json")*/
 }
 /**
  * outside notification button
