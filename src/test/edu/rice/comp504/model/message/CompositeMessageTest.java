@@ -1,5 +1,6 @@
 package edu.rice.comp504.model.message;
 
+import edu.rice.comp504.model.MessageDB;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -29,6 +30,13 @@ public class CompositeMessageTest {
 
     @Test
     public void getChildrenMessageArrayList() {
+    }
+
+
+    @Test
+    public void testGetChildrenContentAsString() {
+        CompositeMessage m3 = (CompositeMessage) MessageDB.make().addMessage("sender", "room", "body", "composite");
+        m3.getChildrenContentAsString();
     }
 
     @Test

@@ -16,7 +16,8 @@ public class ImageMessageTest {
     public void getScale() {
         ImageMessage message = (ImageMessage) ImageMessage.make("","aaa","aaa",12.1);
         double val = 12.1;
-        //assertEquals(val, 12);
+        double scale = message.getScale();
+        assertEquals(scale, 12);
     }
 
     @Test

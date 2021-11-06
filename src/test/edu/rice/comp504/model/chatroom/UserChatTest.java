@@ -20,4 +20,10 @@ public class UserChatTest {
     @Test
     public void propertyChange() {
     }
+
+    @Test
+    public void testNullRoom() {
+        NullRoom room = new NullRoom();
+        assertTrue(room instanceof NullRoom);
+    }
 }

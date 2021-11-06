@@ -74,15 +74,18 @@ public class NotificationTest {
     @Test
     public void testNotificationFac() {
         NotificationFac notificationFac = new NotificationFac();
-        Notification acceptNotification = notificationFac.make("accept","sender","receiver","info");
+        Notification acceptNotification = notificationFac.make("inviteAccept","sender","receiver","info");
         Notification applyNotification = notificationFac.make("apply","sender","receiver","info");
-        Notification interactNotification = notificationFac.make("interact","sender","receiver","info");
+        Notification interactNotification = notificationFac.make("request","sender","receiver","info");
         Notification inviteNotification = notificationFac.make("invite","sender","receiver","info");
         Notification kickNotification = notificationFac.make("kick","sender","receiver","info");
         Notification muteNotification = notificationFac.make("mute","sender","receiver","info");
         Notification nullNotification = notificationFac.make("null","sender","receiver","info");
-        Notification rejectNotification = notificationFac.make("reject","sender","receiver","info");
+        Notification rejectNotification = notificationFac.make("inviteReject","sender","receiver","info");
         Notification simpleNotification = notificationFac.make("simple","sender","receiver","info");
         Notification warningNotification = notificationFac.make("warn","sender","receiver","info");
+        Notification otherNotification = notificationFac.make("sdjisdji","sender","receiver","info");
+        Notification acceptNot = notificationFac.make("accept","sender","receiver","info");
+        Notification rejectNot = notificationFac.make("inviteAccept","sender","receiver","info");
     }
 }

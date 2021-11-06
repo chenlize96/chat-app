@@ -2,6 +2,7 @@ package edu.rice.comp504.model;
 
 import edu.rice.comp504.model.message.CompositeMessage;
 import edu.rice.comp504.model.message.ImageMessage;
+import edu.rice.comp504.model.message.Message;
 import edu.rice.comp504.model.message.TextMessage;
 import org.junit.Test;
 
@@ -22,8 +23,14 @@ public class MessageDBTest {
 
     @Test
     public void addMessage() {
-        assertEquals(MessageDB.make().addMessage("sender", "room", "body", "text"), TextMessage.make("auto", "sender", "body", "default", "black", 12));
-        assertEquals(MessageDB.make().addMessage("sender", "room", "body", "image"), ImageMessage.make("auto", "sender", "body", 1.0));
+        Message m1 = MessageDB.make().addMessage("sender", "room", "body", "text");
+        Message m2 = MessageDB.make().addMessage("sender", "room", "body", "image");
+        Message m3 = MessageDB.make().addMessage("sender", "room", "body", "composite");
+        Message m4 = MessageDB.make().addMessage("sender", "room", "body", "hahaha");
+        assertTrue(m1 instanceof TextMessage);
+        assertTrue(m2 instanceof ImageMessage);
+        assertTrue(m3 instanceof CompositeMessage);
+        assertFalse(m4 instanceof CompositeMessage);
     }
 
     @Test

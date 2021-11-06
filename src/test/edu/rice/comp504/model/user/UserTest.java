@@ -108,5 +108,16 @@ public class UserTest {
 
     @Test
     public void removeAllNotification() {
+        User user = new RegisteredUser("","","",22,"");
+        List<ChatRoom> list = user.getRoomList();
+        list.add(new GroupChat(5,5,"room","sd","dsds",true,"XXXX"));
+        user.removeAChatRoom(list.get(0).getRoomName());
+        list.add(new GroupChat(5,5,"room","sd","dsds",true,"XXXX"));
+        user.removeAChatRoom(list.get(0));
+    }
+
+    @Test
+    public void testRemoveAChatRoom() {
+
     }
 }

@@ -1,9 +1,7 @@
 package edu.rice.comp504.adapter;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonParser;
 import edu.rice.comp504.model.MessageDB;
-import edu.rice.comp504.model.MsgToClientSender;
 import edu.rice.comp504.model.RoomDB;
 import edu.rice.comp504.model.UserDB;
 import edu.rice.comp504.model.chatroom.ChatRoom;

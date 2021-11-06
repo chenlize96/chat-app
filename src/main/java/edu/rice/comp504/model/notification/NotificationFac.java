@@ -24,7 +24,7 @@ public class NotificationFac implements INotificationFac{
             case "request":
                 return InteractNotification.make(sender, receiver, info);
             case "kick":
-                return SimpleNotification.make(sender, receiver, info);
+                return KickNotification.make(sender, receiver, info);
             case "reject":
                 return RejectNotification.make(sender, receiver, info);
             case "accept":

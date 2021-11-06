@@ -158,4 +158,28 @@ public class GroupChatTest {
     @Test
     public void propertyChange() {
     }
+
+    @Test
+    public void testGetBlockMap() {
+        test.getBlockMap();
+    }
+
+    @Test
+    public void testAddToMute() {
+        test.addToMuteList("adssss");
+        String muted = test.getMuteList().get(test.getMuteList().size()-1);
+        assertEquals(muted,"adssss");
+    }
+
+    @Test
+    public void addToBlockList() {
+        test.addToBlockList("admin","aaaa");
+    }
+
+    @Test
+    public void testKick(String kicked) {
+        test.addToUserList(kicked);
+        test.kickUser(kicked);
+        assertEquals(test.getUserList().size(),0);
+    }
 }

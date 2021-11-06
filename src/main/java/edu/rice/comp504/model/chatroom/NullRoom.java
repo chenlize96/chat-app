@@ -16,7 +16,6 @@ public class NullRoom extends ChatRoom{
      * @param evt The property change event
      */
     public void propertyChange(PropertyChangeEvent evt) {
-
     }
 
 }
