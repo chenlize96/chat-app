@@ -53,12 +53,6 @@ window.onload = function () {
     $(".invite_ac").click(acceptInvite);
     $(".invite_rj").click(rejectInvite);
     $("#btn-logout").click(doLogOut);
-    $('[data-toggle="popover"]').popover({
-        html: true,
-        sanitize: false,
-        content: '<button type="button" id="button-image" class="popover_btn btn-primary">recall</button>' +
-            '<button type="button" id="button-image" class="popover_btn btn-danger">delete</button>'
-    });
     $(".rooms").on('click', 'button', function (){
         showRoomInfo();
         $("#chat-content").empty();
@@ -88,6 +82,7 @@ window.onload = function () {
         })
         console.log($("#roomName").text().replace(/[\r\n]/g,"").replace(/[ ]/g,""));
         loadRoomUser();
+
     });
     $(document).on("click", "#btn_createRoomSave", createGroupChat);
     $(document).on("click", "#btn_createRoomCancel", clearCreateForm);
@@ -217,8 +212,11 @@ function renderMsg(data, message) {
             "<div class=\"message-data text-right\">" +
         "<span class=\"message-data-time\">" + username + ", " + timestamp + "</span>" +
         "</div>" +
-        "<div class=\"message other-message float-right\">" + context +
-        "</div>"+
+        "<div class=\"message other-message float-right\">" +
+            "<button type = \"button\" style = \"outline: none\" class = \"text_btn outline-none\"" +
+            "data-container = \"body\" data-toggle = \"popover\" data-trigger = \"hover focus\"" +
+            "data-placement = \"top\" >" + context + "</button>" +
+            "</div>" +
         "</li>");
     } else {
         console.log("other");
@@ -234,9 +232,15 @@ function renderMsg(data, message) {
         "data-container = \"body\" data-toggle = \"popover\" data-trigger = \"hover focus\"" +
         "data-placement = \"top\" >" + context + "</button>" +
             "</div>" +
-            "</li>");
-
+            "</li>"
+        );
     }
+    $('[data-toggle="popover"]').popover({
+        html: true,
+        sanitize: false,
+        content: '<button type="button" id="button-image" class="popover_btn btn-primary">recall</button>' +
+            '<button type="button" id="button-image" class="popover_btn btn-danger">delete</button>'
+    });
 }
 
 /**
