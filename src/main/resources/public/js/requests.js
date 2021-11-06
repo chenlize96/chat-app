@@ -20,6 +20,21 @@ const getInviteRequest = (username, roomName, otherName) => ({
     action: "invite"
 });
 
+const acceptInviteRequest = (username, roomName, otherName) => ({
+    userSendInvite: username,
+    roomName: roomName,
+    userGetInvite: otherName,
+    //timeStamp: new Date().getTime(),
+    action: "acceptInvite"
+});
+
+const rejectInviteRequest = (username, roomName, otherName) => ({
+    userSendInvite: username,
+    roomName: roomName,
+    userGetInvite: otherName,
+    //timeStamp: new Date().getTime(),
+    action: "rejectInvite"
+});
 
 const getInviteUsersRequest = (username, roomName) => ({
     userSendInvite: username,
@@ -118,7 +133,9 @@ const requests = {
     getInviteUsersRequest,
     getBlockUsersRequest,
     getNotificationRequest,
-    getHistoryRequest
+    getHistoryRequest,
+    acceptInviteRequest,
+    rejectInviteRequest
 }
 
 export {requests};

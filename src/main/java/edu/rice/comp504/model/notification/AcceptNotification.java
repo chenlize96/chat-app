@@ -9,7 +9,7 @@ public class AcceptNotification extends Notification{
      * @param info      The notification info
      */
     public AcceptNotification(String sender, String receiver, String info) {
-        super(sender, receiver, info, "accept", true);
+        super(sender, receiver, info, "accept", false);
     }
 
     /**

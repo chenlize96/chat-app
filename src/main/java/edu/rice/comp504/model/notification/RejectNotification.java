@@ -9,7 +9,7 @@ public class RejectNotification extends Notification{
      * @param info      The notification info
      */
     public RejectNotification(String sender, String receiver, String info) {
-        super(sender, receiver, info, "reject", true);
+        super(sender, receiver, info, "reject", false);
     }
 
     /**
