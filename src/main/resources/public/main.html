@@ -174,7 +174,10 @@
                     </button>
                 </div>
                 <div class="col-6 p-0">
-                    <button class="btn btn-primary u_btn" id="btn-kick" data-toggle="modal" data-target="#kickModal">
+                    <!---<button class="btn btn-primary u_btn" id="btn-kick" data-toggle="modal" data-target="#kickModal">
+                        Kick
+                    </button>--->
+                    <button class="btn btn-primary u_btn" id="btn-kick">
                         Kick
                     </button>
                 </div>
@@ -731,7 +734,7 @@
         <div class="modal-content w-75">
             <div class="modal-header">
 
-                <h5 class="modal-title" id="blockModalLabel">Google, xxx</h5>
+                <h5 class="modal-title" id="blockModalLabel">Block <span id="blockIn"></span> to <span id="roomNameInBlock"></span></h5>
                 <!---
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -741,38 +744,8 @@
             <div class="modal-body">
                 <form>
                     <div style="height: 300px;overflow: auto;">
-                        <table class="table ">
+                        <table class="table" id="blockTable">
                             <tbody>
-                            <tr>
-                                <th scope="row"><input type="radio" name="block"></th>
-                                <td>Yvonne</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <th scope="row"><input type="radio" name="block"></th>
-                                <td>Mona</td>
-                                <td>isBlocked</td>
-                            </tr>
-                            <tr>
-                                <th scope="row"><input type="radio" name="block"></th>
-                                <td>Werner</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <th scope="row"><input type="radio" name="block"></th>
-                                <td>Mona</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <th scope="row"><input type="radio" name="block"></th>
-                                <td>Yvonne</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <th scope="row"><input type="radio" name="block"></th>
-                                <td>Ethel</td>
-                                <td>isBlocked</td>
-                            </tr>
                             </tbody>
                         </table>
                     </div>
@@ -780,8 +753,7 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Clear</button>
-                <button type="button" class="btn btn-primary">Block</button>
+                <button type="button" class="btn btn-primary" id="blockReq" disabled="disabled">Block</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 <div class="row">
                     <div class="col-11">
@@ -1073,7 +1045,7 @@
         <div class="modal-content w-100">
             <div class="modal-header">
 
-                <h5 class="modal-title float-left" id="inviteModalLabel">Invite <span id="inviteTo"></span>to <span id="roomNameInInvite"></span></h5>
+                <h5 class="modal-title float-left" id="inviteModalLabel">Invite <span id="inviteTo"></span> to <span id="roomNameInInvite"></span></h5>
                 <!---
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
