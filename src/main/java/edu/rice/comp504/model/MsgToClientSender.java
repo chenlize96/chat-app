@@ -149,6 +149,24 @@ public class MsgToClientSender {
         });
     }
 
+    public static void setLeaveAllResult(boolean res, String userName){
+        JsonObject jo = new JsonObject();
+        jo.addProperty("message", new Gson().toJsonTree(res).toString());
+        jo.addProperty("username", userName);
+        jo.addProperty("action", "leaveAll");
+        UserDB.getSessions().forEach(session -> {
+            String currUser = UserDB.getUserBySession(session);
+            if(currUser.equals(userName)){
+                try {
+                    session.getRemote().sendString(String.valueOf(jo));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+
     public static void setBlockResult(String roomName, boolean res, String userName){
         JsonObject jo = new JsonObject();
         jo.addProperty("message", new Gson().toJsonTree(res).toString());
