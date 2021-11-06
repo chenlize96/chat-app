@@ -473,6 +473,10 @@ public class WebSocketAdapter {
         if(chatRoom.getType().equals("groupchat")) { //check mute
             List<String> mutedUsers = ((GroupChat)chatRoom).getMuteList();
             if(mutedUsers.contains(sender)) {
+                //send mute notification
+                Notification notification = new NotificationFac().make("mute","",sender,room);
+                User user = UserDB.getUsers().get(sender);
+                user.addNotification(notification);
                 return NullMessage.make();
                // return MessageDB.make().addMessage(sender, room, body, "null");
 
