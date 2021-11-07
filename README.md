@@ -24,11 +24,15 @@ Developer: Junhao Yu
 
 1. Enter the application:
 
-   Register an account and login. You can also login to the system directly using the following four registered accounts:
+   Register an account and log in. You can also login to the system directly using the following four registered accounts:
+   
    admin, 123
-   aaa,123
-   bbb,123
-   ccc,123
+   
+   aaa, 123
+   
+   bbb, 123
+   
+   ccc, 123
 
 2. Create a chat room
 
@@ -44,7 +48,7 @@ Developer: Junhao Yu
 
 5. Join a private room
 
-   The admin should click on a room name and invite a user, for example, user aaa. If aaa click on the notification button and accept, this room will appear on the available room list. 
+   The admin should click on a room name and invite a user, for example, user aaa. If aaa clicks on the notification button and accepts, this room will appear on the available room list. 
 
 6. Send messages
 
