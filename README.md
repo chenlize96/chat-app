@@ -16,11 +16,12 @@ Link: https://chatapp-final-team-dog.herokuapp.com/
 <br>
 
 <h2 id="desc"> 1. Description</h2>
+<br>
 
 | Landing | Register |
 |:----------:|:----------:|
-| <img src="./Screenshots/landing.png" width="100"> | <img src="./Screenshots/register.png" width="500"> |
-
+| <img src="./Screenshots/landing.png" width="400"> | <img src="./Screenshots/register.png" width="250"> |
+<br>
 <p>
 <img src="./Screenshots/index.png" width="700">
 </p>
@@ -28,6 +29,7 @@ Link: https://chatapp-final-team-dog.herokuapp.com/
 
 <br>
 <h2 id="handbook"> 2. User Handbook</h2>
+<br>
 
 <ol>
 
@@ -107,6 +109,7 @@ Link: https://chatapp-final-team-dog.herokuapp.com/
 
 <br>
 <h2 id="contributors"> 3. Contributors</h2>
+<br>
 <p>
 Team Lead: Lize Chen
 
